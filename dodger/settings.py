@@ -26,9 +26,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 
 # static config
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 # template config
@@ -65,13 +69,18 @@ MIDDLEWARE_CLASSES = (
 
 
 # secret config
-SECRET_KEY = 'wzgv3s2)z2(ah2%t906z8%+dto6d%z&g+gtu)y1wc*52cv=1fv'
+SECRET_KEY = os.environ['DODGER_SECRET_KEY']
 
 
 # celery config
 djcelery.setup_loader()
 
-BROKER_URL = 'django://'
+BROKER_URL = 'amqp://%s:%s@%s:%s//' % (
+    os.environ['DODGER_AMQP_USER'],
+    os.environ['DODGER_AMQP_PASSWD'],
+    os.environ['DODGER_AMQP_HOST'],
+    os.environ['DODGER_AMQP_PORT']
+)
 
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
@@ -114,7 +123,10 @@ INSTALLED_APPS = (
 # db config
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ['DODGER_PSQL_NAME'],
+        'USER': os.environ['DODGER_PSQL_USER'],
+        'PASSWORD': os.environ['DODGER_PSQL_PASSWD'],
+        'HOST': os.environ['DODGER_PSQL_HOST'],
     }
 }
