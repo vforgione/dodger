@@ -1,5 +1,7 @@
 import os
 
+import djcelery
+
 
 # helpers
 BASE_DIR = os.path.dirname(__file__)
@@ -29,6 +31,28 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
+# template config
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.tz',
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.request',
+)
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+)
+
+
 # middleware config
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -44,12 +68,24 @@ MIDDLEWARE_CLASSES = (
 SECRET_KEY = 'wzgv3s2)z2(ah2%t906z8%+dto6d%z&g+gtu)y1wc*52cv=1fv'
 
 
+# celery config
+djcelery.setup_loader()
+
+BROKER_URL = 'django://'
+
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+
 # app config
 ROOT_URLCONF = 'dodger.urls'
 
 WSGI_APPLICATION = 'dodger.wsgi.application'
 
 INSTALLED_APPS = (
+    # bootstrapped admin
+    'django_admin_bootstrapped.bootstrap3',
+    'django_admin_bootstrapped',
+
     # django apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,6 +96,13 @@ INSTALLED_APPS = (
 
     # migrations
     'south',
+
+    # api
+    'tastypie',
+
+    # task scheduling
+    'djcelery',
+    'kombu.transport.django',
 
     # project apps
     'dat',
