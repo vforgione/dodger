@@ -50,12 +50,16 @@ ROOT_URLCONF = 'dodger.urls'
 WSGI_APPLICATION = 'dodger.wsgi.application'
 
 INSTALLED_APPS = (
+    # django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # migrations
+    'south',
 )
 
 
