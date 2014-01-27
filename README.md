@@ -236,30 +236,3 @@ uwsgi --ini /home/deploy/dodger-env/dodger/uwsgi.ini
 
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
