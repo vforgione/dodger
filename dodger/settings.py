@@ -60,6 +60,11 @@ INSTALLED_APPS = (
 
     # migrations
     'south',
+
+    # project apps
+    'dat',
+    'inventory_manager',
+    'warehouse',
 )
 
 
