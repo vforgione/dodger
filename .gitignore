@@ -4,3 +4,4 @@
 migrations
 celerybeat-schedule
 dodger/static/
+local_settings.py
