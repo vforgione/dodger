@@ -14,7 +14,7 @@ import requests
 
 logger = logging.getLogger('gdocs')
 logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler('gdocs.log')
+fh = logging.FileHandler('/home/deploy/dodger-env/gdocs.log')
 fh.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s\t%(name)s\t%(levelname)s\t%(message)s')
 fh.setFormatter(formatter)
