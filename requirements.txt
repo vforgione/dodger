@@ -8,3 +8,4 @@ gspread==0.1.0
 pytz==2013.9
 requests==2.2.1
 wsgiref==0.1.2
+psycopg2==2.5.2

@@ -8,13 +8,13 @@ BASE_DIR = os.path.dirname(__file__)
 
 
 # debug config
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = DEBUG
 
 
 # site config
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 LANGUAGE_CODE = 'en-us'
 
