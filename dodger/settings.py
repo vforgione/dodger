@@ -73,6 +73,7 @@ djcelery.setup_loader()
 
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
+CELERY_ALWAYS_EAGER = True
 
 # app config
 ROOT_URLCONF = 'dodger.urls'

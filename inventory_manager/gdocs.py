@@ -225,7 +225,7 @@ def rip_doc(doc, list_uri, detail_uri, api_key):
             cats = ['/api/inventory-manager/categories/more/', ]
 
         # filler
-        owner = '/api/auth/users/1/'  # dat account = 10
+        owner = '/api/auth/users/3/'  # dat account = 3
         reorder = 0
         price = 0
         cost = 0
