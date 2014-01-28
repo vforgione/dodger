@@ -42,7 +42,7 @@ def rip_doc(doc, list_uri, detail_uri, api_key):
     def get_supporting_resources(uri, headers):
         logger.debug('getting resources from %s' % uri)
         resources = {}
-        resp = requests.get(uri, headers=headers)
+        resp = requests.get(uri, headers=headers, verify=False)
         resp = json.loads(resp.text)
         for obj in resp['objects']:
             resources[obj['id']] = obj['resource_uri']
@@ -66,7 +66,7 @@ def rip_doc(doc, list_uri, detail_uri, api_key):
     # ---------------------------------------------------------------------------------------------------------
     def is_fresher_and_is_new(uri, headers, doc_mod):
         logger.debug('determining if doc info is fresher than db for sku %s' % sku)
-        resp = requests.get(uri, headers=headers)
+        resp = requests.get(uri, headers=headers, verify=False)
         if resp.status_code == 404:
             return True, True
         resp = json.loads(resp.text)
@@ -113,7 +113,7 @@ def rip_doc(doc, list_uri, detail_uri, api_key):
         if slug in lookup:
             return lookup[slug]
         logger.debug('creating new resource for %s: %s' % (col, winner))
-        resp = requests.post(uri, data=json.dumps({key: winner}), headers=headers)
+        resp = requests.post(uri, data=json.dumps({key: winner}), headers=headers, verify=False)
         resp = json.loads(resp.text)
         lookup[slug] = resp['resource_uri']
         return resp['resource_uri']
@@ -130,7 +130,7 @@ def rip_doc(doc, list_uri, detail_uri, api_key):
                 yield lookup[slug]
             else:
                 logger.debug('creating new resource for %s: %s' % (col, value))
-                resp = requests.post(uri, data=json.dumps({key: value}), headers=headers)
+                resp = requests.post(uri, data=json.dumps({key: value}), headers=headers, verify=False)
                 resp = json.loads(resp.text)
                 lookup[slug] = resp['resource_uri']
                 yield resp['resource_uri']
@@ -148,10 +148,9 @@ def rip_doc(doc, list_uri, detail_uri, api_key):
                 'value': value
             }
             logger.info('built payload %s' % payload)
-            resp = requests.post(uri, data=json.dumps(payload), headers=headers)
+            resp = requests.post(uri, data=json.dumps(payload), headers=headers, verify=False)
             logger.info('attribute response code %s' % resp.status_code)
             resp = json.loads(resp.text)
-            print resp['resource_uri']
         except (ValueError, IndexError):
             logger.debug('no attribute to be had for %s' % col)
             pass
@@ -242,16 +241,14 @@ def rip_doc(doc, list_uri, detail_uri, api_key):
         logger.info('build payload: %s' % product)
         if is_new_product:
             resp = requests.post(
-                list_uri % ('inventory-manager', 'products'), data=json.dumps(product), headers=headers)
+                list_uri % ('inventory-manager', 'products'), data=json.dumps(product), headers=headers, verify=False)
         else:
             del product['sku']
             resp = requests.patch(
-                detail_uri % ('inventory-manager', 'products', sku), data=json.dumps(product), headers=headers)
+                detail_uri % ('inventory-manager', 'products', sku), data=json.dumps(product), headers=headers, verify=False)
         logger.info('response code %s' % resp.status_code)
         resp = json.loads(resp.text)
         prod = resp['resource_uri']
-
-        print prod
 
         # get attributes
         logger.info('working with attributes')
