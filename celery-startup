@@ -1,0 +1,2 @@
+./manage.py celerycam --detach --pidfile=/home/deploy/dodger-env/celerycam.pid
+celery worker -B -E --detach ==pidfile=/home/deploy/dodger-env/celeryworker.pid
