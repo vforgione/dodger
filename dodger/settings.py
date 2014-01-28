@@ -68,19 +68,8 @@ MIDDLEWARE_CLASSES = (
 )
 
 
-# secret config
-SECRET_KEY = os.environ['DODGER_SECRET_KEY']
-
-
 # celery config
 djcelery.setup_loader()
-
-BROKER_URL = 'amqp://%s:%s@%s:%s//' % (
-    os.environ['DODGER_AMQP_USER'],
-    os.environ['DODGER_AMQP_PASSWD'],
-    os.environ['DODGER_AMQP_HOST'],
-    os.environ['DODGER_AMQP_PORT']
-)
 
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
@@ -120,13 +109,4 @@ INSTALLED_APPS = (
 )
 
 
-# db config
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['DODGER_PSQL_NAME'],
-        'USER': os.environ['DODGER_PSQL_USER'],
-        'PASSWORD': os.environ['DODGER_PSQL_PASSWD'],
-        'HOST': os.environ['DODGER_PSQL_HOST'],
-    }
-}
+from local_settings import *
