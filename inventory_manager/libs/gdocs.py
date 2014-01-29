@@ -75,18 +75,13 @@ def rip_doc(doc):
         logger.info('getting data for %s' % model.__name__)
         try:
             objs = model.objects.all()
+            resources = dict((obj.id, obj) for obj in objs)
+            logger.debug('%d resources pulled in %s' % (len(resources), model.__name__))
+            return resources
         except Exception, e:
             logger.critical(e)
             sys.exit(1)
-        resources = {}
-        for obj in objs:
-            try:
-                resources[obj['id']] = obj
-            except Exception, e:
-                logger.critical(e)
-                sys.exit(1)
-        logger.debug('%d resources pulled in %s' % (len(resources), model.__name__))
-        return resources
+
 
     def generate_skus_and_rows(doc):
         """gets unique skus and pairs corresponding rows"""
