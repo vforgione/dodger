@@ -6,3 +6,5 @@ celerybeat-schedule
 dodger/static/
 local_settings.py
 gdoc_config.py
+*.pid
+*.socket
