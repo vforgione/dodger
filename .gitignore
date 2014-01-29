@@ -5,4 +5,4 @@ migrations
 celerybeat-schedule
 dodger/static/
 local_settings.py
-gdoc_configs.py
+gdoc_config.py

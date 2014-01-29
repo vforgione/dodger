@@ -1,8 +1,8 @@
 from datetime import timedelta
 
 from celery.task import PeriodicTask
-from gdocs import read_doc, rip_doc
-from gdoc_config import *
+from libs.gdocs import read_doc, rip_doc
+from libs.gdoc_config import *
 
 
 class SyncDbWithTrackerDoc(PeriodicTask):
