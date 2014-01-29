@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from models import (
     Category, Manufacturer, Attribute, Product, ProductAttribute, ProductCostChange,
-    ProductPriceChange, ProductQtyChange
+    ProductPriceChange, ProductQtyChange, Reason
 )
 
 
@@ -24,6 +24,12 @@ class ManufacturerAdmin(admin.ModelAdmin):
 
 
 class AttributeAdmin(admin.ModelAdmin):
+
+    exclude = ('id', )
+    search_fields = ('name', )
+
+
+class ReasonAdmin(admin.ModelAdmin):
 
     exclude = ('id', )
     search_fields = ('name', )
@@ -246,3 +252,4 @@ admin.site.register(ProductAttribute)
 admin.site.register(ProductCostChange, ProductCostChangeAdmin)
 admin.site.register(ProductPriceChange, ProductPriceChangeAdmin)
 admin.site.register(ProductQtyChange, ProductQtyChangeAdmin)
+admin.site.register(Reason, ReasonAdmin)
