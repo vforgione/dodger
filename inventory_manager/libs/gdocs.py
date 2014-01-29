@@ -5,6 +5,7 @@ from collections import Counter
 from datetime import datetime
 import logging
 import json
+import os
 import re
 
 from django.template.defaultfilters import slugify
@@ -14,7 +15,7 @@ import requests
 
 logger = logging.getLogger('gdocs')
 logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler('/home/deploy/dodger-env/gdocs.log')
+fh = logging.FileHandler(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gdocs.log'))
 fh.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s\t%(name)s\t%(levelname)s\t%(message)s')
 fh.setFormatter(formatter)
