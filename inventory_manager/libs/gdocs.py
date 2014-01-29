@@ -137,6 +137,8 @@ def rip_doc(doc):
 
     def is_doc_fresher(sku, doc_mod):
         """determines if the doc is fresher"""
+        if doc_mod is None:
+            return False
         try:
             prod = Product.objects.get(sku=sku)
             return doc_mod > prod.modified
