@@ -8,13 +8,13 @@ BASE_DIR = os.path.dirname(__file__)
 
 
 # debug config
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = DEBUG
 
 
 # site config
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 LANGUAGE_CODE = 'en-us'
 
@@ -26,13 +26,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
 
 # static config
 STATIC_URL = '/static/'
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 # template config
@@ -68,12 +64,17 @@ MIDDLEWARE_CLASSES = (
 )
 
 
+# secret config
+SECRET_KEY = 'wzgv3s2)z2(ah2%t906z8%+dto6d%z&g+gtu)y1wc*52cv=1fv'
+
+
 # celery config
 djcelery.setup_loader()
 
+BROKER_URL = 'django://'
+
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
-CELERY_ALWAYS_EAGER = True
 
 # app config
 ROOT_URLCONF = 'dodger.urls'
@@ -110,4 +111,10 @@ INSTALLED_APPS = (
 )
 
 
-from local_settings import *
+# db config
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
