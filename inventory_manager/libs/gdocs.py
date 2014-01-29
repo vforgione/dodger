@@ -329,16 +329,25 @@ def rip_doc(doc):
         }
         if not pqc:
             product['qty_on_hand'] = qty
-
-        try:
-            prod = Product.objects.create(**product)
-            for cat in cats:
-                prod.categories.add(cat)
-            prod = prod.save()
-            logger.info('product save: %s' % prod)
-        except Exception, e:
-            logger.critical('product save: %s' % e)
-            sys.exit(1)
+            try:
+                prod = Product.objects.create(**product)
+                for cat in cats:
+                    prod.categories.add(cat)
+                prod = prod.save()
+                logger.info('product save: %s' % prod)
+            except Exception, e:
+                logger.critical('product save: %s' % e)
+                sys.exit(1)
+        else:
+            try:
+                prod = Product.objects.filter(sku=sku).update(**product)
+                for cat in cats:
+                    prod.categories.add(cat)
+                prod = prod.save()
+                logger.info('product save: %s' % prod)
+            except Exception, e:
+                logger.critical('product save: %s' % e)
+                sys.exit(1)
 
         # attributes
         get_attribute(sku, 'weight', rows, 'size (ounces for treats)')
