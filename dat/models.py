@@ -144,6 +144,11 @@ class PurchaseOrder(models.Model):
         self.name = '%d-%s' % (self.id, self.dat_member.last_name)
         super(PurchaseOrder, self).save(*args, **kwargs)
 
+    def has_been_received(self):
+        from warehouse.models import Shipment
+        shipments = Shipment.objects.values_list('purchase_order__id')
+        return self.id in shipments
+
 
 class PurchaseOrderProduct(models.Model):
 
