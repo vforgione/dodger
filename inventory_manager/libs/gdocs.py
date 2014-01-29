@@ -20,6 +20,7 @@ import re
 
 from django.template.defaultfilters import slugify
 import gspread
+import pytz
 
 
 logger = logging.getLogger('gdocs')
@@ -126,6 +127,7 @@ def rip_doc(doc):
                 datetime.strptime(r['Date Received / Updated'], '%m/%d/%Y') for r in rows
                 if re.match('\d{2}/\d{2}/\d{4}', r['Date Received / Updated'])
             ])
+            doc_mod.replace(tzinfo=pytz.timezone('US/Central'))
             return doc_mod
         except ValueError:
             return None
