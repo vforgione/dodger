@@ -175,7 +175,7 @@ class ProductAdmin(admin.ModelAdmin):
             'fields': ('name', 'categories', 'supplier', 'manufacturer'),
         }),
         ('DAT Responsibilities', {
-            'fields': ('owner', 'reorder_threshold', 'price', 'cost', 'mfr_sku', 'case_qty'),
+            'fields': ('owner', 'reorder_threshold', 'do_not_disturb', 'price', 'cost', 'mfr_sku', 'case_qty'),
         }),
         ('Required Attributes', {
             'fields': ('qty_on_hand', 'location'),

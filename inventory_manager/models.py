@@ -80,6 +80,7 @@ class Product(models.Model):
     # responsibility
     owner = models.ForeignKey(User)
     reorder_threshold = models.IntegerField()
+    do_not_disturb = models.BooleanField(default=False)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     cost = models.DecimalField(max_digits=10, decimal_places=2)
     mfr_sku = models.CharField(max_length=255)
