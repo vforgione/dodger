@@ -296,7 +296,7 @@ def rip_doc(doc):
         name = popularity(rows, 'Product', '(unknown)')
 
         # location
-        location = latest(rows, 'Date Received / Updated', 'Location', '(unknown)')
+        location = latest(rows, 'Location', '(unknown)')
 
         # mfr
         manufacturer = slug_popularity(rows, 'Manufacturer', None, manufacturers, Manufacturer)
