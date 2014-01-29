@@ -3,11 +3,16 @@ from django.contrib import admin
 from tastypie.api import Api
 
 
-from api import UserResource, SupplierResource, ContactLabelResource, ContactResource, \
-    ReceiverResource, PurchaseOrderResource, PurchaseOrderProductResource, \
-    CategoryResource, ManufacturerResource, AttributeResource, \
+from api import UserResource
+
+from dat.api import SupplierResource, ContactLabelResource, ContactResource, \
+    ReceiverResource, PurchaseOrderResource, PurchaseOrderProductResource
+
+from inventory_manager.api import CategoryResource, ManufacturerResource, AttributeResource, \
     ProductResource, ProductAttributeResource, ProductQtyChangeResource, ProductCostChangeResource, \
-    ProductPriceChangeResource, ShipmentResource, ShipmentProductResource, ReasonResource
+    ProductPriceChangeResource, ReasonResource
+
+from warehouse.api import ShipmentResource, ShipmentProductResource
 
 
 api_auth = Api(api_name='auth')
