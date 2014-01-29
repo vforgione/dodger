@@ -27,7 +27,7 @@ logger = logging.getLogger('gdocs')
 logger.setLevel(logging.DEBUG)
 fh = logging.FileHandler(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gdocs.log'))
 fh.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s\t%(name)s\t%(levelname)s\t%(message)s')
+formatter = logging.Formatter('%(levelname)s\t%(asctime)s\t%(module)s:%(lineno)s\t%(funcName)s\t%(message)s')
 fh.setFormatter(formatter)
 logger.addHandler(fh)
 
@@ -125,7 +125,7 @@ def rip_doc(doc):
         try:
             doc_mod = max([
                 datetime.strptime(r['Date Received / Updated'], '%m/%d/%Y') for r in rows
-                if re.match('\d{2}/\d{2}/\d{4}', r['Date Received / Updated'])
+                if re.match('\d{1,2}/\d{1,2}/\d{4}', r['Date Received / Updated'])
             ])
             doc_mod = doc_mod.replace(tzinfo=pytz.timezone('US/Central'))
             return doc_mod
@@ -141,7 +141,9 @@ def rip_doc(doc):
             return False
         try:
             prod = Product.objects.get(sku=sku)
-            return doc_mod > prod.modified
+            doc_mod = datetime(doc_mod.year, doc_mod.month, doc_mod.day)
+            prod_mod = datetime(prod.modified.year, prod.modified.month, prod.modified.day)
+            return doc_mod >= prod_mod
         except Product.DoesNotExist:
             return True
         except Exception, e:
@@ -169,7 +171,7 @@ def rip_doc(doc):
                 rows,
                 key=lambda r:
                     datetime.strptime(r['Date Received / Updated'], '%m/%d/%Y')
-                    if re.match('\d{2}/\d{2}/\d{4}', r['Date Received / Updated'])
+                    if re.match('\d{1,2}/\d{1,2}/\d{4}', r['Date Received / Updated'])
                     else datetime(1985, 8, 3)
             )[col]
             if len(value):
@@ -193,8 +195,9 @@ def rip_doc(doc):
         try:
             obj = model()
             obj.name = winner
-            obj = obj.save()
-            lookup[obj.id] = obj.name
+            obj.save()
+            obj = model.objects.get(id=slugify(winner))
+            lookup[obj.id] = obj
             return obj
         except Exception, e:
             logger.critical(e)
@@ -215,8 +218,9 @@ def rip_doc(doc):
                 try:
                     obj = model()
                     obj.name = value
-                    obj = obj.save()
-                    lookup[obj.id] = obj.name
+                    obj.save()
+                    obj = model.objects.get(id=slugify(value))
+                    lookup[obj.id] = obj
                     yield obj
                 except Exception, e:
                     logger.critical(e)
@@ -332,23 +336,23 @@ def rip_doc(doc):
         if not pqc:
             product['qty_on_hand'] = qty
             try:
-                prod = Product.objects.create(**product)
+                Product.objects.create(**product)
+                prod = Product.objects.get(sku=sku)
                 for cat in cats:
                     prod.categories.add(cat)
-                prod = prod.save()
                 logger.info('product save: %s' % prod)
             except Exception, e:
                 logger.critical('product save: %s' % e)
                 sys.exit(1)
         else:
             try:
-                prod = Product.objects.filter(sku=sku).update(**product)
+                Product.objects.filter(sku=sku).update(**product)
+                prod = Product.objects.get(sku=sku)
                 for cat in cats:
                     prod.categories.add(cat)
-                prod = prod.save()
                 logger.info('product save: %s' % prod)
             except Exception, e:
-                logger.critical('product save: %s' % e)
+                logger.critical('product update: %s' % e)
                 sys.exit(1)
 
         # attributes
