@@ -324,28 +324,31 @@ def rip_doc(doc):
 
         product = {
             'sku': sku, 'name': name, 'location': location, 'manufacturer': manufacturer,
-            'supplier': supplier, 'categories': cats, 'owner': owner, 'reorder_threshold': reorder,
+            'supplier': supplier, 'owner': owner, 'reorder_threshold': reorder,
             'price': price, 'cost': cost, 'mfr_sku': mfr_sku, 'case_qty': case
         }
         if not pqc:
             product['qty_on_hand'] = qty
 
         try:
-            val = Product(**product).save()
-            logger.info('product save: %s' % val)
+            prod = Product.objects.create(**product)
+            for cat in cats:
+                prod.categories.add(cat)
+            prod = prod.save()
+            logger.info('product save: %s' % prod)
         except Exception, e:
             logger.critical('product save: %s' % e)
             sys.exit(1)
 
         # attributes
-        get_attribute(rows, 'weight', rows, 'size (ounces for treats)')
-        get_attribute(rows, 'style', rows, 'Style')
-        get_attribute(rows, 'size', rows, 'Size')
-        get_attribute(rows, 'color', rows, 'Color')
-        get_attribute(rows, 'flavor', rows, 'Flavor')
-        get_attribute(rows, 'is-bulk', rows, 'Bulk?')
-        get_attribute(rows, 'expiration-date', rows, 'Expiration')
-        get_attribute(rows, 'country-of-origin', rows, 'Made In')
+        get_attribute(sku, 'weight', rows, 'size (ounces for treats)')
+        get_attribute(sku, 'style', rows, 'Style')
+        get_attribute(sku, 'size', rows, 'Size')
+        get_attribute(sku, 'color', rows, 'Color')
+        get_attribute(sku, 'flavor', rows, 'Flavor')
+        get_attribute(sku, 'is-bulk', rows, 'Bulk?')
+        get_attribute(sku, 'expiration-date', rows, 'Expiration')
+        get_attribute(sku, 'country-of-origin', rows, 'Made In')
 
 
 
