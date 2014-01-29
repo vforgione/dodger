@@ -7,7 +7,7 @@ from api import UserResource, SupplierResource, ContactLabelResource, ContactRes
     ReceiverResource, PurchaseOrderResource, PurchaseOrderProductResource, \
     CategoryResource, ManufacturerResource, AttributeResource, \
     ProductResource, ProductAttributeResource, ProductQtyChangeResource, ProductCostChangeResource, \
-    ProductPriceChangeResource, ShipmentResource, ShipmentProductResource
+    ProductPriceChangeResource, ShipmentResource, ShipmentProductResource, ReasonResource
 
 
 api_auth = Api(api_name='auth')
@@ -30,6 +30,7 @@ api_im.register(ProductAttributeResource())
 api_im.register(ProductQtyChangeResource())
 api_im.register(ProductCostChangeResource())
 api_im.register(ProductPriceChangeResource())
+api_im.register(ReasonResource())
 
 api_wh = Api(api_name='warehouse')
 api_wh.register(ShipmentResource())

@@ -8,7 +8,7 @@ from tastypie.http import HttpConflict, HttpBadRequest
 
 
 from inventory_manager.models import Category, Manufacturer, Attribute, Product, ProductAttribute, \
-    ProductQtyChange, ProductCostChange, ProductPriceChange
+    ProductQtyChange, ProductCostChange, ProductPriceChange, Reason
 
 from dat.models import Supplier, ContactLabel, Contact, Receiver, PurchaseOrder, PurchaseOrderProduct
 
@@ -238,11 +238,29 @@ class ProductAttributeResource(ModelResource):
             super(ProductAttributeResource, self).post_list(request, **kwargs)
 
 
+class ReasonResource(ModelResource):
+    """a resource for the Reason model"""
+
+    class Meta:
+        # how to call
+        resource_name = 'reasons'
+        queryset = Reason.objects.all()
+        # available methods - limit to get and post
+        list_allowed_methods = ('get', 'post')
+        detail_allowed_methods = ('get', )
+        # auth
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        # always return data
+        always_return_data = True
+
+
 class ProductQtyChangeResource(ModelResource):
     """a resource for the ProductQtyChange model"""
 
     # foreign keys
     product = fields.ForeignKey(ProductResource, 'product')
+    reason = fields.ForeignKey(ReasonResource, 'reason')
     who = fields.ForeignKey(UserResource, 'who')
 
     class Meta:
@@ -264,6 +282,7 @@ class ProductCostChangeResource(ModelResource):
 
     # foreign keys
     product = fields.ForeignKey(ProductResource, 'product')
+    reason = fields.ForeignKey(ReasonResource, 'reason')
     who = fields.ForeignKey(UserResource, 'who')
 
     class Meta:
@@ -285,6 +304,7 @@ class ProductPriceChangeResource(ModelResource):
 
     # foreign keys
     product = fields.ForeignKey(ProductResource, 'product')
+    reason = fields.ForeignKey(ReasonResource, 'reason')
     who = fields.ForeignKey(UserResource, 'who')
 
     class Meta:
