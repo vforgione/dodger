@@ -1,0 +1,106 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+<div class="row container">
+  <div id="errors" class="container"></div>
+  <form class="container">{% csrf_token %}
+    <div class="form-group"><label for="supplier">Supplier</label><select id="supplier" class="form-control"></select></div>
+    <div class="form-group"><label for="contact">Contact</label><select id="contact" class="form-control"></select></div>
+    <div class="form-group"><label for="product">Product</label><select id="product" class="form-control"></select><div id="prod_info"></div></div>
+  </form>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+<script>
+  // load up categories
+  $.ajax({
+    url: '/api/dat/suppliers/?limit=0',
+    type: 'GET',
+    dataType: 'json',
+    success: function(xhr, status){
+      var options = '<option> --- </option>';
+      $(xhr.objects).each(function(i){
+        options += '<option value="' + xhr.objects[i].id + '">' + xhr.objects[i].name + '</option>';
+      });
+      $('select#supplier').html(options);
+    },
+    error: function(xhr, status){
+      $('div#errors').html().append('<span>suppliers [' + status + ']: ' + xhr.responseText + '</span><br />');
+    },
+    beforeSend: function(xhr){
+      xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
+    }
+  });
+
+  /*
+    LISTENERS:
+    supplier.change
+      - update contacts
+      - update products
+
+    product.change
+      - update xref info panel
+ */
+
+  // load up contacts and products from supplier choice
+  $('select#supplier').change(function(){
+    // contacts
+    $.ajax({
+      url: '/api/dat/contacts/?represents__id=' + $(this).val(),
+      type: 'GET',
+      dataType: 'json',
+      success: function(xhr, status){
+        var options = '<option> --- </option>';
+        $(xhr.objects).each(function(i){
+          options += '<option value="' + xhr.objects[i].id + '">' + xhr.objects[i].name + '</option>';
+        });
+        $('select#contact').html(options);
+      },
+      error: function(xhr, status){
+        $('div#errors').html().append('<span>contacts [' + status + ']: ' + xhr.responseText + '</span><br />');
+      },
+      beforeSend: function(xhr){
+        xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
+      }
+    });
+    // products
+    $.ajax({
+      url: '/api/inventory-manager/products/?supplier__id=' + $(this).val(),
+      type: 'GET',
+      dataType: 'json',
+      success: function(xhr, status){
+        var options = '<option> --- </option>';
+        $(xhr.objects).each(function(i){
+          options += '<option value="' + xhr.objects[i].sku + '">[' + xhr.objects[i].sku + '] ' + xhr.objects[i].name + '</option>';
+        });
+        $('select#product').html(options);
+      },
+      error: function(xhr, status){
+        $('div#errors').html().append('<span>contacts [' + status + ']: ' + xhr.responseText + '</span><br />');
+      },
+      beforeSend: function(xhr){
+        xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
+      }
+    });
+  });
+
+  $('select#product').change(function(){
+    $.ajax({
+      url: '/api/inventory-manager/products/' + $(this).val() + '/',
+      type: 'GET',
+      dataType: 'json',
+      success: function(xhr, status){
+        var info = '<ul><li>Case Qty: ' + xhr.case_qty + '</li><li>Qty On Hand: ' + xhr.qty_on_hand + '</li><li>Cost: $' + xhr.cost +'</li></ul>';
+        $('div#prod_info').html(info);
+      },
+      error: function(xhr, status){
+        $('div#errors').html().append('<span>prod xref [' + status + ']: ' + xhr.responseText + '</span><br />');
+      },
+      beforeSend: function(xhr){
+        xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
+      }
+    });
+  });
+</script>
+{% endblock %}

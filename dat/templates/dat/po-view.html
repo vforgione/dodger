@@ -1,0 +1,53 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+<div class="container">
+  {% if pos %}
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>PO #</th><th>PO Friendly Name</th><th>Ordered By</th><th>Date Created</th><th>Products</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for po in pos %}
+          <tr>
+            <td><a href="{% url 'dat:po-view' po.id %}">{{ po.id }}</a></td><td><a href="{% url 'dat:po-view' po.name %}">{{ po.name }}</a></td><td>{{ po.dat_member }}</td><td>{{ po.created|date:"F j, Y g:i a" }}</td>
+            <td>
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th>Product</th><th>Qty Ordered</th><th>Disc $</th><th>Disc %</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for pop in po.purchaseorderproduct_set.all %}
+                  <tr>
+                    <td>{{ pop.product }}</td><td>{{ pop.qty_ordered }}</td><td>${{ pop.disc_dollar|default_if_none:"0" }}</td><td>{{ pop.disc_percent|default_if_none:"0" }}%</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if display_pages %}
+    <div class="container">
+      {% if pos.has_previous %}
+      <div class="button"><a href="?page={{ pos.previous_page_number }}">Previous</a></div>
+      {% endif %}
+      <div>Page {{ pos.number }} of {{ pos.paginator.num_pages }}</div>
+      {% if pos.has_next %}
+      <div class="button"><a href="?page={{ pos.next_page_number }}">Next</a></div>
+      {% endif %}
+    </div>
+    {% endif %}
+  {% else %}
+    <p>no data retrieved</p>
+  {% endif %}
+</div>
+{% endblock %}

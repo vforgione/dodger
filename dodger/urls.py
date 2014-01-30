@@ -54,4 +54,7 @@ urlpatterns = patterns(
 
     # api
     url(r'^api/', include(api_auth.urls + api_dat.urls + api_im.urls + api_wh.urls)),
+
+    # dat front end
+    url(r'^dat/', include('dat.urls', namespace='dat')),
 )
