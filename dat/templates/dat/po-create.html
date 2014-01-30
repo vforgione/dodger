@@ -1,48 +1,37 @@
 {% extends 'dodger/base.html' %}
 
 {% block content %}
-<div class="row container">
-  <div id="errors" class="container"></div>
-  <form class="container">{% csrf_token %}
-    <div class="form-group"><label for="supplier">Supplier</label><select id="supplier" class="form-control"></select></div>
-    <div class="form-group"><label for="contact">Contact</label><select id="contact" class="form-control"></select></div>
-    <div class="form-group"><label for="product">Product</label><select id="product" class="form-control"></select><div id="prod_info"></div></div>
+<div class="container">
+  <form>
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      {{ field.label_tag }}{{ field }}{{ field.errors }}
+    </div>
+    {% endfor %}
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Product</th><th>Disc Dollar</th><th>Disc Percent</th><th>Qty Ordered</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for form in formset %}
+        <tr>
+          {% for field in form %}
+          <td style="width:25%;">{{ field }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <input type="submit" value="Save" class="btn btn-primary default" name="_save">
   </form>
 </div>
 {% endblock %}
 
 {% block extrajs %}
 <script>
-  // load up categories
-  $.ajax({
-    url: '/api/dat/suppliers/?limit=0',
-    type: 'GET',
-    dataType: 'json',
-    success: function(xhr, status){
-      var options = '<option> --- </option>';
-      $(xhr.objects).each(function(i){
-        options += '<option value="' + xhr.objects[i].id + '">' + xhr.objects[i].name + '</option>';
-      });
-      $('select#supplier').html(options);
-    },
-    error: function(xhr, status){
-      $('div#errors').html().append('<span>suppliers [' + status + ']: ' + xhr.responseText + '</span><br />');
-    },
-    beforeSend: function(xhr){
-      xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
-    }
-  });
-
-  /*
-    LISTENERS:
-    supplier.change
-      - update contacts
-      - update products
-
-    product.change
-      - update xref info panel
- */
-
   // load up contacts and products from supplier choice
   $('select#supplier').change(function(){
     // contacts
@@ -51,7 +40,7 @@
       type: 'GET',
       dataType: 'json',
       success: function(xhr, status){
-        var options = '<option> --- </option>';
+        var options = '<option>---------</option>';
         $(xhr.objects).each(function(i){
           options += '<option value="' + xhr.objects[i].id + '">' + xhr.objects[i].name + '</option>';
         });
@@ -70,11 +59,11 @@
       type: 'GET',
       dataType: 'json',
       success: function(xhr, status){
-        var options = '<option> --- </option>';
+        var options = '<option>---------</option>';
         $(xhr.objects).each(function(i){
           options += '<option value="' + xhr.objects[i].sku + '">[' + xhr.objects[i].sku + '] ' + xhr.objects[i].name + '</option>';
         });
-        $('select#product').html(options);
+        $('select.product').html(options);
       },
       error: function(xhr, status){
         $('div#errors').html().append('<span>contacts [' + status + ']: ' + xhr.responseText + '</span><br />');
@@ -85,7 +74,7 @@
     });
   });
 
-  $('select#product').change(function(){
+  $('.product').change(function(){
     $.ajax({
       url: '/api/inventory-manager/products/' + $(this).val() + '/',
       type: 'GET',

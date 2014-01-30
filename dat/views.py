@@ -1,8 +1,9 @@
-from django.core.context_processors import csrf
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
+from django.forms.models import inlineformset_factory
 from django.shortcuts import get_object_or_404, get_list_or_404, render_to_response
 from django.template import RequestContext
 
+from forms import *
 from models import *
 
 
@@ -46,9 +47,17 @@ def po_view(request, pk=None):
 
 
 def po_create(request):
+    form = PurchaseOrderForm()
+    form.fields['dat_member'].initial = request.user
+    form.fields['contact'].queryset = Contact.objects.filter(name='')
+    prod_formset = inlineformset_factory(PurchaseOrder, PurchaseOrderProduct, form=PurchaseOrderProductForm, extra=5, can_delete=False)
+    formset = prod_formset(instance=PurchaseOrder())
     return render_to_response(
         'dat/po-create.html',
-        {}.update(csrf(request)),
+        {
+            'form': form,
+            'formset': formset,
+        },
         context_instance=RequestContext(request)
     )
 
