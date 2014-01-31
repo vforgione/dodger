@@ -252,15 +252,49 @@ def contact_update(request, pk):
 
 # contact labels
 def contactlabel_view(request, pk=None):
-    pass
+    if pk:
+        cl = get_object_or_404(ContactLabel, pk=pk)
+        cls = [cl, ]
+    else:
+        cls = get_list_or_404(ContactLabel.objects.order_by('name'))
+        paginator = Paginator(cls, PAGE_SIZE)
+
+        page = request.GET.get('page', 1)
+        try:
+            cls = paginator.page(page)
+        except PageNotAnInteger:
+            cls = paginator.page(1)
+        except EmptyPage:
+            cls = paginator.page(paginator.num_pages)
+
+    display_pages = len(cls) > 1
+    return render_to_response(
+        'dat/contactlabel-view.html',
+        {
+            'cls': cls,
+            'display_pages': display_pages,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 def contactlabel_create(request):
-    pass
+    if request.method == 'GET':
+        form = ContactLabelForm()
 
+    else:
+        form = ContactLabelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('dat:contactlabel-view'))
 
-def contactlabel_update(request, pk):
-    pass
+    return render_to_response(
+        'dat/contactlabel-create.html',
+        {
+            'form': form,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 # receivers

@@ -81,3 +81,13 @@ class ReceiverForm(forms.ModelForm):
             'country': forms.TextInput(attrs={'class': 'form-control'}),
         }
         fields = ('name', 'address0', 'address1', 'city', 'state', 'zipcode', 'country')
+
+
+class ContactLabelForm(forms.ModelForm):
+
+    class Meta:
+        model = ContactLabel
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+        fields = ('name', )
