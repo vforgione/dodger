@@ -90,9 +90,9 @@
               <li><a href="#">Create New Contact Label</a></li>
               <li class="divider"></li>
               <li class="dropdown-header">Receivers</li>
-              <li><a href="#">View Receivers</a></li>
-              <li><a href="#">Create New Receiver</a></li>
-              <li><a href="#">Update A Receiver</a></li>
+              <li><a href="{% url 'dat:receiver-view' %}">View Receivers</a></li>
+              <li><a href="{% url 'dat:receiver-create' %}">Create New Receiver</a></li>
+              <li><a href="{% url 'dat:receiver-update' %}">Update A Receiver</a></li>
             </ul>
           </li>
           <li class="dropdown" id="wh-header">

@@ -65,3 +65,19 @@ class ContactForm(forms.ModelForm):
         }
         fields = ('name', 'email', 'phone', 'fax', 'address0', 'address1', 'city', 'state', 'zipcode', 'country',
             'represents', 'label')
+
+
+class ReceiverForm(forms.ModelForm):
+
+    class Meta:
+        model = Receiver
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'address0': forms.TextInput(attrs={'class': 'form-control'}),
+            'address1': forms.TextInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'state': forms.Select(attrs={'class': 'form-control'}),
+            'zipcode': forms.TextInput(attrs={'class': 'form-control'}),
+            'country': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+        fields = ('name', 'address0', 'address1', 'city', 'state', 'zipcode', 'country')

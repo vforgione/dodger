@@ -17,4 +17,9 @@ urlpatterns = patterns(
     url(r'^contacts(?:/(?P<pk>\d+))?/$', 'contact_view', name='contact-view'),
     url(r'^contacts/create/$', 'contact_create', name='contact-create'),
     url(r'^contacts/update(?:/(?P<pk>\d+))?/$', 'contact_update', name='contact-update'),
+
+    # receivers
+    url(r'^receivers(?:/(?P<pk>\d+))?/$', 'receiver_view', name='receiver-view'),
+    url(r'^receivers/create/$', 'receiver_create', name='receiver-create'),
+    url(r'^receivers/update(?:/(?P<pk>\d+))?/$', 'receiver_update', name='receiver-update'),
 )

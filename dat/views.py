@@ -265,12 +265,87 @@ def contactlabel_update(request, pk):
 
 # receivers
 def receiver_view(request, pk=None):
-    pass
+    if pk:
+        receiver = get_object_or_404(Receiver, pk=pk)
+        receivers = [receiver, ]
+    else:
+        receivers = get_list_or_404(Receiver.objects.order_by('name'))
+        paginator = Paginator(receivers, PAGE_SIZE)
+
+        page = request.GET.get('page', 1)
+        try:
+            receivers = paginator.page(page)
+        except PageNotAnInteger:
+            receivers = paginator.page(1)
+        except EmptyPage:
+            receivers = paginator.page(paginator.num_pages)
+
+    display_pages = len(receivers) > 1
+    return render_to_response(
+        'dat/receiver-view.html',
+        {
+            'receivers': receivers,
+            'display_pages': display_pages,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 def receiver_create(request):
-    pass
+    if request.method == 'GET':
+        form = ReceiverForm()
+
+    else:
+        form = ReceiverForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('dat:receiver-view'))
+
+    return render_to_response(
+        'dat/receiver-create.html',
+        {
+            'form': form,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 def receiver_update(request, pk):
-    pass
+    if pk is None:
+        receivers = get_list_or_404(Receiver.objects.order_by('name'))
+        paginator = Paginator(receivers, PAGE_SIZE)
+
+        page = request.GET.get('page', 1)
+        try:
+            receivers = paginator.page(page)
+        except PageNotAnInteger:
+            receivers = paginator.page(1)
+        except EmptyPage:
+            receivers = paginator.page(paginator.num_pages)
+
+        display_pages = len(receivers) > 1
+        return render_to_response(
+            'dat/receiver-update.html',
+            {
+                'receivers': receivers,
+                'display_pages': display_pages,
+            },
+            context_instance=RequestContext(request)
+        )
+
+    if request.method == 'GET':
+        form = ReceiverForm(instance=get_object_or_404(Receiver, pk=pk))
+
+    else:
+        form = ReceiverForm(request.POST, instance=get_object_or_404(Receiver, pk=pk))
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('dat:receiver-view'))
+
+    return render_to_response(
+        'dat/receiver-update.html',
+        {
+            'form': form,
+        },
+        context_instance=RequestContext(request)
+    )

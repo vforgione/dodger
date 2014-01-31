@@ -1,0 +1,44 @@
+{% extends 'dat/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>View Receivers</h2>
+  {% if receivers %}
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th><th>Address</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for receiver in receivers %}
+          <tr>
+            <td><a href="{% url 'dat:receiver-view' receiver.id %}">{{ receiver.name }}</a></td>
+            <td>
+              {{ receiver.address0 }}<br />
+              {% if receiver.address1 %}{{ receiver.address1 }}<br />{% endif %}
+              {{ receiver.city }}, {{ receiver.state }} {{ receiver.zipcode }}<br />
+              {{ receiver.country }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if display_pages %}
+    <div class="container">
+      {% if receivers.has_previous %}
+      <div class="button"><a href="?page={{ receivers.previous_page_number }}">Previous</a></div>
+      {% endif %}
+      <div>Page {{ receivers.number }} of {{ receivers.paginator.num_pages }}</div>
+      {% if receivers.has_next %}
+      <div class="button"><a href="?page={{ receivers.next_page_number }}">Next</a></div>
+      {% endif %}
+    </div>
+    {% endif %}
+  {% else %}
+    <p>no data retrieved</p>
+  {% endif %}
+</div>
+{% endblock %}
