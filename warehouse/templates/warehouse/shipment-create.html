@@ -1,0 +1,76 @@
+{% extends 'warehouse/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Receive A Shipment</h2>
+  <form method="post" action=".">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      {{ field.label_tag }}{{ field }}{{ field.errors }}
+    </div>
+    {% endfor %}
+    {{ formset.management_form }}
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Product</th><th>Qty Received</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for form in formset %}
+        <tr>
+          {% for field in form %}
+          <td style="width:50%;">{{ field }}{{ field.errors }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <input type="submit" value="Save" class="btn btn-primary default" name="save">
+  </form>
+</div>
+{% endblock %}
+
+{% block contentjs %}
+<script>
+$(document).ready(function(){
+  // global scope options
+  var options = '<option></option>';
+
+  // load up products from purchase order choice
+  $('select#purchase-order').change(function(){
+    $.ajax({
+      url: '/api/dat/purchase-order-products/?purchase_order__id=' + $(this).val(),
+      type: 'GET',
+      dataType: 'json',
+      success: function(xhr, status){
+        $(xhr.objects).each(function(i){
+          options += '<option value="' + xhr.objects[i].id + '">';
+          $.ajax({
+            url: xhr.objects[i].product,
+            type: 'GET',
+            dataType: 'json',
+            async: false,
+            success: function(xhr, status){
+              options += xhr.name + '</option>';
+            },
+            error: function(xhr, status){ alert(status + ' ' + xhr.responseText); },
+            beforeSend: function(xhr){
+              xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
+            }
+          });
+        });
+      },
+      error: function(xhr, status){ alert(status + ' ' + xhr.responseText); },
+      beforeSend: function(xhr){
+        xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
+      },
+      complete: function(){
+        $('select.product').html(options);
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

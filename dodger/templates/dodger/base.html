@@ -99,8 +99,8 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Warehouse<b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li class="dropdown-header">Shipments</li>
-              <li><a href="#">View Shipments</a></li>
-              <li><a href="#">Receive A Shipment</a></li>
+              <li><a href="{% url 'warehouse:shipment-view' %}">View Shipments</a></li>
+              <li><a href="{% url 'warehouse:shipment-create' %}">Receive A Shipment</a></li>
             </ul>
           </li>
           <li id="rep-header"><a href="#">Reporting</a></li>

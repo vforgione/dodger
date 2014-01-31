@@ -26,6 +26,7 @@ class ShipmentResource(ModelResource):
             'purchase_order': ALL_WITH_RELATIONS,
             'received_by': ALL_WITH_RELATIONS,
             'received_on': ALL,
+            'id': ALL,
         }
         # auth
         authentication = ApiKeyAuthentication()

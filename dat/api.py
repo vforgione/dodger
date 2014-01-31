@@ -172,6 +172,7 @@ class PurchaseOrderResource(ModelResource):
             'comments': ALL,
             'created': ALL,
             'name': ALL,
+            'id': ALL,
         }
         # auth
         authentication = ApiKeyAuthentication()

@@ -1,0 +1,54 @@
+{% extends 'warehouse/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>View Shipments</h2>
+  {% if shipments %}
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>PO Friendly Name</th><th>Received On</th><th>Received By</th><th>Products</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ship in shipments %}
+          <tr>
+            <td><a href="{% url 'warehouse:shipment-view' ship.id %}">{{ ship.purchase_order.name }}</a></td><td>{{ ship.received_on }}</td><td>{{ ship.received_by }}</td>
+            <td>
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th>Product</th><th>Qty Ordered</th><th>Qty Received</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for sp in ship.shipmentproduct_set.all %}
+                  <tr>
+                    <td>{{ sp.product.product }}</td><td>{{ sp.product.qty_ordered }}</td><td>{{ sp.qty_received }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if display_pages %}
+    <div class="container">
+      {% if shipments.has_previous %}
+      <div class="button"><a href="?page={{ shipments.previous_page_number }}">Previous</a></div>
+      {% endif %}
+      <div>Page {{ shipments.number }} of {{ shipments.paginator.num_pages }}</div>
+      {% if shipments.has_next %}
+      <div class="button"><a href="?page={{ shipments.next_page_number }}">Next</a></div>
+      {% endif %}
+    </div>
+    {% endif %}
+  {% else %}
+    <p>no data retrieved</p>
+  {% endif %}
+</div>
+{% endblock %}

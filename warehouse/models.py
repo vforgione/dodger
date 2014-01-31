@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from inventory_manager.models import ProductQtyChange
+from inventory_manager.models import ProductQtyChange, Reason
 
 
 class Shipment(models.Model):
@@ -28,7 +28,7 @@ class ShipmentProduct(models.Model):
         pqc = ProductQtyChange()
         pqc.product = self.product.product
         pqc.new_qty = self.product.product.qty_on_hand + self.qty_received
-        pqc.reason = 'received in shipment %s' % self.shipment.purchase_order.name
+        pqc.reason = Reason.objects.get(pk='received-shipment')
         pqc.who = self.shipment.received_by
         pqc.save()
         super(ShipmentProduct, self).save(*args, **kwargs)

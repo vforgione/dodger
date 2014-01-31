@@ -59,6 +59,9 @@ urlpatterns = patterns(
     # dat front end
     url(r'^dat/', include('dat.urls', namespace='dat')),
 
+    # warehouse front end
+    url(r'^warehouse/', include('warehouse.urls', namespace='warehouse')),
+
     # home page
     url(r'^$', TemplateView.as_view(template_name='dodger/home.html')),
 )
