@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.views.generic import TemplateView
 from tastypie.api import Api
 
 
@@ -57,4 +58,7 @@ urlpatterns = patterns(
 
     # dat front end
     url(r'^dat/', include('dat.urls', namespace='dat')),
+
+    # home page
+    url(r'^$', TemplateView.as_view(template_name='dodger/home.html')),
 )

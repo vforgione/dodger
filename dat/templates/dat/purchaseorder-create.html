@@ -1,14 +1,16 @@
-{% extends 'dodger/base.html' %}
+{% extends 'dat/base.html' %}
 
 {% block content %}
 <div class="container">
-  <form>
+  <h2>Create A New Purchase Order</h2>
+  <form method="post" action=".">
     {% csrf_token %}
     {% for field in form %}
     <div class="form-group">
       {{ field.label_tag }}{{ field }}{{ field.errors }}
     </div>
     {% endfor %}
+    {{ formset.management_form }}
     <table class="table table-condensed">
       <thead>
         <tr>
@@ -19,19 +21,20 @@
         {% for form in formset %}
         <tr>
           {% for field in form %}
-          <td style="width:25%;">{{ field }}</td>
+          <td style="width:25%;">{{ field }}{{ field.errors }}</td>
           {% endfor %}
         </tr>
         {% endfor %}
       </tbody>
     </table>
-    <input type="submit" value="Save" class="btn btn-primary default" name="_save">
+    <input type="submit" value="Save" class="btn btn-primary default" name="save">
   </form>
 </div>
 {% endblock %}
 
-{% block extrajs %}
+{% block contentjs %}
 <script>
+$(document).ready(function(){
   // load up contacts and products from supplier choice
   $('select#supplier').change(function(){
     // contacts
@@ -40,7 +43,7 @@
       type: 'GET',
       dataType: 'json',
       success: function(xhr, status){
-        var options = '<option>---------</option>';
+        var options = '<option></option>';
         $(xhr.objects).each(function(i){
           options += '<option value="' + xhr.objects[i].id + '">' + xhr.objects[i].name + '</option>';
         });
@@ -59,7 +62,7 @@
       type: 'GET',
       dataType: 'json',
       success: function(xhr, status){
-        var options = '<option>---------</option>';
+        var options = '<option></option>';
         $(xhr.objects).each(function(i){
           options += '<option value="' + xhr.objects[i].sku + '">[' + xhr.objects[i].sku + '] ' + xhr.objects[i].name + '</option>';
         });
@@ -72,24 +75,9 @@
         xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
       }
     });
+    // deselect products
+    $('select.product').val('');
   });
-
-  $('.product').change(function(){
-    $.ajax({
-      url: '/api/inventory-manager/products/' + $(this).val() + '/',
-      type: 'GET',
-      dataType: 'json',
-      success: function(xhr, status){
-        var info = '<ul><li>Case Qty: ' + xhr.case_qty + '</li><li>Qty On Hand: ' + xhr.qty_on_hand + '</li><li>Cost: $' + xhr.cost +'</li></ul>';
-        $('div#prod_info').html(info);
-      },
-      error: function(xhr, status){
-        $('div#errors').html().append('<span>prod xref [' + status + ']: ' + xhr.responseText + '</span><br />');
-      },
-      beforeSend: function(xhr){
-        xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
-      }
-    });
-  });
+});
 </script>
 {% endblock %}

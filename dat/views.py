@@ -1,6 +1,6 @@
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
-from django.forms.models import inlineformset_factory
-from django.shortcuts import get_object_or_404, get_list_or_404, render_to_response
+from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404, get_list_or_404, redirect, render_to_response
 from django.template import RequestContext
 
 from forms import *
@@ -12,12 +12,8 @@ from inventory_manager.models import Product
 PAGE_SIZE = 20
 
 
-def home(request):
-    pass
-
-
 # purchase orders
-def po_view(request, pk=None):
+def purchaseorder_view(request, pk=None):
     """view purchase order or paginated list of purchase orders"""
     if pk:
         try:
@@ -26,7 +22,7 @@ def po_view(request, pk=None):
             po = get_object_or_404(PurchaseOrder, name=pk)
         pos = [po, ]
     else:
-        pos = get_list_or_404(PurchaseOrder.objects.order_by('-name'))
+        pos = get_list_or_404(PurchaseOrder.objects.order_by('-created'))
         paginator = Paginator(pos, PAGE_SIZE)
 
         page = request.GET.get('page', 1)
@@ -39,25 +35,37 @@ def po_view(request, pk=None):
 
     display_pages = len(pos) > 1
     return render_to_response(
-        'dat/po-view.html',
+        'dat/purchaseorder-view.html',
         {
             'pos': pos,
-            'display_pages': display_pages
+            'display_pages': display_pages,
         },
         context_instance=RequestContext(request)
     )
 
 
-def po_create(request):
+def purchaseorder_create(request):
     form = PurchaseOrderForm()
-    form.fields['dat_member'].initial = request.user
-    form.fields['contact'].queryset = Contact.objects.filter(name='')
-    prod_formset = inlineformset_factory(PurchaseOrder, PurchaseOrderProduct, form=PurchaseOrderProductForm, extra=5, can_delete=False)
-    formset = prod_formset(instance=PurchaseOrder())
-    for _form in formset:
-        _form.fields['product'].queryset = Product.objects.filter(name='')
+    formset = PurchaseOrderProductFormset(instance=PurchaseOrder())
+
+    if request.method == 'GET':
+        form.fields['dat_member'].initial = request.user
+        form.fields['contact'].queryset = Contact.objects.filter(name='')
+        for _form in formset:
+            _form.fields['product'].queryset = Product.objects.filter(name='')
+
+    else:
+        form = PurchaseOrderForm(request.POST)
+        if form.is_valid():
+            po = form.save(commit=False)
+            formset = PurchaseOrderProductFormset(request.POST, instance=po)
+            if formset.is_valid():
+                po.save()
+                formset.save()
+                return redirect(reverse('dat:purchaseorder-view'))
+
     return render_to_response(
-        'dat/po-create.html',
+        'dat/purchaseorder-create.html',
         {
             'form': form,
             'formset': formset,
@@ -68,20 +76,118 @@ def po_create(request):
 
 # suppliers
 def supplier_view(request, pk=None):
-    pass
+    if pk:
+        supplier = get_object_or_404(Supplier, pk=pk)
+        suppliers = [supplier, ]
+    else:
+        suppliers = get_list_or_404(Supplier.objects.order_by('name'))
+        paginator = Paginator(suppliers, PAGE_SIZE)
+
+        page = request.GET.get('page', 1)
+        try:
+            suppliers = paginator.page(page)
+        except PageNotAnInteger:
+            suppliers = paginator.page(1)
+        except EmptyPage:
+            suppliers = paginator.page(paginator.num_pages)
+
+    display_pages = len(suppliers) > 1
+    return render_to_response(
+        'dat/supplier-view.html',
+        {
+            'suppliers': suppliers,
+            'display_pages': display_pages,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 def supplier_create(request):
-    pass
+    if request.method == 'GET':
+        form = SupplierForm()
+
+    else:
+        form = SupplierForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('dat:supplier-view'))
+
+    return render_to_response(
+        'dat/supplier-create.html',
+        {
+            'form': form,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 def supplier_update(request, pk):
-    pass
+    if pk is None:
+        suppliers = get_list_or_404(Supplier.objects.order_by('name'))
+        paginator = Paginator(suppliers, PAGE_SIZE)
+
+        page = request.GET.get('page', 1)
+        try:
+            suppliers = paginator.page(page)
+        except PageNotAnInteger:
+            suppliers = paginator.page(1)
+        except EmptyPage:
+            suppliers = paginator.page(paginator.num_pages)
+
+        display_pages = len(suppliers) > 1
+        return render_to_response(
+            'dat/supplier-update.html',
+            {
+                'suppliers': suppliers,
+                'display_pages': display_pages,
+            },
+            context_instance=RequestContext(request)
+        )
+
+    if request.method == 'GET':
+        form = SupplierForm(instance=get_object_or_404(Supplier, pk=pk))
+
+    else:
+        form = SupplierForm(request.POST, instance=get_object_or_404(Supplier, pk=pk))
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('dat:supplier-view'))
+
+    return render_to_response(
+        'dat/supplier-update.html',
+        {
+            'form': form,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 # contacts
 def contact_view(request, pk=None):
-    pass
+    if pk:
+        contact = get_object_or_404(Contact, pk=pk)
+        contacts = [contact, ]
+    else:
+        contacts = get_list_or_404(Contact.objects.order_by('name'))
+        paginator = Paginator(contacts, PAGE_SIZE)
+
+        page = request.GET.get('page', 1)
+        try:
+            contacts = paginator.page(page)
+        except PageNotAnInteger:
+            contacts = paginator.page(1)
+        except EmptyPage:
+            contacts = paginator.page(paginator.num_pages)
+
+    display_pages = len(contacts) > 1
+    return render_to_response(
+        'dat/supplier-view.html',
+        {
+            'contacts': contacts,
+            'display_pages': display_pages,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 def contact_create(request):

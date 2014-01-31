@@ -1,6 +1,6 @@
 from django import forms
 
-from models import PurchaseOrder, PurchaseOrderProduct
+from models import *
 
 
 class PurchaseOrderForm(forms.ModelForm):
@@ -30,3 +30,19 @@ class PurchaseOrderProductForm(forms.ModelForm):
         }
         fields = ('product', 'disc_dollar', 'disc_percent', 'qty_ordered')
         exclude = ('DELETE', )
+
+
+PurchaseOrderProductFormset = forms.models.inlineformset_factory(PurchaseOrder, PurchaseOrderProduct,
+    form=PurchaseOrderProductForm, extra=5, can_delete=False)
+
+
+class SupplierForm(forms.ModelForm):
+
+    class Meta:
+        model = Supplier
+        excludes = ('id', )
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'terms': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+        fields = ('name', 'terms', 'ships_products')

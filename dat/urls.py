@@ -3,10 +3,13 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns(
     'dat.views',
-    # home
-    url(r'^home/$', 'home', name='home'),
 
     # purchase orders
-    url(r'^po(?:/(?P<pk>\d+|\d+\-[a-zA-Z]+))?/$', 'po_view', name='po-view'),
-    url(r'^po/create/$', 'po_create', name='po-create'),
+    url(r'^purchase-orders(?:/(?P<pk>\d+|\d+\-[a-zA-Z]+))?/$', 'purchaseorder_view', name='purchaseorder-view'),
+    url(r'^purchase-orders/create/$', 'purchaseorder_create', name='purchaseorder-create'),
+
+    # suppliers - ids are slugs, so the view has to go last as a fall through
+    url(r'^suppliers/create/$', 'supplier_create', name='supplier-create'),
+    url(r'^suppliers/update(?:/(?P<pk>[a-zA-Z\-]+))?/$', 'supplier_update', name='supplier-update'),
+    url(r'^suppliers(?:/(?P<pk>[a-zA-Z\-]+))?/$', 'supplier_view', name='supplier-view'),
 )

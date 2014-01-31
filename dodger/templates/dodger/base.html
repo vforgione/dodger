@@ -7,6 +7,9 @@
   {% load static %}
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css"/>
+  <style>
+    .errorlist{color:red;font-weight:bold;list-style-type:none;}
+  </style>
   {% block css %}{% endblock %}
   {% block extrahead %}{% endblock %}
   <!--[if lt IE 9]>
@@ -23,59 +26,88 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">dodger</a>
+        <a class="navbar-brand" href="/">dodger</a>
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li class="dropdown">
+          <li id="home-header"><a href="/">Home</a></li>
+          <li class="dropdown" id="im-header">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory Manager<b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
+              <li class="dropdown-header">Products</li>
+              <li><a href="#">View Products</a></li>
+              <li><a href="#">Create New Product</a></li>
+              <li><a href="#">Update A Product</a></li>
               <li class="divider"></li>
-              <li class="dropdown-header">Nav header</li>
-              <li><a href="#">Separated link</a></li>
-              <li><a href="#">One more separated link</a></li>
+              <li class="dropdown-header">Categories</li>
+              <li><a href="#">View Categories</a></li>
+              <li><a href="#">Create New Category</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Manufacturers</li>
+              <li><a href="#">View Manufacturers</a></li>
+              <li><a href="#">Create New Manufacturer</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Attributes</li>
+              <li><a href="#">View Attributes</a></li>
+              <li><a href="#">Create New Attribute</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Change Reasons</li>
+              <li><a href="#">View Reasons</a></li>
+              <li><a href="#">Create New Reason</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Product Quantity Changes</li>
+              <li><a href="#">View Product Quantity Changes</a></li>
+              <li><a href="#">Create New Product Quantity Change</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Product Cost Change</li>
+              <li><a href="#">View Product Cost Changes</a></li>
+              <li><a href="#">Create New Product Cost Change</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Product Price Changes</li>
+              <li><a href="#">View Product Price Changes</a></li>
+              <li><a href="#">Create New Product Price Change</a></li>
             </ul>
           </li>
-          <li class="dropdown">
+          <li class="dropdown" id="dat-header">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">DAT<b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
+              <li class="dropdown-header">Purchase Orders</li>
+              <li><a href="{% url 'dat:purchaseorder-view' %}">View Past Orders</a></li>
+              <li><a href="{% url 'dat:purchaseorder-create' %}">Create New Order</a></li>
               <li class="divider"></li>
-              <li class="dropdown-header">Nav header</li>
-              <li><a href="#">Separated link</a></li>
-              <li><a href="#">One more separated link</a></li>
+              <li class="dropdown-header">Suppliers</li>
+              <li><a href="{% url 'dat:supplier-view' %}">View Suppliers</a></li>
+              <li><a href="{% url 'dat:supplier-create' %}">Create New Supplier</a></li>
+              <li><a href="{% url 'dat:supplier-update' %}">Update A Supplier</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Contacts</li>
+              <li><a href="#">View Contacts</a></li>
+              <li><a href="#">Create New Contact</a></li>
+              <li><a href="#">Update A Contact</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Contact Labels</li>
+              <li><a href="#">View Contact Label</a></li>
+              <li><a href="#">Create New Contact Label</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Receivers</li>
+              <li><a href="#">View Receivers</a></li>
+              <li><a href="#">Create New Receiver</a></li>
+              <li><a href="#">Update A Receiver</a></li>
             </ul>
           </li>
-          <li class="dropdown">
+          <li class="dropdown" id="wh-header">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Warehouse<b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Nav header</li>
-              <li><a href="#">Separated link</a></li>
-              <li><a href="#">One more separated link</a></li>
+              <li class="dropdown-header">Shipments</li>
+              <li><a href="#">View Shipments</a></li>
+              <li><a href="#">Receive A Shipment</a></li>
             </ul>
           </li>
-          <li><a href="#about">Reporting</a></li>
-          <li><a href="#contact">Dashboard</a></li>
+          <li id="rep-header"><a href="#">Reporting</a></li>
+          <li id="dash-header"><a href="#">Dashboard</a></li>
         </ul>
-        <form class="navbar-form navbar-right">
-          <div class="form-group">
-            <input type="text" placeholder="Email" class="form-control">
-          </div>
-          <div class="form-group">
-            <input type="password" placeholder="Password" class="form-control">
-          </div>
-          <button type="submit" class="btn btn-success">Log In</button>
-        </form>
+        <div class="navbar-form navbar-right">
+        </div>
       </div>
     </div>
   </div>
@@ -88,6 +120,7 @@
   <footer id="footer" style="min-height:25px;"></footer>
   <script src="//code.jquery.com/jquery-latest.min.js"></script>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+  {% block contentjs %}{% endblock %}
   {% block extrajs %}{% endblock %}
 </body>
 </html>

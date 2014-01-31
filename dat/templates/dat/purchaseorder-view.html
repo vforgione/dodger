@@ -1,7 +1,8 @@
-{% extends 'dodger/base.html' %}
+{% extends 'dat/base.html' %}
 
 {% block content %}
 <div class="container">
+  <h2>View Past Purchase Orders</h2>
   {% if pos %}
     <div class="table-responsive">
       <table class="table table-striped">
@@ -13,7 +14,7 @@
         <tbody>
           {% for po in pos %}
           <tr>
-            <td><a href="{% url 'dat:po-view' po.id %}">{{ po.id }}</a></td><td><a href="{% url 'dat:po-view' po.name %}">{{ po.name }}</a></td><td>{{ po.dat_member }}</td><td>{{ po.created|date:"F j, Y g:i a" }}</td>
+            <td><a href="{% url 'dat:purchaseorder-view' po.id %}">{{ po.id }}</a></td><td><a href="{% url 'dat:purchaseorder-view' po.name %}">{{ po.name }}</a></td><td>{{ po.dat_member }}</td><td>{{ po.created|date:"F j, Y g:i a" }}</td>
             <td>
               <table class="table table-condensed">
                 <thead>
