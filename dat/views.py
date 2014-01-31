@@ -6,6 +6,8 @@ from django.template import RequestContext
 from forms import *
 from models import *
 
+from inventory_manager.models import Product
+
 
 PAGE_SIZE = 20
 
@@ -52,6 +54,8 @@ def po_create(request):
     form.fields['contact'].queryset = Contact.objects.filter(name='')
     prod_formset = inlineformset_factory(PurchaseOrder, PurchaseOrderProduct, form=PurchaseOrderProductForm, extra=5, can_delete=False)
     formset = prod_formset(instance=PurchaseOrder())
+    for _form in formset:
+        _form.fields['product'].queryset = Product.objects.filter(name='')
     return render_to_response(
         'dat/po-create.html',
         {
