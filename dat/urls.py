@@ -12,4 +12,9 @@ urlpatterns = patterns(
     url(r'^suppliers/create/$', 'supplier_create', name='supplier-create'),
     url(r'^suppliers/update(?:/(?P<pk>[a-zA-Z\-]+))?/$', 'supplier_update', name='supplier-update'),
     url(r'^suppliers(?:/(?P<pk>[a-zA-Z\-]+))?/$', 'supplier_view', name='supplier-view'),
+
+    # contacts
+    url(r'^contacts(?:/(?P<pk>\d+))?/$', 'contact_view', name='contact-view'),
+    url(r'^contacts/create/$', 'contact_create', name='contact-create'),
+    url(r'^contacts/update(?:/(?P<pk>\d+))?/$', 'contact_update', name='contact-update'),
 )

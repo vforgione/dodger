@@ -181,7 +181,7 @@ def contact_view(request, pk=None):
 
     display_pages = len(contacts) > 1
     return render_to_response(
-        'dat/supplier-view.html',
+        'dat/contact-view.html',
         {
             'contacts': contacts,
             'display_pages': display_pages,
@@ -191,23 +191,75 @@ def contact_view(request, pk=None):
 
 
 def contact_create(request):
-    pass
+    if request.method == 'GET':
+        form = ContactForm()
+
+    else:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('dat:contact-view'))
+
+    return render_to_response(
+        'dat/contact-create.html',
+        {
+            'form': form,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 def contact_update(request, pk):
-    pass
+    if pk is None:
+        contacts = get_list_or_404(Contact.objects.order_by('name'))
+        paginator = Paginator(contacts, PAGE_SIZE)
+
+        page = request.GET.get('page', 1)
+        try:
+            contacts = paginator.page(page)
+        except PageNotAnInteger:
+            contacts = paginator.page(1)
+        except EmptyPage:
+            contacts = paginator.page(paginator.num_pages)
+
+        display_pages = len(contacts) > 1
+        return render_to_response(
+            'dat/contact-update.html',
+            {
+                'contacts': contacts,
+                'display_pages': display_pages,
+            },
+            context_instance=RequestContext(request)
+        )
+
+    if request.method == 'GET':
+        form = ContactForm(instance=get_object_or_404(Contact, pk=pk))
+
+    else:
+        form = ContactForm(request.POST, instance=get_object_or_404(Contact, pk=pk))
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('dat:contact-view'))
+
+    return render_to_response(
+        'dat/contact-update.html',
+        {
+            'form': form,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 # contact labels
-def cl_view(request, pk=None):
+def contactlabel_view(request, pk=None):
     pass
 
 
-def cl_create(request):
+def contactlabel_create(request):
     pass
 
 
-def cl_update(request, pk):
+def contactlabel_update(request, pk):
     pass
 
 

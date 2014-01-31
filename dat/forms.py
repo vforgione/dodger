@@ -7,7 +7,6 @@ class PurchaseOrderForm(forms.ModelForm):
 
     class Meta:
         model = PurchaseOrder
-        exclude = ('name', )
         widgets = {
             'dat_member': forms.Select(attrs={'class': 'form-control', 'id': 'dat_member'}),
             'supplier': forms.Select(attrs={'class': 'form-control', 'id': 'supplier'}),
@@ -29,7 +28,6 @@ class PurchaseOrderProductForm(forms.ModelForm):
             'qty_ordered': forms.TextInput(attrs={'class': 'form-control'}),
         }
         fields = ('product', 'disc_dollar', 'disc_percent', 'qty_ordered')
-        exclude = ('DELETE', )
 
 
 PurchaseOrderProductFormset = forms.models.inlineformset_factory(PurchaseOrder, PurchaseOrderProduct,
@@ -40,9 +38,30 @@ class SupplierForm(forms.ModelForm):
 
     class Meta:
         model = Supplier
-        excludes = ('id', )
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'terms': forms.TextInput(attrs={'class': 'form-control'}),
         }
         fields = ('name', 'terms', 'ships_products')
+
+
+class ContactForm(forms.ModelForm):
+
+    class Meta:
+        model = Contact
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'fax': forms.TextInput(attrs={'class': 'form-control'}),
+            'address0': forms.TextInput(attrs={'class': 'form-control'}),
+            'address1': forms.TextInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'state': forms.Select(attrs={'class': 'form-control product'}),
+            'zipcode': forms.TextInput(attrs={'class': 'form-control'}),
+            'country': forms.TextInput(attrs={'class': 'form-control'}),
+            'label': forms.Select(attrs={'class': 'form-control product'}),
+            'represents': forms.Select(attrs={'class': 'form-control product'}),
+        }
+        fields = ('name', 'email', 'phone', 'fax', 'address0', 'address1', 'city', 'state', 'zipcode', 'country',
+            'represents', 'label')
