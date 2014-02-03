@@ -35,9 +35,21 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory Manager<b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li class="dropdown-header">Products</li>
-              <li><a href="#">View Products</a></li>
-              <li><a href="#">Create New Product</a></li>
-              <li><a href="#">Update A Product</a></li>
+              <li><a href="{% url 'inv-mgr:product-view' %}">View Products</a></li>
+              <li><a href="{% url 'inv-mgr:product-create' %}">Create New Product</a></li>
+              <li><a href="{% url 'inv-mgr:product-update' %}">Update A Product</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Product Quantity Changes</li>
+              <li><a href="#">View Product Quantity Changes</a></li>
+              <li><a href="#">Create New Product Quantity Change</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Product Cost Change</li>
+              <li><a href="#">View Product Cost Changes</a></li>
+              <li><a href="#">Create New Product Cost Change</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Product Price Changes</li>
+              <li><a href="#">View Product Price Changes</a></li>
+              <li><a href="#">Create New Product Price Change</a></li>
               <li class="divider"></li>
               <li class="dropdown-header">Categories</li>
               <li><a href="#">View Categories</a></li>
@@ -54,18 +66,6 @@
               <li class="dropdown-header">Change Reasons</li>
               <li><a href="#">View Reasons</a></li>
               <li><a href="#">Create New Reason</a></li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Product Quantity Changes</li>
-              <li><a href="#">View Product Quantity Changes</a></li>
-              <li><a href="#">Create New Product Quantity Change</a></li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Product Cost Change</li>
-              <li><a href="#">View Product Cost Changes</a></li>
-              <li><a href="#">Create New Product Cost Change</a></li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Product Price Changes</li>
-              <li><a href="#">View Product Price Changes</a></li>
-              <li><a href="#">Create New Product Price Change</a></li>
             </ul>
           </li>
           <li class="dropdown" id="dat-header">

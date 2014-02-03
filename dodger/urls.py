@@ -62,6 +62,9 @@ urlpatterns = patterns(
     # warehouse front end
     url(r'^warehouse/', include('warehouse.urls', namespace='warehouse')),
 
+    # inv man front end
+    url(r'inventory-manager/', include('inventory_manager.urls', namespace='inv-mgr')),
+
     # home page
     url(r'^$', TemplateView.as_view(template_name='dodger/home.html')),
 )
