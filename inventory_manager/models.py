@@ -98,6 +98,11 @@ class Product(models.Model):
             return u'[{}] {} : {}'.format(self.sku, self.name, u', '.join(attributes))
         return u'[{}] {}'.format(self.sku, self.name)
 
+    def _description(self):
+        return self.__unicode__()
+
+    description = property(_description)
+
     def save(self, *args, **kwargs):
         if not self.sku:  # new product
             sku_max = Product.objects.all().aggregate(models.Max('sku'))

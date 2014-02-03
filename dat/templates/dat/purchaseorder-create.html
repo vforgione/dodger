@@ -63,7 +63,7 @@ $(document).ready(function(){
       success: function(xhr, status){
         var options = '<option></option>';
         $(xhr.objects).each(function(i){
-          options += '<option value="' + xhr.objects[i].sku + '">[' + xhr.objects[i].sku + '] ' + xhr.objects[i].name + '</option>';
+          options += '<option value="' + xhr.objects[i].sku + '">' + xhr.objects[i].description + '</option>';
         });
         $('select.product').html(options);
       },

@@ -1,6 +1,6 @@
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404, get_list_or_404, redirect, render_to_response
+from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
 
 from forms import *
@@ -22,7 +22,7 @@ def purchaseorder_view(request, pk=None):
             po = get_object_or_404(PurchaseOrder, name=pk)
         pos = [po, ]
     else:
-        pos = get_list_or_404(PurchaseOrder.objects.order_by('-created'))
+        pos = PurchaseOrder.objects.order_by('-created')
         paginator = Paginator(pos, PAGE_SIZE)
 
         page = request.GET.get('page', 1)
@@ -80,7 +80,7 @@ def supplier_view(request, pk=None):
         supplier = get_object_or_404(Supplier, pk=pk)
         suppliers = [supplier, ]
     else:
-        suppliers = get_list_or_404(Supplier.objects.order_by('name'))
+        suppliers = Supplier.objects.order_by('name')
         paginator = Paginator(suppliers, PAGE_SIZE)
 
         page = request.GET.get('page', 1)
@@ -123,7 +123,7 @@ def supplier_create(request):
 
 def supplier_update(request, pk):
     if pk is None:
-        suppliers = get_list_or_404(Supplier.objects.order_by('name'))
+        suppliers = Supplier.objects.order_by('name')
         paginator = Paginator(suppliers, PAGE_SIZE)
 
         page = request.GET.get('page', 1)
@@ -168,7 +168,7 @@ def contact_view(request, pk=None):
         contact = get_object_or_404(Contact, pk=pk)
         contacts = [contact, ]
     else:
-        contacts = get_list_or_404(Contact.objects.order_by('name'))
+        contacts = Contact.objects.order_by('name')
         paginator = Paginator(contacts, PAGE_SIZE)
 
         page = request.GET.get('page', 1)
@@ -211,7 +211,7 @@ def contact_create(request):
 
 def contact_update(request, pk):
     if pk is None:
-        contacts = get_list_or_404(Contact.objects.order_by('name'))
+        contacts = Contact.objects.order_by('name')
         paginator = Paginator(contacts, PAGE_SIZE)
 
         page = request.GET.get('page', 1)
@@ -256,7 +256,7 @@ def contactlabel_view(request, pk=None):
         cl = get_object_or_404(ContactLabel, pk=pk)
         cls = [cl, ]
     else:
-        cls = get_list_or_404(ContactLabel.objects.order_by('name'))
+        cls = ContactLabel.objects.order_by('name')
         paginator = Paginator(cls, PAGE_SIZE)
 
         page = request.GET.get('page', 1)
@@ -303,7 +303,7 @@ def receiver_view(request, pk=None):
         receiver = get_object_or_404(Receiver, pk=pk)
         receivers = [receiver, ]
     else:
-        receivers = get_list_or_404(Receiver.objects.order_by('name'))
+        receivers = Receiver.objects.order_by('name')
         paginator = Paginator(receivers, PAGE_SIZE)
 
         page = request.GET.get('page', 1)
@@ -346,7 +346,7 @@ def receiver_create(request):
 
 def receiver_update(request, pk):
     if pk is None:
-        receivers = get_list_or_404(Receiver.objects.order_by('name'))
+        receivers = Receiver.objects.order_by('name')
         paginator = Paginator(receivers, PAGE_SIZE)
 
         page = request.GET.get('page', 1)

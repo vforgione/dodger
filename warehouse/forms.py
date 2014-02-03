@@ -1,6 +1,7 @@
 from django import forms
 
 from models import *
+from inventory_manager.models import Product
 
 
 class ShipmentForm(forms.ModelForm):

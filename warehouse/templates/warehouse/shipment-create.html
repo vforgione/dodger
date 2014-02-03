@@ -3,6 +3,9 @@
 {% block content %}
 <div class="container">
   <h2>Receive A Shipment</h2>
+  {% if no_pos %}
+  <h4>There are no outstanding POs right now.</h4>
+  {% else %}
   <form method="post" action=".">
     {% csrf_token %}
     {% for field in form %}
@@ -10,6 +13,7 @@
       {{ field.label_tag }}{{ field }}{{ field.errors }}
     </div>
     {% endfor %}
+    <input type="hidden" id="supplier" />
     {{ formset.management_form }}
     <table class="table table-condensed">
       <thead>
@@ -29,6 +33,7 @@
     </table>
     <input type="submit" value="Save" class="btn btn-primary default" name="save">
   </form>
+  {% endif %}
 </div>
 {% endblock %}
 
@@ -38,39 +43,48 @@ $(document).ready(function(){
   // global scope options
   var options = '<option></option>';
 
-  // load up products from purchase order choice
+  // listen for change in po selection
   $('select#purchase-order').change(function(){
-    $.ajax({
-      url: '/api/dat/purchase-order-products/?purchase_order__id=' + $(this).val(),
-      type: 'GET',
-      dataType: 'json',
-      success: function(xhr, status){
-        $(xhr.objects).each(function(i){
-          options += '<option value="' + xhr.objects[i].id + '">';
+
+      // get supplier for purchase order
+      $.ajax({
+        url: '/api/dat/purchase-orders/' + $(this).val() + '/',
+        type: 'GET',
+        dataType: 'json',
+        async: false,  // make blocking call
+        success: function(xhr, status){
+          var supplier_uri = xhr.supplier;
           $.ajax({
-            url: xhr.objects[i].product,
+            url: supplier_uri,
             type: 'GET',
             dataType: 'json',
-            async: false,
-            success: function(xhr, status){
-              options += xhr.name + '</option>';
-            },
+            async: false,  // make blocking call
+            success: function(xhr, status){ $('input#supplier').val(xhr.id); },
             error: function(xhr, status){ alert(status + ' ' + xhr.responseText); },
-            beforeSend: function(xhr){
-              xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
-            }
+            beforeSend: function(xhr){ xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54'); }
           });
-        });
-      },
-      error: function(xhr, status){ alert(status + ' ' + xhr.responseText); },
-      beforeSend: function(xhr){
-        xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
-      },
-      complete: function(){
-        $('select.product').html(options);
-      }
-    });
+        },
+        error: function(xhr, status){ alert(status + ' ' + xhr.responseText); },
+        beforeSend: function(xhr){ xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54'); }
+      });
+
+      // load up products from supplier - the rationale is that the supplier could screw up and switch skus
+      $.ajax({
+        url: '/api/inventory-manager/products/?supplier__id=' + $('input#supplier').val(),
+        type: 'GET',
+        dataType: 'json',
+        success: function(xhr, status){
+          $(xhr.objects).each(function(i){
+            options += '<option value="' + xhr.objects[i].sku + '">' + xhr.objects[i].description  + '</option>';
+          });
+        },
+        error: function(xhr, status){ alert(status + ' ' + xhr.responseText); },
+        beforeSend: function(xhr){ xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54'); },
+        complete: function(){ $('select.product').html(options); }
+      });
+
   });
+
 });
 </script>
 {% endblock %}

@@ -1,12 +1,13 @@
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404, get_list_or_404, redirect, render_to_response
+from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
 
 from forms import *
 from models import *
 
-from dat.models import PurchaseOrder, PurchaseOrderProduct
+from dat.models import PurchaseOrder
+from inventory_manager.models import Product
 
 
 PAGE_SIZE = 20
@@ -22,7 +23,7 @@ def shipment_view(request, pk=None):
             shipment = get_object_or_404(Shipment, name=pk)
         shipments = [shipment, ]
     else:
-        shipments = get_list_or_404(Shipment.objects.order_by('-received_on'))
+        shipments = Shipment.objects.order_by('-received_on')
         paginator = Paginator(shipments, PAGE_SIZE)
 
         page = request.GET.get('page', 1)
@@ -48,13 +49,15 @@ def shipment_create(request):
     """receive a shipment"""
     form = ShipmentForm()
     formset = ShipmentProductFormset(instance=Shipment())
+    no_pos = False
 
     if request.method == 'GET':
         form.fields['received_by'].initial = request.user
         received = [x.purchase_order.id for x in Shipment.objects.all()]
         form.fields['purchase_order'].queryset = PurchaseOrder.objects.all().exclude(id__in=received)
+        no_pos = len(form.fields['purchase_order'].queryset) == 0
         for _form in formset:
-            _form.fields['product'].queryset = PurchaseOrderProduct.objects.filter(id=-1)
+            _form.fields['product'].queryset = Product.objects.filter(sku=-1)
 
     else:
         form = ShipmentForm(request.POST)
@@ -71,6 +74,7 @@ def shipment_create(request):
         {
             'form': form,
             'formset': formset,
+            'no_pos': no_pos,
         },
         context_instance=RequestContext(request)
     )

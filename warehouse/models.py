@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from inventory_manager.models import ProductQtyChange, Reason
+from dat.models import PurchaseOrderProduct
 
 
 class Shipment(models.Model):
@@ -17,17 +18,18 @@ class Shipment(models.Model):
 class ShipmentProduct(models.Model):
 
     shipment = models.ForeignKey(Shipment)
-    product = models.ForeignKey('dat.PurchaseOrderProduct')
+    product = models.ForeignKey('inventory_manager.Product')
     qty_received = models.IntegerField()
 
     def __unicode__(self):
-        return u'[{}] {}: {} of {}'.format(self.shipment.purchase_order.name, self.product.product.sku,
-                                           self.qty_received, self.product.qty_ordered)
+        prod = PurchaseOrderProduct.objects.get(purchase_order=self.shipment.purchase_order, product=self.product)
+        return u'[{}] {}: {} of {}'.format(self.shipment.purchase_order.name, self.product.sku,
+                                           self.qty_received, prod.qty_ordered)
 
     def save(self, *args, **kwargs):
         pqc = ProductQtyChange()
-        pqc.product = self.product.product
-        pqc.new_qty = self.product.product.qty_on_hand + self.qty_received
+        pqc.product = self.product
+        pqc.new_qty = self.product.qty_on_hand + self.qty_received
         pqc.reason = Reason.objects.get(pk='received-shipment')
         pqc.who = self.shipment.received_by
         pqc.save()

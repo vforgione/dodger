@@ -83,6 +83,7 @@ class ProductResource(ModelResource):
     supplier = fields.ForeignKey('dat.api.SupplierResource', 'supplier')
     manufacturer = fields.ForeignKey(ManufacturerResource, 'manufacturer')
     owner = fields.ForeignKey('dodger.api.UserResource', 'owner')
+    description = fields.CharField(attribute='_description', readonly=True)
 
     class Meta:
         # how to call resource
