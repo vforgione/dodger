@@ -5,7 +5,7 @@
 
   {% if pqc %}
   <style>.id{font-weight:bold;}td:first-child{width:30%}</style>
-  <h2>{{ pqc }}</h2>
+  <h2>PQC #{{ pqc.id }} on {{ pqc.modified|date:"F j, Y g:i a" }}</h2>
   <div class="table-responsive">
     <table class="table table-striped">
       <tbody>
@@ -43,13 +43,13 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Product</th><th>When</th><th>Old/New</th><th>Why</th><th>Who</th>
+          <th>ID</th><th>Product</th><th>When</th><th>Old/New</th><th>Why</th><th>Who</th>
         </tr>
       </thead>
       <tbody>
         {% for pqc in pqcs %}
         <tr>
-          <td>{{ pqc.product }}</td><td>{{ pqc.modified|date:"F j, Y g:i a" }}</td><td>{{ pqc.old_qty }} / {{ pqc.new_qty }}</td><td>{{ pqc.reason }}</td><td>{{ pqc.who.first_name }} {{ pqc.who.last_name }}</td>
+          <td><a href="{% url 'inv-mgr:pqc-view' pqc.id %}">{{ pqc.id }}</a></td><td>{{ pqc.product }}</td><td>{{ pqc.modified|date:"F j, Y g:i a" }}</td><td>{{ pqc.old_qty }} / {{ pqc.new_qty }}</td><td>{{ pqc.reason }}</td><td>{{ pqc.who.first_name }} {{ pqc.who.last_name }}</td>
         </tr>
         {% endfor %}
       </tbody>
