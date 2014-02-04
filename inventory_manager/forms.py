@@ -90,3 +90,32 @@ class ProductPriceChangeForm(forms.ModelForm):
         }
         fields = ('who', 'product', 'reason', 'old_price', 'new_price')
 
+
+class CategoryForm(forms.ModelForm):
+
+    class Meta:
+        model = Category
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+        fields = ('name', )
+
+
+class ManufacturerForm(forms.ModelForm):
+
+    class Meta:
+        model = Manufacturer
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+        fields = ('name', )
+
+
+class AttributeForm(forms.ModelForm):
+
+    class Meta:
+        model = Attribute
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+        fields = ('name', )

@@ -109,7 +109,7 @@ td:first-child{width:30%}
       <tbody>
         {% for prod in products %}
         <tr>
-          <td><a href="{% url 'inv-mgr:product-view' prod.sku %}">{{ prod.sku }}</a></td><td><a href="{% url 'inv-mgr:product-view' prod.sku %}">{{ prod.name }}</a></td>
+          <td><a href="{% url 'inv-mgr:product-view' prod.pk %}">{{ prod.sku }}</a></td><td><a href="{% url 'inv-mgr:product-view' prod.pk %}">{{ prod.name }}</a></td>
           <td>
             <ul>
               {% for attr in prod.productattribute_set.all %}

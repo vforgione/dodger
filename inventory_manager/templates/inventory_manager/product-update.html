@@ -14,7 +14,7 @@
       <tbody>
         {% for prod in products %}
         <tr>
-          <td><a href="{% url 'inv-mgr:product-update' prod.sku %}">{{ prod.sku }}</a></td><td><a href="{% url 'inv-mgr:product-update' prod.sku %}">{{ prod.name }}</a></td>
+          <td><a href="{% url 'inv-mgr:product-update' prod.pk %}">{{ prod.sku }}</a></td><td><a href="{% url 'inv-mgr:product-update' prod.pk %}">{{ prod.name }}</a></td>
           <td>
             <ul>
               {% for attr in prod.productattribute_set.all %}
