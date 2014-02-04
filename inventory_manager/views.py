@@ -168,3 +168,101 @@ def productqtychange_create(request):
         },
         context_instance=RequestContext(request)
     )
+
+
+# product cost change
+def productcostchange_view(request, pk=None):
+    pcc, pccs = None, None
+
+    if pk:
+        pcc = get_object_or_404(ProductCostChange, pk=pk)
+
+    else:
+        pccs = ProductCostChange.objects.order_by('-modified')
+        paginator = Paginator(pccs, PAGE_SIZE)
+
+        page = request.GET.get('page', 1)
+        try:
+            pccs = paginator.page(page)
+        except PageNotAnInteger:
+            pccs = paginator.page(1)
+        except EmptyPage:
+            pccs = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'inventory_manager/pcc-view.html',
+        {
+            'pcc': pcc,
+            'pccs': pccs,
+        }
+    )
+
+
+def productcostchange_create(request):
+    form = ProductCostChangeForm()
+
+    if request.method == 'GET':
+        form.fields['who'].initial = request.user
+
+    else:
+        form = ProductCostChangeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('inv-mgr:pcc-view'))
+
+    return render_to_response(
+        'inventory_manager/pcc-create.html',
+        {
+            'form': form,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+# product price change
+def productpricechange_view(request, pk=None):
+    ppc, ppcs = None, None
+
+    if pk:
+        ppc = get_object_or_404(ProductPriceChange, pk=pk)
+
+    else:
+        ppcs = ProductPriceChange.objects.order_by('-modified')
+        paginator = Paginator(ppcs, PAGE_SIZE)
+
+        page = request.GET.get('page', 1)
+        try:
+            ppcs = paginator.page(page)
+        except PageNotAnInteger:
+            ppcs = paginator.page(1)
+        except EmptyPage:
+            ppcs = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'inventory_manager/ppc-view.html',
+        {
+            'ppc': ppc,
+            'ppcs': ppcs,
+        }
+    )
+
+
+def productpricechange_create(request):
+    form = ProductPriceChangeForm()
+
+    if request.method == 'GET':
+        form.fields['who'].initial = request.user
+
+    else:
+        form = ProductPriceChangeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('inv-mgr:ppc-view'))
+
+    return render_to_response(
+        'inventory_manager/ppc-create.html',
+        {
+            'form': form,
+        },
+        context_instance=RequestContext(request)
+    )

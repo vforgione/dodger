@@ -12,4 +12,12 @@ urlpatterns = patterns(
     # product qty changes
     url(r'product-qty-changes(?:/(?P<pk>\d+))?/$', 'productqtychange_view', name='pqc-view'),
     url(r'product-qty-changes/create/', 'productqtychange_create', name='pqc-create'),
+
+    # product cost changes
+    url(r'product-cost-changes(?:/(?P<pk>\d+))?/$', 'productcostchange_view', name='pcc-view'),
+    url(r'product-cost-changes/create/', 'productcostchange_create', name='pcc-create'),
+
+    # product price changes
+    url(r'product-price-changes(?:/(?P<pk>\d+))?/$', 'productpricechange_view', name='ppc-view'),
+    url(r'product-price-changes/create/', 'productpricechange_create', name='ppc-create'),
 )

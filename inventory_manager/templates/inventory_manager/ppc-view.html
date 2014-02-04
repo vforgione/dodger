@@ -1,0 +1,70 @@
+{% extends 'inventory_manager/base.html' %}
+
+{% block content %}
+<div class="container">
+
+  {% if ppc %}
+  <style>.id{font-weight:bold;}td:first-child{width:30%}</style>
+  <h2>PPC #{{ ppc.id }} on {{ ppc.modified|date:"F j, Y g:i a" }}</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td class="id">Product:</td>
+          <td>{{ ppc.product }}</td>
+        </tr>
+        <tr>
+          <td class="id">Old price:</td>
+          <td>${{ ppc.old_price }}</td>
+        </tr>
+        <tr>
+          <td class="id">New price:</td>
+          <td>${{ ppc.new_price }}</td>
+        </tr>
+        <tr>
+          <td class="id">Reason:</td>
+          <td>{{ ppc.reason }}</td>
+        </tr>
+        <tr>
+          <td class="id">Who:</td>
+          <td>{{ ppc.who.first_name }} {{ ppc.who.last_name }}</td>
+        </tr>
+        <tr>
+          <td class="id">When:</td>
+          <td>{{ ppc.modified|date:"F j, Y g:i a" }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  {% else %}
+  <h2>View Product Price Changes</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th><th>Product</th><th>When</th><th>Old/New</th><th>Why</th><th>Who</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ppc in ppcs %}
+        <tr>
+          <td><a href="{% url 'inv-mgr:ppc-view' ppc.id %}">{{ ppc.id }}</a></td><td>{{ ppc.product }}</td><td>{{ ppc.modified|date:"F j, Y g:i a" }}</td><td>${{ ppc.old_price }} / ${{ ppc.new_price }}</td><td>{{ ppc.reason }}</td><td>{{ ppc.who.first_name }} {{ ppc.who.last_name }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="container">
+    {% if ppcs.has_previous %}
+    <div class="button"><a href="?page={{ ppcs.previous_page_number }}">Previous</a></div>
+    {% endif %}
+    <div>Page {{ ppcs.number }} of {{ ppcs.paginator.num_pages }}</div>
+    {% if ppcs.has_next %}
+    <div class="button"><a href="?page={{ ppcs.next_page_number }}">Next</a></div>
+    {% endif %}
+  </div>
+
+  {% endif %}
+</div>
+{% endblock %}

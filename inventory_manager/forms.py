@@ -62,3 +62,31 @@ class ProductQtyChangeForm(forms.ModelForm):
         }
         fields = ('who', 'product', 'reason', 'old_qty', 'new_qty')
 
+
+class ProductCostChangeForm(forms.ModelForm):
+
+    class Meta:
+        model = ProductCostChange
+        widgets = {
+            'product': forms.Select(attrs={'class': 'form-control'}),
+            'who': forms.Select(attrs={'class': 'form-control'}),
+            'reason': forms.Select(attrs={'class': 'form-control'}),
+            'old_cost': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'new_cost': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+        fields = ('who', 'product', 'reason', 'old_cost', 'new_cost')
+
+
+class ProductPriceChangeForm(forms.ModelForm):
+
+    class Meta:
+        model = ProductPriceChange
+        widgets = {
+            'product': forms.Select(attrs={'class': 'form-control'}),
+            'who': forms.Select(attrs={'class': 'form-control'}),
+            'reason': forms.Select(attrs={'class': 'form-control'}),
+            'old_price': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'new_price': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+        fields = ('who', 'product', 'reason', 'old_price', 'new_price')
+
