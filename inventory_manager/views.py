@@ -119,3 +119,52 @@ def product_update(request, sku=None):
         },
         context_instance=RequestContext(request)
     )
+
+
+# product qty change
+def productqtychange_view(request, pk=None):
+    pqc, pqcs = None, None
+
+    if pk:
+        pqc = get_object_or_404(ProductQtyChange, pk=pk)
+
+    else:
+        pqcs = ProductQtyChange.objects.order_by('-modified')
+        paginator = Paginator(pqcs, PAGE_SIZE)
+
+        page = request.GET.get('page', 1)
+        try:
+            pqcs = paginator.page(page)
+        except PageNotAnInteger:
+            pqcs = paginator.page(1)
+        except EmptyPage:
+            pqcs = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'inventory_manager/pqc-view.html',
+        {
+            'pqc': pqc,
+            'pqcs': pqcs,
+        }
+    )
+
+
+def productqtychange_create(request):
+    form = ProductQtyChangeForm()
+
+    if request.method == 'GET':
+        form.fields['who'].initial = request.user
+
+    else:
+        form = ProductQtyChangeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('inv-mgr:pqc-view'))
+
+    return render_to_response(
+        'inventory_manager/pqc-create.html',
+        {
+            'form': form,
+        },
+        context_instance=RequestContext(request)
+    )

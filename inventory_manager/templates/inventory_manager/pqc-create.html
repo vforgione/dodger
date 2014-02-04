@@ -1,0 +1,33 @@
+{% extends 'inventory_manager/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Change Available Qty</h2>
+  <form method="post" action=".">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      {{ field.label_tag }}{{ field }}{{ field.errors }}
+    </div>
+    {% endfor %}
+  <input type="submit" value="Save" class="btn btn-primary default" name="save">
+  </form>
+</div>
+{% endblock %}
+
+{% block contentjs %}
+<script>
+$(document).ready(function(){
+  $('#id_product').change(function(){
+    $.ajax({
+      url: '/api/inventory-manager/products/' + $(this).val() + '/',
+      type: 'GET',
+      dataType: 'json',
+      success: function(xhr, status){ $('#id_old_qty').val(xhr.qty_on_hand); },
+      error: function(xhr, status){ alert(status + ' ' + xhr.responseText); },
+      beforeSend: function(xhr){ xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54'); }
+    });
+  });
+});
+</script>
+{% endblock %}

@@ -26,6 +26,7 @@ class ProductForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
+        # dynamically restrict fields based on if create or update
         instance = getattr(self, 'instance', None)
         if instance and instance.sku:
             self.fields['cost'].widget.attrs['readonly'] = True
@@ -46,3 +47,18 @@ class ProductAttributeForm(forms.ModelForm):
 
 ProductAttributeFormset = forms.models.inlineformset_factory(Product, ProductAttribute,
     form=ProductAttributeForm, extra=10, can_delete=False)
+
+
+class ProductQtyChangeForm(forms.ModelForm):
+
+    class Meta:
+        model = ProductQtyChange
+        widgets = {
+            'product': forms.Select(attrs={'class': 'form-control'}),
+            'who': forms.Select(attrs={'class': 'form-control'}),
+            'reason': forms.Select(attrs={'class': 'form-control'}),
+            'old_qty': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'new_qty': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+        fields = ('who', 'product', 'reason', 'old_qty', 'new_qty')
+
