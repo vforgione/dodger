@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from models import (
     Category, Manufacturer, Attribute, Product, ProductAttribute, ProductCostChange,
-    ProductPriceChange, ProductQtyChange, Reason
+    ProductPriceChange, ProductQtyChange, QtyChangeReason, CostChangeReason, PriceChangeReason
 )
 
 
@@ -252,4 +252,6 @@ admin.site.register(ProductAttribute)
 admin.site.register(ProductCostChange, ProductCostChangeAdmin)
 admin.site.register(ProductPriceChange, ProductPriceChangeAdmin)
 admin.site.register(ProductQtyChange, ProductQtyChangeAdmin)
-admin.site.register(Reason, ReasonAdmin)
+admin.site.register(QtyChangeReason, ReasonAdmin)
+admin.site.register(CostChangeReason, ReasonAdmin)
+admin.site.register(PriceChangeReason, ReasonAdmin)

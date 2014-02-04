@@ -5,8 +5,8 @@ urlpatterns = patterns(
     'dat.views',
 
     # purchase orders
-    url(r'^purchase-orders(?:/(?P<pk>\d+|\d+\-[a-zA-Z]+))?/$', 'purchaseorder_view', name='purchaseorder-view'),
     url(r'^purchase-orders/create/$', 'purchaseorder_create', name='purchaseorder-create'),
+    url(r'^purchase-orders(?:/(?P<pk>[a-zA-Z\-\d]+))?/$', 'purchaseorder_view', name='purchaseorder-view'),
 
     # suppliers - ids are slugs, so the view has to go last as a fall through
     url(r'^suppliers/create/$', 'supplier_create', name='supplier-create'),

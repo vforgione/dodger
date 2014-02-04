@@ -6,7 +6,7 @@ from tastypie.resources import ModelResource
 from tastypie.http import HttpConflict
 
 from models import Category, Manufacturer, Attribute, Product, ProductAttribute, \
-    ProductQtyChange, ProductCostChange, ProductPriceChange, Reason
+    ProductQtyChange, ProductCostChange, ProductPriceChange, QtyChangeReason, CostChangeReason, PriceChangeReason
 
 
 class CategoryResource(ModelResource):
@@ -155,13 +155,57 @@ class ProductAttributeResource(ModelResource):
             super(ProductAttributeResource, self).post_list(request, **kwargs)
 
 
-class ReasonResource(ModelResource):
-    """a resource for the Reason model"""
+class QtyChangeReasonResource(ModelResource):
+    """a resource for the QtyChangeReason model"""
 
     class Meta:
         # how to call
-        resource_name = 'reasons'
-        queryset = Reason.objects.all()
+        resource_name = 'qty-change-reasons'
+        queryset = QtyChangeReason.objects.all()
+        # available methods - limit to get and post
+        list_allowed_methods = ('get', 'post')
+        detail_allowed_methods = ('get', )
+        # field filters (querystring)
+        filtering = {
+            'id': ALL,
+            'name': ALL,
+        }
+        # auth
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        # always return data
+        always_return_data = True
+
+
+class CostChangeReasonResource(ModelResource):
+    """a resource for the QtyChangeReason model"""
+
+    class Meta:
+        # how to call
+        resource_name = 'cost-change-reasons'
+        queryset = CostChangeReason.objects.all()
+        # available methods - limit to get and post
+        list_allowed_methods = ('get', 'post')
+        detail_allowed_methods = ('get', )
+        # field filters (querystring)
+        filtering = {
+            'id': ALL,
+            'name': ALL,
+        }
+        # auth
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        # always return data
+        always_return_data = True
+
+
+class PriceChangeReasonResource(ModelResource):
+    """a resource for the QtyChangeReason model"""
+
+    class Meta:
+        # how to call
+        resource_name = 'price-cahnge-reasons'
+        queryset = PriceChangeReason.objects.all()
         # available methods - limit to get and post
         list_allowed_methods = ('get', 'post')
         detail_allowed_methods = ('get', )
@@ -182,7 +226,7 @@ class ProductQtyChangeResource(ModelResource):
 
     # foreign keys
     product = fields.ForeignKey(ProductResource, 'product')
-    reason = fields.ForeignKey(ReasonResource, 'reason')
+    reason = fields.ForeignKey(QtyChangeReasonResource, 'reason')
     who = fields.ForeignKey('dodger.api.UserResource', 'who')
 
     class Meta:
@@ -200,6 +244,7 @@ class ProductQtyChangeResource(ModelResource):
             'old_qty': ALL,
             'new_qty': ALL,
             'modified': ALL,
+            'details': ALL,
         }
         # auth
         authentication = ApiKeyAuthentication()
@@ -213,7 +258,7 @@ class ProductCostChangeResource(ModelResource):
 
     # foreign keys
     product = fields.ForeignKey(ProductResource, 'product')
-    reason = fields.ForeignKey(ReasonResource, 'reason')
+    reason = fields.ForeignKey(CostChangeReasonResource, 'reason')
     who = fields.ForeignKey('dodger.api.UserResource', 'who')
 
     class Meta:
@@ -231,6 +276,7 @@ class ProductCostChangeResource(ModelResource):
             'old_cost': ALL,
             'new_cost': ALL,
             'modified': ALL,
+            'details': ALL,
         }
         # auth
         authentication = ApiKeyAuthentication()
@@ -244,7 +290,7 @@ class ProductPriceChangeResource(ModelResource):
 
     # foreign keys
     product = fields.ForeignKey(ProductResource, 'product')
-    reason = fields.ForeignKey(ReasonResource, 'reason')
+    reason = fields.ForeignKey(PriceChangeReasonResource, 'reason')
     who = fields.ForeignKey('dodger.api.UserResource', 'who')
 
     class Meta:
@@ -262,6 +308,7 @@ class ProductPriceChangeResource(ModelResource):
             'old_price': ALL,
             'new_price': ALL,
             'modified': ALL,
+            'details': ALL,
         }
         # auth
         authentication = ApiKeyAuthentication()

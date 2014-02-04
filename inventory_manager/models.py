@@ -51,23 +51,6 @@ class Attribute(models.Model):
         super(Attribute, self).save(*args, **kwargs)
 
 
-class Reason(models.Model):
-
-    id = models.SlugField(max_length=255, primary_key=True)
-    name = models.CharField(max_length=255, unique=True)
-
-    class Meta:
-        verbose_name = 'Product change reason'
-
-    def __unicode__(self):
-        return self.name
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.id = slugify(self.name)
-        super(Reason, self).save(*args, **kwargs)
-
-
 class Product(models.Model):
 
     # id
@@ -79,11 +62,11 @@ class Product(models.Model):
     manufacturer = models.ForeignKey(Manufacturer)
     # responsibility
     owner = models.ForeignKey(User)
-    reorder_threshold = models.IntegerField()
+    reorder_threshold = models.IntegerField(default=0)
     do_not_disturb = models.BooleanField(default=False)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     cost = models.DecimalField(max_digits=10, decimal_places=2)
-    mfr_sku = models.CharField(max_length=255)
+    mfr_sku = models.CharField(max_length=255, blank=True, null=True)
     case_qty = models.CharField(max_length=255)
     # required attributes
     location = models.CharField(max_length=255)
@@ -158,12 +141,27 @@ class ProductAttribute(models.Model):
         return u'{}@{} : {}'.format(self.product.name, self.attribute.name, self.value)
 
 
+class QtyChangeReason(models.Model):
+
+    id = models.SlugField(max_length=255, primary_key=True)
+    name = models.CharField(max_length=255, unique=True)
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.id = slugify(self.name)
+        super(QtyChangeReason, self).save(*args, **kwargs)
+
+
 class ProductQtyChange(models.Model):
 
     product = models.ForeignKey(Product)
     old_qty = models.IntegerField()
     new_qty = models.IntegerField()
-    reason = models.ForeignKey(Reason)
+    reason = models.ForeignKey(QtyChangeReason)
+    details = models.TextField(blank=True, null=True)
     who = models.ForeignKey(User)
     modified = models.DateTimeField(auto_now_add=True)
 
@@ -180,12 +178,27 @@ class ProductQtyChange(models.Model):
         self.product.save()
 
 
+class PriceChangeReason(models.Model):
+
+    id = models.SlugField(max_length=255, primary_key=True)
+    name = models.CharField(max_length=255, unique=True)
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.id = slugify(self.name)
+        super(PriceChangeReason, self).save(*args, **kwargs)
+
+
 class ProductPriceChange(models.Model):
 
     product = models.ForeignKey(Product)
     old_price = models.DecimalField(max_digits=10, decimal_places=2)
     new_price = models.DecimalField(max_digits=10, decimal_places=2)
-    reason = models.ForeignKey(Reason)
+    reason = models.ForeignKey(PriceChangeReason)
+    details = models.TextField(blank=True, null=True)
     who = models.ForeignKey(User)
     modified = models.DateTimeField(auto_now_add=True)
 
@@ -202,12 +215,27 @@ class ProductPriceChange(models.Model):
         self.product.save()
 
 
+class CostChangeReason(models.Model):
+
+    id = models.SlugField(max_length=255, primary_key=True)
+    name = models.CharField(max_length=255, unique=True)
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.id = slugify(self.name)
+        super(CostChangeReason, self).save(*args, **kwargs)
+
+
 class ProductCostChange(models.Model):
 
     product = models.ForeignKey(Product)
     old_cost = models.DecimalField(max_digits=10, decimal_places=2)
     new_cost = models.DecimalField(max_digits=10, decimal_places=2)
-    reason = models.ForeignKey(Reason)
+    reason = models.ForeignKey(CostChangeReason)
+    details = models.TextField(blank=True, null=True)
     who = models.ForeignKey(User)
     modified = models.DateTimeField(auto_now_add=True)
 

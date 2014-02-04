@@ -11,7 +11,7 @@ from dat.api import SupplierResource, ContactLabelResource, ContactResource, \
 
 from inventory_manager.api import CategoryResource, ManufacturerResource, AttributeResource, \
     ProductResource, ProductAttributeResource, ProductQtyChangeResource, ProductCostChangeResource, \
-    ProductPriceChangeResource, ReasonResource
+    ProductPriceChangeResource, QtyChangeReasonResource, CostChangeReasonResource, PriceChangeReasonResource
 
 from warehouse.api import ShipmentResource, ShipmentProductResource
 
@@ -36,7 +36,9 @@ api_im.register(ProductAttributeResource())
 api_im.register(ProductQtyChangeResource())
 api_im.register(ProductCostChangeResource())
 api_im.register(ProductPriceChangeResource())
-api_im.register(ReasonResource())
+api_im.register(QtyChangeReasonResource())
+api_im.register(CostChangeReasonResource())
+api_im.register(PriceChangeReasonResource())
 
 api_wh = Api(api_name='warehouse')
 api_wh.register(ShipmentResource())
