@@ -2,53 +2,92 @@
 
 {% block content %}
 <div class="container">
-  <h2>View Past Purchase Orders</h2>
-  {% if pos %}
-    <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>PO #</th><th>PO Friendly Name</th><th>Ordered By</th><th>Date Created</th><th>Products</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for po in pos %}
-          <tr>
-            <td><a href="{% url 'dat:purchaseorder-view' po.id %}">{{ po.id }}</a></td><td><a href="{% url 'dat:purchaseorder-view' po.name %}">{{ po.name }}</a></td><td>{{ po.dat_member }}</td><td>{{ po.created|date:"F j, Y g:i a" }}</td>
-            <td>
-              <table class="table table-condensed">
-                <thead>
-                  <tr>
-                    <th>Product</th><th>Qty Ordered</th><th>Disc $</th><th>Disc %</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for pop in po.purchaseorderproduct_set.all %}
-                  <tr>
-                    <td>{{ pop.product }}</td><td>{{ pop.qty_ordered }}</td><td>${{ pop.disc_dollar|default_if_none:"0" }}</td><td>{{ pop.disc_percent|default_if_none:"0" }}%</td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    {% if display_pages %}
-    <div class="container">
-      {% if pos.has_previous %}
-      <div class="button"><a href="?page={{ pos.previous_page_number }}">Previous</a></div>
-      {% endif %}
-      <div>Page {{ pos.number }} of {{ pos.paginator.num_pages }}</div>
-      {% if pos.has_next %}
-      <div class="button"><a href="?page={{ pos.next_page_number }}">Next</a></div>
-      {% endif %}
-    </div>
-    {% endif %}
+
+  {% if po %}
+  <h2>PO {{ po.slug }}</h2>
+  <div class="table-responsive">
+    <table class="table table-striped detail-table">
+      <tbody>
+        <tr>
+          <td>Friendly Name</td><td>{{ po.slug }}</td>
+        </tr>
+        <tr>
+          <td>Date Created</td><td>{{ po.created|date:"F j, Y g:i a" }}</td>
+        </tr>
+        <tr>
+          <td>Date Received</td><td>{{ po.shipment_set.all.0.received_on|default:"Not Yet Received" }}</td>
+        </tr>
+        <tr>
+          <td>Creator</td><td>{{ po.creator.username }}</td>
+        </tr>
+        <tr>
+          <td>Supplier</td><td><a href="{% url 'dat:supplier-view' po.supplier.pk %}">{{ po.supplier.name }}</a></td>
+        </tr>
+        <tr>
+          <td>Contact</td><td><a href="{% url 'dat:contact-view' po.contact.pk %}">{{ po.contact.name }}</a></td>
+        </tr>
+        <tr>
+          <td>Receiver</td><td><a href="{% url 'dat:receiver-view' po.ship_to.pk %}">{{ po.ship_to.name }}</a></td>
+        </tr>
+        {% if po.comments %}
+        <tr>
+          <td>Comments</td><td>{{ po.comments }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+          <td>Products</td>
+          <td>
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th>Product</th><th>Qty Ordered</th><th>Qty Received</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for prod in po.purchaseorderproduct_set.all %}
+                <tr>
+                  <td class="sku" sku="{{ prod.product.sku }}" po="{{ po.pk }}">[{{ prod.product.sku }}] {{ prod.product.name }}</td>
+                  <td>{{ prod.qty_ordered }}</td>
+                  <td id="{{ prod.product.sku }}-qty"></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a class="btn btn-primary default" href="{% url 'dat:purchaseorder-view' %}">Back To List</a>
+
+  {% elif pos %}
+  <h2>View Purchase Orders</h2>
+  <div class="table-responsive">
+    <table class="table table-striped detail-table">
+      <thead>
+        <tr>
+          <th>Friendly Name</th><th>Date Created</th><th>Creator</th><th>Supplier</th><th>Contact</th><th>Receiver</th><th>Received?</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for po in pos %}
+        <tr>
+          <td><a href="{% url 'dat:purchaseorder-view' po.pk %}">{{ po.slug }}</a></td><td>{{ po.created|date:"F j, Y g:i a" }}</td><td>{{ po.creator.username }}</td><td>{{ po.supplier.name }}</td><td>{{ po.contact.name }}</td><td>{{ po.ship_to.name }}</td><td>{{ po.has_been_received|yesno:"Yes,No" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
   {% else %}
-    <p>no data retrieved</p>
+
+
   {% endif %}
 </div>
+{% endblock %}
+
+{% block contentjs %}
+{% load static %}
+<script src="{% static 'dat/js/purchaseorder-view.js' %}"></script>
 {% endblock %}

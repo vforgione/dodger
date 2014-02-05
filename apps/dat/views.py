@@ -15,16 +15,14 @@ PAGE_SIZE = 20
 # purchase orders
 def purchaseorder_view(request, pk=None):
     """view purchase order or paginated list of purchase orders"""
+    po, pos = None, None
+
     if pk:
-        try:
-            po = get_object_or_404(PurchaseOrder, pk=pk)
-        except:
-            po = get_object_or_404(PurchaseOrder, name=pk)
-        pos = [po, ]
+        po = get_object_or_404(PurchaseOrder, pk=pk)
+
     else:
         pos = PurchaseOrder.objects.order_by('-created')
         paginator = Paginator(pos, PAGE_SIZE)
-
         page = request.GET.get('page', 1)
         try:
             pos = paginator.page(page)
@@ -33,12 +31,11 @@ def purchaseorder_view(request, pk=None):
         except EmptyPage:
             pos = paginator.page(paginator.num_pages)
 
-    display_pages = len(pos) > 1
     return render_to_response(
         'dat/purchaseorder-view.html',
         {
+            'po': po,
             'pos': pos,
-            'display_pages': display_pages,
         },
         context_instance=RequestContext(request)
     )

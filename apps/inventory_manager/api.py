@@ -94,7 +94,7 @@ class ProductResource(ModelResource):
         detail_allowed_methods = ('get', 'patch', 'delete')
         # field filters (querystring)
         filtering = {
-            'sku': ALL,
+            'sku': ALL_WITH_RELATIONS,
             'name': ALL,
             'categories': ALL_WITH_RELATIONS,
             'supplier': ALL_WITH_RELATIONS,

@@ -1,9 +1,6 @@
 {% extends 'dodger/base.html' %}
 
 {% block extrajs %}
-<script>
-$(document).ready(function(){
-  $('li#dat-header').addClass('active');
-});
-</script>
+{% load static %}
+<script src="{% static 'dat/js/highlight.js' %}"></script>
 {% endblock %}

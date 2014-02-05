@@ -54,6 +54,7 @@ class ShipmentProductResource(ModelResource):
             'shipment': ALL_WITH_RELATIONS,
             'product': ALL_WITH_RELATIONS,
             'qty_received': ALL,
+            'slug': ALL,
         }
         # auth
         authentication = ApiKeyAuthentication()

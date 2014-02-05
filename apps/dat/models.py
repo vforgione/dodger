@@ -167,9 +167,9 @@ class PurchaseOrder(models.Model):
 
     def has_been_received(self):
         """checks if id in list of ids associated with received shipments"""
-        from dodger.apps.warehouse.models import Shipment
+        from apps.warehouse.models import Shipment
         shipments = Shipment.objects.values_list('purchase_order__id')
-        return self.id in shipments
+        return self.id in shipments[0]
 
 
 class PurchaseOrderProduct(models.Model):

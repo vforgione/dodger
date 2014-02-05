@@ -46,7 +46,7 @@
   </div>
   <a class="btn btn-primary default" href="{% url 'warehouse:shipment-view' %}">Back To List</a>
 
-  {% else %}
+  {% elif shipments %}
   <h2>View Shipments</h2>
   <div class="table-responsive">
     <table class="table table-striped">
@@ -76,6 +76,10 @@
     <a class="btn btn-primary default" href="?page={{ shipments.next_page_number }}">Next</a>
     {% endif %}
   </div>
+
+  {% else %}
+  <p>no data received</p>
+
   {% endif %}
 </div>
 {% endblock %}
