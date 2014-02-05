@@ -1,0 +1,289 @@
+[
+{
+  "pk": 1,
+  "model": "auth.user",
+  "fields": {
+    "username": "vince",
+    "first_name": "",
+    "last_name": "",
+    "is_active": true,
+    "is_superuser": true,
+    "is_staff": true,
+    "last_login": "2014-02-04T22:37:46.283Z",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$12000$l1A21g0Ox01E$3V6vsjVUwmfw5lojHRp4aYnKwa64nutt9CKroypYfh8=",
+    "email": "",
+    "date_joined": "2014-02-04T22:36:30.182Z"
+  }
+},
+{
+  "pk": 1,
+  "model": "tastypie.apikey",
+  "fields": {
+    "user": 1,
+    "key": "51ec739d7e8e7a24381ebd8b8a10e6be79c33e54",
+    "created": "2014-02-04T22:37:52Z"
+  }
+},
+{
+  "pk": 1,
+  "model": "dat.supplier",
+  "fields": {
+    "terms": "NET 15",
+    "slug": "some-supply-company",
+    "ships_products": false,
+    "name": "Some Supply Company"
+  }
+},
+{
+  "pk": 1,
+  "model": "dat.contactlabel",
+  "fields": {
+    "slug": "sales-rep",
+    "name": "Sales Rep"
+  }
+},
+{
+  "pk": 1,
+  "model": "dat.contact",
+  "fields": {
+    "city": "Toldeo",
+    "fax": "",
+    "name": "Some Dude",
+    "represents": 1,
+    "address1": "123 Main St",
+    "address2": "",
+    "address3": "",
+    "zipcode": "43601",
+    "slug": "some-dude-some-supply-company",
+    "phone": "312 555 0123",
+    "state": "OH",
+    "country": "United States",
+    "label": 1,
+    "email": "some.dude@somesupplycompany.com"
+  }
+},
+{
+  "pk": 1,
+  "model": "dat.receiver",
+  "fields": {
+    "city": "Chicago",
+    "name": "Ogden Warehouse",
+    "address1": "C/O: Torin",
+    "address2": "350 N Ogden Ave",
+    "address3": "",
+    "zipcode": "60607",
+    "state": "IL",
+    "country": "United States",
+    "slug": "ogden-warehouse"
+  }
+},
+{
+  "pk": 1,
+  "model": "dat.purchaseorder",
+  "fields": {
+    "creator": 1,
+    "created": "2014-02-05T15:28:24.355Z",
+    "comments": "",
+    "contact": 1,
+    "supplier": 1,
+    "ship_to": 1,
+    "slug": "1-vince"
+  }
+},
+{
+  "pk": 2,
+  "model": "dat.purchaseorder",
+  "fields": {
+    "creator": 1,
+    "created": "2014-02-05T15:28:50.941Z",
+    "comments": "",
+    "contact": 1,
+    "supplier": 1,
+    "ship_to": 1,
+    "slug": "2-vince"
+  }
+},
+{
+  "pk": 1,
+  "model": "dat.purchaseorderproduct",
+  "fields": {
+    "product": 123,
+    "slug": "1-123",
+    "disc_percent": null,
+    "purchase_order": 1,
+    "disc_dollar": null,
+    "qty_ordered": 100
+  }
+},
+{
+  "pk": 2,
+  "model": "dat.purchaseorderproduct",
+  "fields": {
+    "product": 124,
+    "slug": "2-124",
+    "disc_percent": null,
+    "purchase_order": 2,
+    "disc_dollar": null,
+    "qty_ordered": 100
+  }
+},
+{
+  "pk": 1,
+  "model": "inventory_manager.category",
+  "fields": {
+    "slug": "chew",
+    "name": "Chew"
+  }
+},
+{
+  "pk": 2,
+  "model": "inventory_manager.category",
+  "fields": {
+    "slug": "toy",
+    "name": "Toy"
+  }
+},
+{
+  "pk": 1,
+  "model": "inventory_manager.manufacturer",
+  "fields": {
+    "slug": "some-manufacturing-conglomerate",
+    "name": "Some Manufacturing Conglomerate"
+  }
+},
+{
+  "pk": 1,
+  "model": "inventory_manager.attribute",
+  "fields": {
+    "slug": "color",
+    "name": "Color"
+  }
+},
+{
+  "pk": 123,
+  "model": "inventory_manager.product",
+  "fields": {
+    "mfr_sku": "",
+    "reorder_threshold": 0,
+    "name": "Some Chew Thing",
+    "created": "2014-02-05T15:23:35.423Z",
+    "notify_at_threshold": true,
+    "location": "unknown",
+    "modified": "2014-02-05T15:33:29.421Z",
+    "owner": 1,
+    "cost": "5",
+    "case_qty": 5,
+    "qty_on_hand": 100,
+    "supplier": 1,
+    "price": "10",
+    "categories": [
+      1,
+      2
+    ],
+    "manufacturer": 1
+  }
+},
+{
+  "pk": 124,
+  "model": "inventory_manager.product",
+  "fields": {
+    "mfr_sku": "",
+    "reorder_threshold": 0,
+    "name": "Some Chew Thing",
+    "created": "2014-02-05T15:24:58.521Z",
+    "notify_at_threshold": true,
+    "location": "unknown",
+    "modified": "2014-02-05T15:24:58.521Z",
+    "owner": 1,
+    "cost": "5",
+    "case_qty": 5,
+    "qty_on_hand": 0,
+    "supplier": 1,
+    "price": "10",
+    "categories": [
+      1,
+      2
+    ],
+    "manufacturer": 1
+  }
+},
+{
+  "pk": 1,
+  "model": "inventory_manager.productattribute",
+  "fields": {
+    "attribute": 1,
+    "product": 123,
+    "slug": "123-color-red",
+    "value": "Red"
+  }
+},
+{
+  "pk": 2,
+  "model": "inventory_manager.productattribute",
+  "fields": {
+    "attribute": 1,
+    "product": 124,
+    "slug": "124-color-blue",
+    "value": "Blue"
+  }
+},
+{
+  "pk": "received-shipment",
+  "model": "inventory_manager.qtychangereason",
+  "fields": {
+    "name": "received shipment"
+  }
+},
+{
+  "pk": 1,
+  "model": "inventory_manager.productqtychange",
+  "fields": {
+    "product": 123,
+    "new_qty": 100,
+    "who": 1,
+    "modified": "2014-02-05T15:33:29.418Z",
+    "reason": "received-shipment",
+    "details": "po \"1-vince\"",
+    "slug": "2014-02-05-15-33",
+    "old_qty": 0
+  }
+},
+{
+  "pk": 1,
+  "model": "inventory_manager.pricechangereason",
+  "fields": {
+    "slug": "cost-related-adjustment",
+    "name": "cost related adjustment"
+  }
+},
+{
+  "pk": 1,
+  "model": "inventory_manager.costchangereason",
+  "fields": {
+    "slug": "supplier-initiated",
+    "name": "supplier initiated"
+  }
+},
+{
+  "pk": 1,
+  "model": "warehouse.shipment",
+  "fields": {
+    "received_by": 1,
+    "purchase_order": 1,
+    "received_on": "2014-02-05T15:33:29.412Z",
+    "slug": "1-vince"
+  }
+},
+{
+  "pk": 1,
+  "model": "warehouse.shipmentproduct",
+  "fields": {
+    "product": 123,
+    "slug": "1-123",
+    "shipment": 1,
+    "qty_received": 100
+  }
+}
+]

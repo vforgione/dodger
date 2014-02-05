@@ -3,6 +3,7 @@
 *.log
 migrations
 celerybeat-schedule
-dodger/static/
-local_settings.py
-gdoc_config.py
+/static
+*_settings.py
+*_config.py
+.DS_Store

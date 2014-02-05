@@ -4,7 +4,9 @@ import djcelery
 
 
 # helpers
-BASE_DIR = os.path.dirname(__file__)
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+PROJ_DIR = os.path.dirname(__file__)
 
 
 # debug config
@@ -29,7 +31,7 @@ USE_TZ = True
 
 # static config
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'assets'),
+    os.path.join(PROJ_DIR, 'static'),
 )
 
 STATIC_URL = '/static/'
@@ -111,9 +113,9 @@ INSTALLED_APPS = (
     'kombu.transport.django',
 
     # project apps
-    'dat',
-    'inventory_manager',
-    'warehouse',
+    'apps.dat',
+    'apps.inventory_manager',
+    'apps.warehouse',
 )
 
 

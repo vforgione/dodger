@@ -1,0 +1,55 @@
+{% extends 'dat/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Update An Existing Supplier</h2>
+  {% if form %}
+  <form method="post" action="">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      {{ field.label_tag }}{{ field }}{{ field.errors }}
+    </div>
+    {% endfor %}
+    <input type="submit" value="Save" class="btn btn-primary default" name="save">
+  </form>
+  {% else %}
+  <div class="table-responsive">
+    <h3>Select A Supplier To Update</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th><th>Can Dropship</th><th>Terms</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sup in suppliers %}
+        <tr>
+          <td><a href="{% url 'dat:supplier-update' sup.id %}">{{ sup.name }}</a></td><td>{{ sup.ships_products }}</td><td>{{ sup.terms }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if display_pages %}
+  <div class="container">
+    {% if suppliers.has_previous %}
+    <div class="button"><a href="?page={{ suppliers.previous_page_number }}">Previous</a></div>
+    {% endif %}
+    <div>Page {{ suppliers.number }} of {{ suppliers.paginator.num_pages }}</div>
+    {% if suppliers.has_next %}
+    <div class="button"><a href="?page={{ suppliers.next_page_number }}">Next</a></div>
+    {% endif %}
+  </div>
+  {% endif %}
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block contentjs %}
+<script>
+$(document).ready(function(){
+  $('input#id_ships_products').addClass('form-control');
+});
+</script>
+{% endblock %}

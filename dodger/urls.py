@@ -4,16 +4,16 @@ from django.views.generic import TemplateView
 from tastypie.api import Api
 
 
-from api import UserResource
+from .api import UserResource
 
-from dat.api import SupplierResource, ContactLabelResource, ContactResource, \
+from apps.dat.api import SupplierResource, ContactLabelResource, ContactResource, \
     ReceiverResource, PurchaseOrderResource, PurchaseOrderProductResource
 
-from inventory_manager.api import CategoryResource, ManufacturerResource, AttributeResource, \
+from apps.inventory_manager.api import CategoryResource, ManufacturerResource, AttributeResource, \
     ProductResource, ProductAttributeResource, ProductQtyChangeResource, ProductCostChangeResource, \
     ProductPriceChangeResource, QtyChangeReasonResource, CostChangeReasonResource, PriceChangeReasonResource
 
-from warehouse.api import ShipmentResource, ShipmentProductResource
+from apps.warehouse.api import ShipmentResource, ShipmentProductResource
 
 
 api_auth = Api(api_name='auth')
@@ -59,13 +59,13 @@ urlpatterns = patterns(
     url(r'^api/', include(api_auth.urls + api_dat.urls + api_im.urls + api_wh.urls)),
 
     # dat front end
-    url(r'^dat/', include('dat.urls', namespace='dat')),
+    url(r'^dat/', include('apps.dat.urls', namespace='dat')),
 
     # warehouse front end
-    url(r'^warehouse/', include('warehouse.urls', namespace='warehouse')),
+    url(r'^warehouse/', include('apps.warehouse.urls', namespace='warehouse')),
 
     # inv man front end
-    url(r'inventory-manager/', include('inventory_manager.urls', namespace='inv-mgr')),
+    url(r'^inventory-manager/', include('apps.inventory_manager.urls', namespace='inventory-manager')),
 
     # home page
     url(r'^$', TemplateView.as_view(template_name='dodger/home.html')),
