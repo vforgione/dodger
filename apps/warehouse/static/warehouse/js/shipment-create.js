@@ -49,7 +49,7 @@ $(document).ready(function(){
         type: 'GET',
         dataType: 'json',
         success: function(xhr, status){
-          var products = '<h3>Order Details</h3><table class="table table-striped"><thead><tr><th>Product</th><th>Qty Ordered</th>';
+          var products = '<p>&nbsp;</p><h3>Order Details</h3><table class="table table-striped"><thead><tr><th>Product</th><th>Qty Ordered</th>';
           $(xhr.objects).each(function(i){
             $.ajax({
               url: xhr.objects[i].product,

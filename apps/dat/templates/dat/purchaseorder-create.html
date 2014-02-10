@@ -20,13 +20,14 @@
         {% for form in formset %}
         <tr>
           {% for field in form %}
-          <td style="width:25%;">{{ field }}{{ field.errors }}</td>
+          <td class="col-lg-3">{{ field }}{{ field.errors }}</td>
           {% endfor %}
         </tr>
         {% endfor %}
       </tbody>
     </table>
     <input type="submit" value="Save" class="btn btn-primary default" name="save">
+    <a class="btn btn-danger pull-right" href="{% url 'warehouse:shipment-view' %}">Cancel</a>
   </form>
 </div>
 {% endblock %}
@@ -34,6 +35,7 @@
 {% block contentjs %}
 <script>
 $(document).ready(function(){
+
   // load up contacts and products from supplier choice
   $('select#supplier').change(function(){
     // contacts
@@ -55,6 +57,7 @@ $(document).ready(function(){
         xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
       }
     });
+
     // products
     $.ajax({
       url: '/api/inventory-manager/products/?supplier__id=' + $(this).val(),
@@ -74,9 +77,17 @@ $(document).ready(function(){
         xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
       }
     });
+
     // deselect products
     $('select.product').val('');
+
   });
+
+  // supply info on product selection
+  $('.product').change(function(){
+    alert( $(this).attr('id') );
+  });
+
 });
 </script>
 {% endblock %}
