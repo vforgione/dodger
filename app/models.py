@@ -75,6 +75,9 @@ class Sku(models.Model):
             if 'qty_change' in kwargs:  # save triggered by qty change model
                 del kwargs['qty_change']
                 super(Sku, self).save(*args, **kwargs)
+            elif 'gdocs' in kwargs:
+                del kwargs['gdocs']
+                super(Sku, self).save(*args, **kwargs)
             else:  # change from elsewhere - verify qty is same
                 try:
                     existing = Sku.objects.get(pk=self.pk)
