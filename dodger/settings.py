@@ -90,7 +90,7 @@ ROOT_URLCONF = 'dodger.urls'
 WSGI_APPLICATION = 'dodger.wsgi.application'
 
 INSTALLED_APPS = (
-    # bootstrapped admin
+    # bootstrap in admin
     'django_admin_bootstrapped.bootstrap3',
     'django_admin_bootstrapped',
 
@@ -108,14 +108,8 @@ INSTALLED_APPS = (
     # api
     'tastypie',
 
-    # task scheduling
-    'djcelery',
-    'kombu.transport.django',
-
     # project apps
-    'apps.dat',
-    'apps.inventory_manager',
-    'apps.warehouse',
+    'app',
 )
 
 
@@ -123,6 +117,6 @@ INSTALLED_APPS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(PROJ_DIR, 'db.sqlite3'),
     }
 }

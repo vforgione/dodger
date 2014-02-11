@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>dodger | {% block title %}product management{% endblock %}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>dodger | {% block title %}sku management{% endblock %}</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   {% block meta %}{% endblock %}
+
   {% load static %}
   <link rel="shortcut icon" href="{% static 'dodger/img/favicon.ico' %}" />
-  <link rel="stylesheet" href="{% static 'dodger/css/bootstrap.min.css' %}"/>
-  <link rel="stylesheet" href="{% static 'dodger/css/bootstrap-theme.min.css' %}"/>
-{#  <link rel="stylesheet" href="{% static 'dodger/css/dodger.css' %}" />#}
+  <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/bootstrap-theme.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/base.css' %}" />
   {% block css %}{% endblock %}
+
   {% block extrahead %}{% endblock %}
+
   <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
   <![endif]-->
+
 </head>
 <body>
+
   <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
       <div class="navbar-header">
@@ -25,101 +32,42 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/">dodger</a>
+        <a class="navbar-brand" href="#">dodger</a>
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li id="home-header"><a href="/">Home</a></li>
-          <li class="dropdown" id="im-header">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory Manager<b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li class="dropdown-header">Products</li>
-              <li><a href="{% url 'inventory-manager:product-view' %}">View Products</a></li>
-              <li><a href="{% url 'inventory-manager:product-create' %}">Create New Product</a></li>
-              <li><a href="{% url 'inventory-manager:product-update' %}">Update A Product</a></li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Product Quantity Changes</li>
-              <li><a href="{% url 'inventory-manager:productqtychange-view' %}">View Product Quantity Changes</a></li>
-              <li><a href="{% url 'inventory-manager:productqtychange-create' %}">Create New Product Quantity Change</a></li>
-              <li><a href="">View Reasons</a></li>
-              <li><a href="">Create New Reason</a></li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Product Cost Change</li>
-              <li><a href="{% url 'inventory-manager:productcostchange-view' %}">View Product Cost Changes</a></li>
-              <li><a href="{% url 'inventory-manager:productcostchange-create' %}">Create New Product Cost Change</a></li>
-              <li><a href="">View Reasons</a></li>
-              <li><a href="">Create New Reason</a></li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Product Price Changes</li>
-              <li><a href="{% url 'inventory-manager:productpricechange-view' %}">View Product Price Changes</a></li>
-              <li><a href="{% url 'inventory-manager:productpricechange-create' %}">Create New Product Price Change</a></li>
-              <li><a href="">View Reasons</a></li>
-              <li><a href="">Create New Reason</a></li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Categories</li>
-              <li><a href="{% url 'inventory-manager:category-view' %}">View Categories</a></li>
-              <li><a href="{% url 'inventory-manager:category-create' %}">Create New Category</a></li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Manufacturers</li>
-              <li><a href="{% url 'inventory-manager:manufacturer-view' %}">View Manufacturers</a></li>
-              <li><a href="{% url 'inventory-manager:manufacturer-create' %}">Create New Manufacturer</a></li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Attributes</li>
-              <li><a href="{% url 'inventory-manager:attribute-view' %}">View Attributes</a></li>
-              <li><a href="{% url 'inventory-manager:attribute-create' %}">Create New Attribute</a></li>
-            </ul>
-          </li>
-          <li class="dropdown" id="dat-header">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">DAT<b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li class="dropdown-header">Purchase Orders</li>
-              <li><a href="{% url 'dat:purchaseorder-view' %}">View Past Orders</a></li>
-              <li><a href="{% url 'dat:purchaseorder-create' %}">Create New Order</a></li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Suppliers</li>
-              <li><a href="{% url 'dat:supplier-view' %}">View Suppliers</a></li>
-              <li><a href="{% url 'dat:supplier-create' %}">Create New Supplier</a></li>
-              <li><a href="{% url 'dat:supplier-update' %}">Update A Supplier</a></li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Contacts</li>
-              <li><a href="{% url 'dat:contact-view' %}">View Contacts</a></li>
-              <li><a href="{% url 'dat:contact-create' %}">Create New Contact</a></li>
-              <li><a href="{% url 'dat:contact-update' %}">Update A Contact</a></li>
-              <li><a href="{% url 'dat:contactlabel-view' %}">View Contact Labels</a></li>
-              <li><a href="{% url 'dat:contactlabel-create' %}">Create New Contact Label</a></li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Receivers</li>
-              <li><a href="{% url 'dat:receiver-view' %}">View Receivers</a></li>
-              <li><a href="{% url 'dat:receiver-create' %}">Create New Receiver</a></li>
-              <li><a href="{% url 'dat:receiver-update' %}">Update A Receiver</a></li>
-            </ul>
-          </li>
-          <li class="dropdown" id="wh-header">
+          <li class="dropdown" id="warehouse-header">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Warehouse<b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li class="dropdown-header">Shipments</li>
-              <li><a href="{% url 'warehouse:shipment-view' %}">View Shipments</a></li>
-              <li><a href="{% url 'warehouse:shipment-create' %}">Receive A Shipment</a></li>
+              <li class="dropdown-header">Sku Qty Adjustments</li>
+              <li><a href="{% url 'app:sku_qty_adj__view' %}">View Adjustments</a></li>
+              <li><a href="{% url 'app:sku_qty_adj__create' %}">Make an Adjustment</a></li>
             </ul>
           </li>
-          <li id="rep-header"><a href="#">Reporting</a></li>
-          <li id="dash-header"><a href="#">Dashboard</a></li>
         </ul>
-        <div class="navbar-form navbar-right">
-        </div>
       </div>
     </div>
   </div>
-  <div class="row"><div style="height:90px;">&nbsp;</div></div>
-  <div id="content" class="colM">
-    <div id="content-main">
+
+  <div class="nav-pad"></div>
+
+  <div id="content">
+    <div class="container" id="content-main">
       {% block content %}{% endblock %}
     </div>
   </div>
-  <footer id="footer" style="min-height:25px;"></footer>
-  <script src="{% static 'dodger/js/jquery-1.10.02.min.js' %}"></script>
+
+  <div id="footer">
+    <div class="container">
+      &copy; 2014 doggyloot inc
+    </div>
+  </div>
+
+  <script src="{% static 'dodger/js/jquery-1.11.0.min.js' %}"></script>
   <script src="{% static 'dodger/js/bootstrap.min.js' %}"></script>
+  {% block highlightjs %}{% endblock %}
   {% block contentjs %}{% endblock %}
   {% block extrajs %}{% endblock %}
+
 </body>
 </html>

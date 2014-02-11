@@ -1,9 +1,7 @@
 *.py[cod]
 *.sqlite3
 *.log
-migrations
-celerybeat-schedule
-/static
 *_settings.py
 *_config.py
 .DS_Store
+/apps
