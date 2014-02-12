@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
@@ -10,6 +11,7 @@ from .models import *
 PAGE_SIZE = 20
 
 
+@login_required
 def sku_qty_adj__view(request, pk=None):
     trace, traces = None, None
 
@@ -37,6 +39,7 @@ def sku_qty_adj__view(request, pk=None):
     )
 
 
+@login_required
 def sku_qty_adj__create(request):
     form = SkuQuantityAdjustmentForm()
 
