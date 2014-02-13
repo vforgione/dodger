@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 
@@ -45,6 +46,7 @@ def sku_qty_adj__create(request):
 
     if request.method == 'GET':
         form.fields['who'].initial = request.user
+        form.fields['sku'].queryset = Sku.objects.filter(~Q(name='')).order_by('brand__name')
 
     else:
         form = SkuQuantityAdjustmentForm(request.POST)

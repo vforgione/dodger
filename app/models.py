@@ -102,12 +102,14 @@ class Sku(models.Model):
     def _description(self):
         attrs = self.get_attributes()
         if len(attrs):
-            return '[%d] %s : %s' % (self.id, self.name, ', '.join(attrs))
-        return '[%d] %s' % (self.id, self.name)
+            desc = '[%d] %s %s : %s' % (self.id, self.brand.name, self.name, ', '.join(attrs))
+        else:
+            desc = '[%d] %s %s' % (self.id, self.brand.name, self.name)
+        return ''.join([c for c in desc if ord(c) < 128])
     description = property(_description)
 
     def __str__(self):
-        return '%d' % self.id
+        return self.description
 
 
 class SkuAttribute(models.Model):
