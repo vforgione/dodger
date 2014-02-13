@@ -5,3 +5,4 @@
 *_config.py
 .DS_Store
 /apps
+/static

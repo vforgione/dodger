@@ -16,7 +16,7 @@ TEMPLATE_DEBUG = DEBUG
 
 
 # site config
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 LANGUAGE_CODE = 'en-us'
 
