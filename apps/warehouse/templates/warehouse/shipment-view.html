@@ -1,0 +1,90 @@
+{% extends 'warehouse/barf.html' %}
+
+{% block content %}
+<div class="container">
+
+  {% if shipment %}
+  <h2>Shipment {{ shipment.slug }}</h2>
+  <div class="table-responsive">
+    <table class="table table-striped detail-table">
+      <tbody>
+        <tr>
+          <td>Friendly Name</td><td>{{ shipment.slug }}</td>
+        </tr>
+        <tr>
+          <td>PO Friendly Name</td><td><a href="{% url 'dat:purchaseorder-view' shipment.purchase_order.pk %}">{{ shipment.purchase_order.slug }}</a></td>
+        </tr>
+        <tr>
+          <td>Received By</td><td>{{ shipment.received_by.username }}</td>
+        </tr>
+        <tr>
+          <td>Received On</td><td>{{ shipment.received_on|date:"F j, Y g:i a" }}</td>
+        </tr>
+        <tr>
+          <td>Products</td>
+          <td>
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th>Product</th><th>Qty Ordered</th><th>Qty Received</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for sp in shipment.shipmentproduct_set.all %}
+                <tr>
+                  <td class="sku" sku="{{ sp.product.sku }}" po="{{ sp.shipment.purchase_order.id }}">[{{ sp.product.sku }}] {{ sp.product.name }}</td>
+                  <td id="{{ sp.shipment.purchase_order.id }}-{{ sp.product.sku }}-qty"></td>
+                  <td>{{ sp.qty_received }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a class="btn btn-primary default" href="{% url 'warehouse:shipment-view' %}">Back To List</a>
+
+  {% elif shipments %}
+  <h2>View Shipments</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Shipment</th><th>Purchase Order</th><th>Received On</th><th>Received By</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ship in shipments %}
+        <tr>
+          <td><a href="{% url 'warehouse:shipment-view' ship.pk %}">{{ ship.purchase_order.slug }}</a></td>
+          <td><a href="{% url 'dat:purchaseorder-view' ship.purchase_order.pk %}">{{ ship.purchase_order.slug }}</a></td>
+          <td>{{ ship.received_on }}</td>
+          <td>{{ ship.received_by }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="container">
+    {% if shipments.has_previous %}
+    <a class="btn btn-primary default" href="?page={{ shipments.previous_page_number }}">Previous</a>
+    {% endif %}
+    Page {{ shipments.number }} of {{ shipments.paginator.num_pages }}
+    {% if shipments.has_next %}
+    <a class="btn btn-primary default" href="?page={{ shipments.next_page_number }}">Next</a>
+    {% endif %}
+  </div>
+
+  {% else %}
+  <p>no data received</p>
+
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block contentjs %}
+{% load static %}
+<script src="{% static 'warehouse/js/shipment-view.js' %}"></script>
+{% endblock %}

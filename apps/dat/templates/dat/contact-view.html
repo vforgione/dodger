@@ -1,0 +1,38 @@
+{% extends 'dat/barf.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>View Contacts</h2>
+  {% if contacts %}
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th><th>Represents</th><th>Label</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for contact in contacts %}
+          <tr>
+            <td><a href="{% url 'dat:contact-view' contact.id %}">{{ contact.name }}</a></td><td>{{ contact.represents }}</td><td>{{ contact.label }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if display_pages %}
+    <div class="container">
+      {% if contacts.has_previous %}
+      <div class="button"><a href="?page={{ contacts.previous_page_number }}">Previous</a></div>
+      {% endif %}
+      <div>Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}</div>
+      {% if contacts.has_next %}
+      <div class="button"><a href="?page={{ contacts.next_page_number }}">Next</a></div>
+      {% endif %}
+    </div>
+    {% endif %}
+  {% else %}
+    <p>no data retrieved</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -4,17 +4,19 @@ import djcelery
 
 
 # helpers
-BASE_DIR = os.path.dirname(__file__)
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+PROJ_DIR = os.path.dirname(__file__)
 
 
 # debug config
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = DEBUG
 
 
 # site config
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 LANGUAGE_CODE = 'en-us'
 
@@ -26,10 +28,12 @@ USE_L10N = True
 
 USE_TZ = True
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
 
 # static config
+STATICFILES_DIRS = (
+    os.path.join(PROJ_DIR, 'static'),
+)
+
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -68,12 +72,17 @@ MIDDLEWARE_CLASSES = (
 )
 
 
+# secret config
+SECRET_KEY = 'wzgv3s2)z2(ah2%t906z8%+dto6d%z&g+gtu)y1wc*52cv=1fv'
+
+
 # celery config
 djcelery.setup_loader()
 
+BROKER_URL = 'django://'
+
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
-CELERY_ALWAYS_EAGER = True
 
 # app config
 ROOT_URLCONF = 'dodger.urls'
@@ -81,7 +90,7 @@ ROOT_URLCONF = 'dodger.urls'
 WSGI_APPLICATION = 'dodger.wsgi.application'
 
 INSTALLED_APPS = (
-    # bootstrapped admin
+    # bootstrap in admin
     'django_admin_bootstrapped.bootstrap3',
     'django_admin_bootstrapped',
 
@@ -99,15 +108,15 @@ INSTALLED_APPS = (
     # api
     'tastypie',
 
-    # task scheduling
-    'djcelery',
-    'kombu.transport.django',
-
     # project apps
-    'dat',
-    'inventory_manager',
-    'warehouse',
+    'app',
 )
 
 
-from local_settings import *
+# db config
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(PROJ_DIR, 'db.sqlite3'),
+    }
+}

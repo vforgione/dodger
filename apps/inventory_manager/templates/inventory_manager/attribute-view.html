@@ -1,0 +1,43 @@
+{% extends 'inventory_manager/barf.html' %}
+
+{% block content %}
+<div class="container">
+  {% if attr %}
+  <style>.id{font-weight:bold;}td:first-child{width:30%}</style>
+  <h2>{{ attr.name }} Attribute</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td class="id">Attribute:</td>
+          <td>{{ attr.name }}</td>
+        </tr>
+        <tr>
+          <td class="id">Products Tagged with Attribute:</td>
+          <td>{{ attr.productattribute_set.all|length }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  {% else %}
+  <h2>View Attributes</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th><th>Products Tagged with Attribute</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for attr in attrs %}
+        <tr>
+          <td><a href="{% url 'inv-mgr:attribute-view' attr.pk %}">{{ attr.name }}</a></td><td>{{ attr.productattribute_set.all|length }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'inventory_manager/barf.html' %}
+
+{% block content %}
+<div class="container">
+
+  {% if pcc %}
+  <style>.id{font-weight:bold;}td:first-child{width:30%}</style>
+  <h2>PCC #{{ pcc.id }} on {{ pcc.modified|date:"F j, Y g:i a" }}</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td class="id">Product:</td>
+          <td>{{ pcc.product }}</td>
+        </tr>
+        <tr>
+          <td class="id">Old Cost:</td>
+          <td>${{ pcc.old_cost }}</td>
+        </tr>
+        <tr>
+          <td class="id">New Cost:</td>
+          <td>${{ pcc.new_cost }}</td>
+        </tr>
+        <tr>
+          <td class="id">Reason:</td>
+          <td>{{ pcc.reason }}</td>
+        </tr>
+        <tr>
+          <td class="id">Who:</td>
+          <td>{{ pcc.who.first_name }} {{ pcc.who.last_name }}</td>
+        </tr>
+        <tr>
+          <td class="id">When:</td>
+          <td>{{ pcc.modified|date:"F j, Y g:i a" }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  {% else %}
+  <h2>View Product Cost Changes</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th><th>Product</th><th>When</th><th>Old/New</th><th>Why</th><th>Who</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pcc in pccs %}
+        <tr>
+          <td><a href="{% url 'inv-mgr:pcc-view' pcc.id %}">{{ pcc.id }}</a></td><td>{{ pcc.product }}</td><td>{{ pcc.modified|date:"F j, Y g:i a" }}</td><td>${{ pcc.old_cost }} / ${{ pcc.new_cost }}</td><td>{{ pcc.reason }}</td><td>{{ pcc.who.first_name }} {{ pcc.who.last_name }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="container">
+    {% if pccs.has_previous %}
+    <div class="button"><a href="?page={{ pccs.previous_page_number }}">Previous</a></div>
+    {% endif %}
+    <div>Page {{ pccs.number }} of {{ pccs.paginator.num_pages }}</div>
+    {% if pccs.has_next %}
+    <div class="button"><a href="?page={{ pccs.next_page_number }}">Next</a></div>
+    {% endif %}
+  </div>
+
+  {% endif %}
+</div>
+{% endblock %}

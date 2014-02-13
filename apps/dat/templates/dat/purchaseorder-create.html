@@ -1,0 +1,93 @@
+{% extends 'dat/barf.html' %}
+
+{% block content %}
+<div class="container">
+  <form method="post" action="">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      {{ field.label_tag }}{{ field }}{{ field.errors }}
+    </div>
+    {% endfor %}
+    {{ formset.management_form }}
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Product</th><th>Disc Dollar</th><th>Disc Percent</th><th>Qty Ordered</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for form in formset %}
+        <tr>
+          {% for field in form %}
+          <td class="col-lg-3">{{ field }}{{ field.errors }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <input type="submit" value="Save" class="btn btn-primary default" name="save">
+    <a class="btn btn-danger pull-right" href="{% url 'warehouse:shipment-view' %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}
+
+{% block contentjs %}
+<script>
+$(document).ready(function(){
+
+  // load up contacts and products from supplier choice
+  $('select#supplier').change(function(){
+    // contacts
+    $.ajax({
+      url: '/api/dat/contacts/?represents__id=' + $(this).val(),
+      type: 'GET',
+      dataType: 'json',
+      success: function(xhr, status){
+        var options = '<option></option>';
+        $(xhr.objects).each(function(i){
+          options += '<option value="' + xhr.objects[i].id + '">' + xhr.objects[i].name + '</option>';
+        });
+        $('select#contact').html(options);
+      },
+      error: function(xhr, status){
+        $('div#errors').html().append('<span>contacts [' + status + ']: ' + xhr.responseText + '</span><br />');
+      },
+      beforeSend: function(xhr){
+        xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
+      }
+    });
+
+    // products
+    $.ajax({
+      url: '/api/inventory-manager/products/?supplier__id=' + $(this).val(),
+      type: 'GET',
+      dataType: 'json',
+      success: function(xhr, status){
+        var options = '<option></option>';
+        $(xhr.objects).each(function(i){
+          options += '<option value="' + xhr.objects[i].sku + '">' + xhr.objects[i].description + '</option>';
+        });
+        $('select.product').html(options);
+      },
+      error: function(xhr, status){
+        $('div#errors').html().append('<span>contacts [' + status + ']: ' + xhr.responseText + '</span><br />');
+      },
+      beforeSend: function(xhr){
+        xhr.setRequestHeader('Authorization', 'ApiKey vince:51ec739d7e8e7a24381ebd8b8a10e6be79c33e54');
+      }
+    });
+
+    // deselect products
+    $('select.product').val('');
+
+  });
+
+  // supply info on product selection
+  $('.product').change(function(){
+    alert( $(this).attr('id') );
+  });
+
+});
+</script>
+{% endblock %}

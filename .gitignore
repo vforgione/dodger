@@ -1,10 +1,7 @@
 *.py[cod]
 *.sqlite3
 *.log
-migrations
-celerybeat-schedule
-dodger/static/
-local_settings.py
-gdoc_config.py
-*.pid
-*.socket
+*_settings.py
+*_config.py
+.DS_Store
+/apps

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <title>dodger | {% block title %}sku management{% endblock %}</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {% block meta %}{% endblock %}
+
+  {% load static %}
+  <link rel="shortcut icon" href="{% static 'dodger/img/favicon.ico' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/bootstrap-theme.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/base.css' %}" />
+  {% block css %}{% endblock %}
+
+  {% block extrahead %}{% endblock %}
+
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+<body>
+<div class="container">
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">dodger</a>
+        </div>
+
+        <div class="navbar-collapse collapse navbar-left">
+          <ul class="nav navbar-nav">
+            <li class="dropdown" id="warehouse-header">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Warehouse<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Sku Qty Adjustments</li>
+                <li><a href="{% url 'app:sku_qty_adj__view' %}">View Adjustments</a></li>
+                <li><a href="{% url 'app:sku_qty_adj__create' %}">Make an Adjustment</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="navbar-collapse collapse navbar-right">
+          <ul class="nav navbar-nav">
+            {% if user.is_active and user.is_superuser %}
+            <li><a href="/admin">Admin</a></li>
+            {% endif %}
+            {% if user.is_active and user.is_staff %}
+            <li><a href="/accounts/logout/">Logout</a></li>
+            {% else %}
+            <li><a href="/accounts/login/">Login</a></li>
+            {% endif %}
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-pad"></div>
+
+  <div id="content">
+    <div class="container" id="content-main">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+
+  <div id="footer">
+    <div class="container">
+      &copy; 2014 doggyloot inc
+    </div>
+  </div>
+
+  <script src="{% static 'dodger/js/jquery-1.11.0.min.js' %}"></script>
+  <script src="{% static 'dodger/js/bootstrap.min.js' %}"></script>
+  {% block highlightjs %}{% endblock %}
+  {% block contentjs %}{% endblock %}
+  {% block extrajs %}{% endblock %}
+</div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+{% extends 'inventory_manager/barf.html' %}
+
+{% block content %}
+<div class="container">
+
+  {% if pqc %}
+  <style>.id{font-weight:bold;}td:first-child{width:30%}</style>
+  <h2>PQC #{{ pqc.id }} on {{ pqc.modified|date:"F j, Y g:i a" }}</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td class="id">Product:</td>
+          <td>{{ pqc.product }}</td>
+        </tr>
+        <tr>
+          <td class="id">Old Qty:</td>
+          <td>{{ pqc.old_qty }}</td>
+        </tr>
+        <tr>
+          <td class="id">New Qty:</td>
+          <td>{{ pqc.new_qty }}</td>
+        </tr>
+        <tr>
+          <td class="id">Reason:</td>
+          <td>{{ pqc.reason }}</td>
+        </tr>
+        <tr>
+          <td class="id">Who:</td>
+          <td>{{ pqc.who.first_name }} {{ pqc.who.last_name }}</td>
+        </tr>
+        <tr>
+          <td class="id">When:</td>
+          <td>{{ pqc.modified|date:"F j, Y g:i a" }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  {% else %}
+  <h2>View Product Qty Changes</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th><th>Product</th><th>When</th><th>Old/New</th><th>Why</th><th>Who</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pqc in pqcs %}
+        <tr>
+          <td><a href="{% url 'inv-mgr:pqc-view' pqc.id %}">{{ pqc.id }}</a></td><td>{{ pqc.product }}</td><td>{{ pqc.modified|date:"F j, Y g:i a" }}</td><td>{{ pqc.old_qty }} / {{ pqc.new_qty }}</td><td>{{ pqc.reason }}</td><td>{{ pqc.who.first_name }} {{ pqc.who.last_name }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="container">
+    {% if pqcs.has_previous %}
+    <div class="button"><a href="?page={{ pqcs.previous_page_number }}">Previous</a></div>
+    {% endif %}
+    <div>Page {{ pqcs.number }} of {{ pqcs.paginator.num_pages }}</div>
+    {% if pqcs.has_next %}
+    <div class="button"><a href="?page={{ pqcs.next_page_number }}">Next</a></div>
+    {% endif %}
+  </div>
+
+  {% endif %}
+</div>
+{% endblock %}
