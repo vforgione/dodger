@@ -17,6 +17,7 @@
     <tr><th>Detail</th><td>{{ trace.detail|safe }}</td></tr>
   </tbody>
   </table>
+  <a class="btn btn-primary default" href="{% url 'app:sku_qty_adj__view' %}">Back To List</a>
 
 {% elif traces %}
 <h3>View Sku Quantity Adjustments</h3>

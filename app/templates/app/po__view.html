@@ -1,0 +1,77 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+<div class="table-responsive">
+
+{% if po %}
+<h3>Purchase Order #{{ po.id }}</h3>
+<table class="table">
+<tbody>
+  <tr><th>ID</th><td>{{ po.id }}</td></tr>
+  <tr><th>Date Created</th><td>{{ po.created }}</td></tr>
+  <tr><th>Creator</th><td>{{ po.creator.username }}</td></tr>
+  <tr><th>Supplier</th><td>{{ po.supplier.name }}</td></tr>
+  <tr><th>Contact</th><td>{{ po.contact.name }}</td></tr>
+  <tr><th>Comments</th><td>{{ po.comments }}</td></tr>
+  <tr>
+    <td colspan="2">
+      <h4>Line Items</h4>
+      <table class="table table-condensed table-striped">
+      <thead>
+        <tr>
+          <th>SKU</th><th>Qty Ordered</th><th>Disc %</th><th>Disc $</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for li in po.purchaseorderlineitem_set.all %}
+        <tr>
+          <td>{{ li.sku.description }}</td><td>{{ li.qty_ordered }}</td><td>{{ li.disc_percent }}</td><td>{{ li.disc_dollar }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+    </td>
+  </tr>
+</tbody>
+</table>
+<a class="btn btn-primary default" href="{% url 'app:po__view' %}">Back To List</a>
+
+{% elif pos %}
+<h3>View Purchase Orders</h3>
+<table class="table table-striped">
+<thead>
+  <tr>
+    <th>ID</th><th>Date Created</th><th>Creator</th><th>Supplier</th><th>Contact</th><th>Comments</th>
+  </tr>
+</thead>
+<tbody>
+  {% for po in pos %}
+  <tr>
+    <td><a href="{% url 'app:po__view' po.pk %}">{{ po.id }}</a></td>
+    <td>{{ po.created }}</td>
+    <td>{{ po.creator.username }}</td>
+    <td>{{ po.supplier.name }}</td>
+    <td>{{ po.contact.name }}</td>
+    <td>{% if po.comments|length > 20 %}{{ po.comments|slice:":16" }}&nbsp;&hellip;{% else %}{{ po.comments }}{% endif %}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+
+{% if pos.has_previous %}
+<a class="btn btn-primary default" href="?page={{ pos.previous_page_number }}">Previous</a>
+{% endif %}
+
+Page {{ pos.number }} of {{ pos.paginator.num_pages }}
+
+{% if pos.has_next %}
+<a class="btn btn-primary default" href="?page={{ pos.next_page_number }}">Next</a>
+{% endif %}
+
+{% else %}
+<h3>View Purchase Orders</h3>
+<p>No data received.</p>
+
+{% endif %}
+</div>
+{% endblock %}

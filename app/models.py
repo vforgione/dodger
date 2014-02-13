@@ -230,6 +230,11 @@ class PurchaseOrder(models.Model):
     def __str__(self):
         return '%d-%s' % (self.id, self.creator.username)
 
+    def has_been_received(self):
+        """checks if id in list of ids associated with received shipments"""
+        shipments = Shipment.objects.values_list('purchase_order__id')
+        return self.id in shipments[0]
+
 
 class PurchaseOrderLineItem(models.Model):
     """model for line items (skus) in a PO"""

@@ -45,6 +45,18 @@
                 <li class="dropdown-header">Sku Qty Adjustments</li>
                 <li><a href="{% url 'app:sku_qty_adj__view' %}">View Adjustments</a></li>
                 <li><a href="{% url 'app:sku_qty_adj__create' %}">Make an Adjustment</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Shipments</li>
+                <li><a href="{% url 'app:shipment__view' %}">View Shipments</a></li>
+                <li><a href="{% url 'app:shipment__create' %}">Checkin a Shipment</a></li>
+              </ul>
+            </li>
+            <li class="dropdown" id="dat-header">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">DAT<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Purchase Orders</li>
+                <li><a href="{% url 'app:po__view' %}">View Purchase Orders</a></li>
+                <li><a href="{% url 'app:po__create' %}">Create a Purchase Order</a></li>
               </ul>
             </li>
           </ul>
