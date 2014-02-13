@@ -4,12 +4,14 @@
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dodger.settings')
 
+# normally i hate shit like this, but the path hack is necessary
 import sys
-sys.path.insert(0, '/home/deploy/dodger-env/dodger')  # normally i hate shit like this, but the path hack is necessary
+sys.path.insert(0, '/Users/vince/Development/dodger-env/dodger')
 
 from datetime import datetime, timedelta
 import re
 
+from django.db.utils import IntegrityError
 from django.contrib.auth.models import User
 import gspread
 
@@ -32,13 +34,14 @@ def get_fresh_doc(username, password, doc_name, sheet_name):
         doc = [dict(zip(header, row)) for row in rows[1:]]
         doc = filter(
             lambda r:
-                re.match(r'\d{4}\-\d{2}-\d{2} \d{2}:\d{2}:\d{2}', r['modtime'])
-                and NOW - datetime.strptime(r['modtime'], '%Y-%m-%d %H:%M:%S') <= DELTA
+                re.match(r'\d{1,2}/\d{1,2}/\d{4} \d{2}:\d{2}:\d{2}', r['modtime'])
+                and NOW - datetime.strptime(r['modtime'], '%m/%d/%Y %H:%M:%S') <= DELTA
                 and r['SKU'].lower() not in ('n/a', '')
             , doc
         )
     except Exception, e:
-        sys.exit(1)
+        print e
+        # sys.exit(1)
     return doc
 
 
@@ -51,8 +54,8 @@ def get_full_doc(username, password, doc_name, sheet_name):
         rows = sheet.get_all_values()
         header = rows[0]
         doc = [dict(zip(header, row)) for row in rows[1:]]
-        skus = set([r['SKU'] for r in doc])
-        filtered  = []
+        skus = set([r['SKU'] for r in doc if len(r['SKU']) and not r['SKU'].lower().endswith('n/a')])
+        filtered = []
         for sku in skus:
             filtered.append(  # get latest row for the sku
                 max(
@@ -64,6 +67,7 @@ def get_full_doc(username, password, doc_name, sheet_name):
                 )
             )
     except Exception, e:
+        print e
         sys.exit(1)
     return filtered
 
@@ -73,21 +77,44 @@ def rip_doc(doc):
 
     def set_attr(sku, obj, attr, key):
         """super redundant - sets value for sku-attribute"""
+        if obj[key] in ('0' or ''):
+            return
         attr = Attribute.objects.get(name=attr)
         sa = SkuAttribute()
         sa.sku = sku
         sa.attribute = attr
         sa.value = obj[key]
-        sa.save()
+        try:
+            sa.save()
+        except IntegrityError:
+            pass
+
+    def remove_na(obj):
+        for key, value in obj.iteritems():
+            if value.lower().endswith('n/a'):
+                obj[key] = ''
+        return obj
 
     for obj in doc:
+
+        obj = remove_na(obj)
+
         try:  # if sku already exists
-            sku = Sku.objects.get(id=obj['SKU'])
-            sku.location = obj['Location']
-            sku.save()
+            try:
+                id = int(obj['SKU'].split()[0])
+            except:
+                continue
+            sku = Sku.objects.get(id=id)
+            if sku.location != obj['Location']:
+                sku.location = obj['Location']
+                sku.save()
 
             # check to perform qty change
-            if sku.qty_on_hand != obj['Total SKU Quantity']:
+            try:
+                qty = int(obj['Total SKU Quantity'])
+            except:
+                qty = sku.qty_on_hand
+            if sku.qty_on_hand != qty:
                 adj = SkuQuantityAdjustment()
                 adj.sku = sku
                 adj.who = User.objects.get(username='vince@doggyloot.com')
@@ -96,31 +123,44 @@ def rip_doc(doc):
                 adj.save()
 
         except Sku.DoesNotExist:  # make a new one
+            try:
+                id = int(obj['SKU'].split()[0])
+            except:
+                continue
             sku = Sku()
-            sku.id = obj['SKU']
+            sku.id = id
             sku.name = obj['Product']
 
             # get or create supplier
             try:
                 supplier = Supplier.objects.get(name=obj['Supplier'])
             except Supplier.DoesNotExist:
-                supplier = Supplier()
-                supplier.name = obj['Supplier']
-                supplier.terms = '?'
-                supplier.save()
+                if obj['Supplier'] == '':
+                    supplier = Supplier.objects.get(name='(unknown)')
+                else:
+                    supplier = Supplier()
+                    supplier.name = obj['Supplier']
+                    supplier.terms = '?'
+                    supplier.save()
             sku.supplier = supplier
 
             # get or create brand
             try:
                 brand = Brand.objects.get(name=obj['Manufacturer'])
             except Brand.DoesNotExist:
-                brand = Brand()
-                brand.name = obj['Manufacturer']
-                brand.save()
+                if obj['Manufacturer'] == '':
+                    brand = Brand.objects.get(name='(unknown)')
+                else:
+                    brand = Brand()
+                    brand.name = obj['Manufacturer']
+                    brand.save()
             sku.brand = brand
 
             # split and set categories
             cats = re.split(r'/|\- ', obj['Type (Toy/ Treat/ Chew/  More)'])
+            cats = [cat for cat in cats if len(cat)]
+            if not len(cats):
+                cats = ['More', ]
             for cat in cats:
                 try:
                     category = Category.objects.get(name=cat)
@@ -136,7 +176,10 @@ def rip_doc(doc):
             sku.price = 0.00
             sku.cost = 0.00
             sku.case_qty = 0
-            sku.qty_on_hand = obj['Total SKU Quantity']
+            try:
+                sku.qty_on_hand = int(float(obj['Total SKU Quantity'].split()[0]))
+            except:
+                sku.qty_on_hand = 0
 
         # save with gdocs flag - won't trip qty change sanity check
         sku.save(gdocs=True)

@@ -74,6 +74,9 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'app', ['SkuAttribute'])
 
+        # Adding unique constraint on 'SkuAttribute', fields ['sku', 'attribute']
+        db.create_unique(u'app_skuattribute', ['sku_id', 'attribute_id'])
+
         # Adding model 'QuantityAdjustmentReason'
         db.create_table(u'app_quantityadjustmentreason', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -163,7 +166,7 @@ class Migration(SchemaMigration):
         # Adding model 'Shipment'
         db.create_table(u'app_shipment', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('puchase_order', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.PurchaseOrder'])),
+            ('purchase_order', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.PurchaseOrder'])),
             ('received_by', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('received_on', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
@@ -182,6 +185,9 @@ class Migration(SchemaMigration):
     def backwards(self, orm):
         # Removing unique constraint on 'Contact', fields ['name', 'represents']
         db.delete_unique(u'app_contact', ['name', 'represents_id'])
+
+        # Removing unique constraint on 'SkuAttribute', fields ['sku', 'attribute']
+        db.delete_unique(u'app_skuattribute', ['sku_id', 'attribute_id'])
 
         # Deleting model 'Supplier'
         db.delete_table(u'app_supplier')
@@ -309,7 +315,7 @@ class Migration(SchemaMigration):
         u'app.shipment': {
             'Meta': {'object_name': 'Shipment'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'puchase_order': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.PurchaseOrder']"}),
+            'purchase_order': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.PurchaseOrder']"}),
             'received_by': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
             'received_on': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'})
         },
@@ -340,7 +346,7 @@ class Migration(SchemaMigration):
             'supplier': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Supplier']"})
         },
         u'app.skuattribute': {
-            'Meta': {'object_name': 'SkuAttribute'},
+            'Meta': {'unique_together': "((u'sku', u'attribute'),)", 'object_name': 'SkuAttribute'},
             'attribute': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Attribute']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'sku': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Sku']"}),

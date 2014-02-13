@@ -36,7 +36,7 @@
     <td>{{ trace.old }}</td>
     <td>{{ trace.new }}</td>
     <td>{{ trace.reason.name }}</td>
-    <td>{{ trace.detail|slice:":20" }}</td>
+    <td>{% if trace.detail|length > 20 %}{{ trace.detail|slice:":16" }}&nbsp;&hellip;{% else %}{{ trace.detail }}{% endif %}</td>
   </tr>
   {% endfor %}
 </tbody>

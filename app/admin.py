@@ -28,6 +28,7 @@ class SkuAdmin(admin.ModelAdmin):
 
     inlines = (SkuAttributeInline, )
     exclude = ('created', 'modified')
+    search_fields = ('id', )
 
 
 def undo_quantity_change(modeladmin, request, queryset):

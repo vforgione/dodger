@@ -23,6 +23,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = 'Categories'
+
 
 class Brand(models.Model):
     """model for the brand control for sku"""
@@ -113,6 +116,11 @@ class SkuAttribute(models.Model):
     sku = models.ForeignKey(Sku)
     attribute = models.ForeignKey(Attribute)
     value = models.CharField(max_length=255)
+
+    class Meta:
+        unique_together = (
+            ('sku', 'attribute'),
+        )
 
 
 class ChangeReason(models.Model):

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% load admin_static bootstrapped_goodies_tags %}{% load url from future %}
+  <title>{% block title %}{% endblock %}</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  {% block extrastyle %}{% endblock %}
+  <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet"/>
+  <style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+  </style>
+  <link href="{% static "bootstrap/css/bootstrap-theme.min.css" %}" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="{% static "admin/css/overrides.css" %}"/>
+
+  <script type="text/javascript">
+    //<![CDATA[
+    window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";
+    //]]>
+  </script>
+  <script src="{% static "admin/js/jquery-1.9.1.min.js" %}"></script>
+  <script src="{% static "admin/js/jquery-migrate-1.2.1.min.js" %}"></script>
+  <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+
+  {% block extrahead %}{% endblock %}
+
+  {% block blockbots %}
+    <meta name="robots" content="NONE,NOARCHIVE"/>{% endblock %}
+  <script type="text/javascript">
+    //<![CDATA[
+    (function ($) {
+      $(document).ready(function () {
+        $('input[type="submit"]').addClass('btn');
+        $('[title]').tooltip();
+      });
+    }(jQuery));
+    //]]>
+  </script>
+</head>
+{% load i18n %}
+
+<body>
+
+<!-- Container -->
+<div class="container">
+
+    <!-- Header -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            {% block branding %}{% endblock %}
+          </div>
+
+          <div class="navbar-collapse collapse navbar-left">
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">App<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/admin/app/">Main Page</a></li>
+                  <li class="divider"></li>
+                  <li class="dropdown-header">SKUs &amp; Attributes</li>
+                  <li><a href="/admin/app/sku/">Skus</a></li>
+                  <li><a href="/admin/app/attribute/">Attributes</a></li>
+                  <li><a href="/admin/app/skuattribute/">Sku Attributes</a></li>
+                  <li><a href="/admin/app/brand/">Brands</a></li>
+                  <li><a href="/admin/app/category/">Categories</a></li>
+                  <li class="divider"></li>
+                  <li class="dropdown-header">POs &amp; Shipments</li>
+                  <li><a href="/admin/app/purchaseorder/">Purchase Orders</a></li>
+                  <li><a href="/admin/app/shipment/">Shipments</a></li>
+                  <li><a href="/admin/app/purchaseorderlineitem/">PO Line Items</a></li>
+                  <li><a href="/admin/app/shipmentlineitem/">Shipment Line Items</a></li>
+                  <li class="divider"></li>
+                  <li class="dropdown-header">SKU Adjustments</li>
+                  <li><a href="/admin/app/skuquantityadjustment/">Quantity Adjs</a></li>
+                  <li><a href="/admin/app/quantityadjustmentreason/">Qty Adj Reasons</a></li>
+                  <li class="divider"></li>
+                  <li class="dropdown-header">Suppliers &amp; Contacts</li>
+                  <li><a href="/admin/app/supplier/">Suppliers</a></li>
+                  <li><a href="/admin/app/contact/">Contacts</a></li>
+                  <li><a href="/admin/app/contactlabel/">Contact Labels</a></li>
+                  <li><a href="/admin/app/receiver/">Receivers</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auth<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/admin/auth/">Main Page</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/admin/auth/user/">Users</a></li>
+                  <li><a href="/admin/auth/group/">Groups</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tastypie<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/admin/tastypie/">Main Page</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/admin/tastypie/apikey/">API Keys</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <div class="navbar-collapse collapse navbar-right">
+            <ul class="nav navbar-nav">
+              <li><a href="/">Dodger Main Site</a></li>
+              <li><a href="{% url 'admin:logout' %}">{% trans 'Logout' %}</a></li>
+            </ul>
+
+          </div>
+          <!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+  <!-- Content -->
+  <div id="content" class="{% block coltype %}colM{% endblock %}">
+    {% block navbar %}
+      <div class="navbar navbar-default">
+        <div class="navbar-inner">
+          {% block pretitle %}{% endblock %}
+          {% block content_title %}{% if title %}<a class="navbar-brand">
+            {% render_with_template_if_exist title|lower|add:"/admin_app_name.html" title %}</a>
+          {% endif %}{% endblock %}
+          {% block object-tools %}{% endblock %}
+        </div>
+      </div>
+    {% endblock navbar %}
+
+    {% block messages %}
+      {% if messages %}
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="alert alert-info">
+              <ul class="list-unstyled">
+                {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endblock messages %}
+
+    {% block content %}{{ content }}{% endblock %}
+    {% block sidebar %}{% endblock %}
+  </div>
+  <!-- END Content -->
+
+  {% block footer %}
+    <footer id="footer"></footer>{% endblock %}
+</div>
+<!-- END Container -->
+
+</body>
+</html>
