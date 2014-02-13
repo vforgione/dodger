@@ -1,0 +1,58 @@
+[
+{
+  "pk": 1, 
+  "model": "app.attribute", 
+  "fields": {
+    "name": "Color"
+  }
+},
+{
+  "pk": 2, 
+  "model": "app.attribute", 
+  "fields": {
+    "name": "Size"
+  }
+},
+{
+  "pk": 3, 
+  "model": "app.attribute", 
+  "fields": {
+    "name": "Style"
+  }
+},
+{
+  "pk": 4, 
+  "model": "app.attribute", 
+  "fields": {
+    "name": "Flavor"
+  }
+},
+{
+  "pk": 5, 
+  "model": "app.attribute", 
+  "fields": {
+    "name": "Weight"
+  }
+},
+{
+  "pk": 6, 
+  "model": "app.attribute", 
+  "fields": {
+    "name": "Is Bulk"
+  }
+},
+{
+  "pk": 7, 
+  "model": "app.attribute", 
+  "fields": {
+    "name": "Expiration Date"
+  }
+},
+{
+  "pk": 8, 
+  "model": "app.attribute", 
+  "fields": {
+    "name": "Country of Origin"
+  }
+}
+]
