@@ -43,31 +43,32 @@ $(document).ready(function(){
         complete: function(){ $('select.product').html(options); }
       });
 
-//      // get order products info for info pane
-//      $.ajax({
-//        url: '/api/sku-service/purchase-order-line-items/?purchase_order__id=' + $(this).val(),
-//        type: 'GET',
-//        dataType: 'json',
-//        success: function(xhr, status){
-//          var products = '<p>&nbsp;</p><h3>Order Details</h3><table class="table table-striped"><thead><tr><th>Product</th><th>Qty Ordered</th>';
-//          $(xhr.objects).each(function(i){
-//            $.ajax({
-//              url: xhr.objects[i].product,
-//              type: 'GET',
-//              dataType: 'json',
-//              async: false,
-//              success: function(xhr, status){ products += '<tr><td>' + xhr.description + '</td>'; },
-//              error: function(xhr, status){ alert(status + ' ' + xhr.responseText); },
-//              beforeSend: function(xhr){ xhr.setRequestHeader('Authorization', 'ApiKey api-readonly:697ccf3beb1cc60c1eddaa8bc6ef9fc968661034'); }
-//            });
-//            products += '<td>' + xhr.objects[i].qty_ordered + '</td></tr>';
-//          });
-//          products += '</tbody></table>';
-//          $('#order-info').html(products);
-//        },
-//        error: function(xhr, status){ alert(status + ' ' + xhr.responseText); },
-//        beforeSend: function(xhr){ xhr.setRequestHeader('Authorization', 'ApiKey api-readonly:697ccf3beb1cc60c1eddaa8bc6ef9fc968661034'); }
-//      });
+
+      // load up info pane
+      $.ajax({
+        url: "/api/sku-service/purchase-order-line-items/?purchase_order__id=" + $(this).val(),
+        type: "GET",
+        dataType: "json",
+        success: function(xhr){
+          var info = '<table class="table table-condensed"><thead><tr><th>SKU</th><th>Qty Ordered</th></tr></thead><tbody>';
+          $(xhr.objects).each(function(i){
+            $.ajax({
+              url: xhr.objects[i].sku,
+              type: "GET",
+              dataType: "json",
+              async: false,
+              success: function(xhr){ info += "<tr><td>" + xhr.id + "</td>"; },
+              error: function(xhr){ alert(xhr.responseText); },
+              beforeSend: function(xhr){ xhr.setRequestHeader("Authorization", "ApiKey api-readonly:697ccf3beb1cc60c1eddaa8bc6ef9fc968661034"); }
+            });
+            info += "<td>" + xhr.objects[i].qty_ordered + "</td></tr>";
+          });
+          info += '</tbody></table>';
+          $("#po-info").html(info);
+        },
+        error: function(xhr){ alert(xhr.responseText); },
+        beforeSend: function(xhr){ xhr.setRequestHeader("Authorization", "ApiKey api-readonly:697ccf3beb1cc60c1eddaa8bc6ef9fc968661034"); }
+      });
 
   });
 
