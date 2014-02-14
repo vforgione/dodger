@@ -21,14 +21,18 @@
     <table class="table table-condensed">
       <thead>
         <tr>
-          <th>Product</th><th>Qty Received</th>
+          <th>SKU</th><th>Qty Received</th>
         </tr>
       </thead>
       <tbody>
         {% for form in formset %}
         <tr>
           {% for field in form %}
+          {% if forloop.counter < 3 %}
           <td class="col-lg-6">{{ field }}{{ field.errors }}</td>
+          {% else %}
+          <td style="display:none">{{ field }}{{ field.errors }}</td>
+          {% endif %}
           {% endfor %}
         </tr>
         {% endfor %}

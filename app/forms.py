@@ -67,7 +67,7 @@ class ShipmentLineItemForm(forms.ModelForm):
         model = ShipmentLineItem
         fields = ('sku', 'qty_received')
         widgets = {
-            'sku': forms.Select(attrs={'class': 'form-control product'}),
+            'sku': forms.Select(attrs={'class': 'form-control sku'}),
             'qty_received': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
