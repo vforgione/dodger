@@ -71,7 +71,7 @@
 
         <div class="navbar-collapse collapse navbar-right">
           <ul class="nav navbar-nav">
-            {% if user.is_active and user.is_superuser %}
+            {% if user.is_active and user.is_staff %}
             <li><a href="/admin">Admin</a></li>
             {% endif %}
             {% if user.is_active and user.is_staff %}
@@ -96,7 +96,7 @@
 
   <div id="footer">
     <div class="container">
-      &copy; 2014 doggyloot inc
+      &copy; 2014 doggyloot, inc.
     </div>
   </div>
 
