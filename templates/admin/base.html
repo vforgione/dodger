@@ -94,6 +94,7 @@
                   <li><a href="/admin/app/receiver/">Receivers</a></li>
                 </ul>
               </li>
+              {% if user.is_superuser %}
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auth<b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -111,6 +112,7 @@
                   <li><a href="/admin/tastypie/apikey/">API Keys</a></li>
                 </ul>
               </li>
+              {% endif %}
             </ul>
           </div>
 

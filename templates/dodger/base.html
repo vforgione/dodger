@@ -74,9 +74,10 @@
             {% if user.is_active and user.is_staff %}
             <li><a href="/admin">Admin</a></li>
             {% endif %}
-            {% if user.is_active and user.is_staff %}
+
+            {% if user.is_active and user.is_authenticated %}
             <li><a href="/accounts/logout/">Logout</a></li>
-            {% else %}
+            {% elif not user.is_authenticated %}
             <li><a href="/accounts/login/">Login</a></li>
             {% endif %}
           </ul>
