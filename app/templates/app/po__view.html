@@ -28,7 +28,7 @@
       <tbody>
         {% for li in po.purchaseorderlineitem_set.all %}
         <tr>
-          <td>{{ li.sku.description }}</td><td>{{ li.qty_ordered }}</td><td>{{ li.disc_percent }}</td><td>{{ li.disc_dollar }}</td>
+          <td><a href="{% url 'app:sku__view' li.sku.pk %}">{{ li.sku.description }}</a></td><td>{{ li.qty_ordered }}</td><td>{{ li.disc_percent }}</td><td>{{ li.disc_dollar }}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -64,15 +64,17 @@
 </tbody>
 </table>
 
-{% if pos.has_previous %}
-<a class="btn btn-primary default" href="?page={{ pos.previous_page_number }}">Previous</a>
-{% endif %}
+<div class="container">
+  {% if pos.has_previous %}
+  <a class="btn btn-primary default" href="?page={{ pos.previous_page_number }}">Previous</a>
+  {% endif %}
 
-Page {{ pos.number }} of {{ pos.paginator.num_pages }}
+  Page {{ pos.number }} of {{ pos.paginator.num_pages }}
 
-{% if pos.has_next %}
-<a class="btn btn-primary default" href="?page={{ pos.next_page_number }}">Next</a>
-{% endif %}
+  {% if pos.has_next %}
+  <a class="btn btn-primary default" href="?page={{ pos.next_page_number }}">Next</a>
+  {% endif %}
+</div>
 
 {% else %}
 <h3>View Purchase Orders</h3>

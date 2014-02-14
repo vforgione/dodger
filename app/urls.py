@@ -15,4 +15,7 @@ urlpatterns = patterns(
     # shipments
     url(r'^shipment(?:/(?P<pk>\d+))?/$', 'shipment__view', name='shipment__view'),
     url(r'^shipment/create/$', 'shipment__create', name='shipment__create'),
+
+    # skus
+    url(r'^sku(?:/(?P<pk>\d+))?/$', 'sku__view', name='sku__view'),
 )

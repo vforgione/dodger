@@ -9,7 +9,7 @@
   <tbody>
     <tr><th>ID</th><td>{{ trace.id }}</td></tr>
     <tr><th>When</th><td>{{ trace.when }}</td></tr>
-    <tr><th>SKU</th><td>{{ trace.sku.description }}</td></tr>
+    <tr><th>SKU</th><td><a href="{% url 'app:sku__view' trace.sku.pk %}">{{ trace.sku.description }}</a></td></tr>
     <tr><th>Who</th><td>{{ trace.who.username }}</td></tr>
     <tr><th>Old</th><td>{{ trace.old }}</td></tr>
     <tr><th>New</th><td>{{ trace.new }}</td></tr>
@@ -32,7 +32,7 @@
   <tr>
     <td><a href="{% url 'app:sku_qty_adj__view' trace.pk %}">{{ trace.id }}</a></td>
     <td>{{ trace.when }}</td>
-    <td>{{ trace.sku.description }}</td>
+    <td><a href="{% url 'app:sku__view' trace.sku.pk %}">{{ trace.sku.description }}</a></td>
     <td>{{ trace.who.username }}</td>
     <td>{{ trace.old }}</td>
     <td>{{ trace.new }}</td>
@@ -43,15 +43,17 @@
 </tbody>
 </table>
 
-{% if traces.has_previous %}
-<a class="btn btn-primary default" href="?page={{ traces.previous_page_number }}">Previous</a>
-{% endif %}
+<div class="container">
+  {% if traces.has_previous %}
+  <a class="btn btn-primary default" href="?page={{ traces.previous_page_number }}">Previous</a>
+  {% endif %}
 
-Page {{ traces.number }} of {{ traces.paginator.num_pages }}
+  Page {{ traces.number }} of {{ traces.paginator.num_pages }}
 
-{% if traces.has_next %}
-<a class="btn btn-primary default" href="?page={{ traces.next_page_number }}">Next</a>
-{% endif %}
+  {% if traces.has_next %}
+  <a class="btn btn-primary default" href="?page={{ traces.next_page_number }}">Next</a>
+  {% endif %}
+</div>
 
 {% else %}
 <p>No data received.</p>

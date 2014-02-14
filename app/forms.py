@@ -65,14 +65,64 @@ class ShipmentLineItemForm(forms.ModelForm):
 
     class Meta:
         model = ShipmentLineItem
+        fields = ('sku', 'qty_received')
         widgets = {
             'sku': forms.Select(attrs={'class': 'form-control product'}),
             'qty_received': forms.TextInput(attrs={'class': 'form-control'}),
         }
-        fields = ('sku', 'qty_received')
 
 
 ShipmentLineItemFormset = forms.models.inlineformset_factory(
     Shipment, ShipmentLineItem,
     form=ShipmentLineItemForm, extra=5, can_delete=False
+)
+
+
+class SkuForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ProductForm, self).__init__(*args, **kwargs)
+        # dynamically restrict fields based on if create or update
+        instance = getattr(self, 'instance', None)
+        if instance and instance.sku:
+            self.fields['cost'].widget.attrs['readonly'] = True
+            self.fields['price'].widget.attrs['readonly'] = True
+            self.fields['qty_on_hand'].widget.attrs['readonly'] = True
+
+    class Meta:
+        model = Sku
+        fields = (
+            'name', 'categories', 'supplier', 'brand', 'owner', 'reorder_threshold',
+            'notify_at_threshold', 'price', 'cost', 'mfr_sku', 'case_qty',
+            'location', 'qty_on_hand'
+        )
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'categories': forms.CheckboxSelectMultiple(),
+            'supplier': forms.Select(attrs={'class': 'form-control'}),
+            'brand': forms.Select(attrs={'class': 'form-control'}),
+            'owner': forms.Select(attrs={'class': 'form-control'}),
+            'reorder_threshold': forms.TextInput(attrs={'class': 'form-control'}),
+            'price': forms.TextInput(attrs={'class': 'form-control'}),
+            'cost': forms.TextInput(attrs={'class': 'form-control'}),
+            'mfr_sku': forms.TextInput(attrs={'class': 'form-control'}),
+            'case_qty': forms.TextInput(attrs={'class': 'form-control'}),
+            'location': forms.TextInput(attrs={'class': 'form-control'}),
+            'qty_on_hand': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class SkuAttributeForm(forms.ModelForm):
+
+    class Meta:
+        model = SkuAttribute
+        fields = ('attribute', 'value')
+        widgets = {
+            'attribute': forms.Select(attrs={'class': 'form-control'}),
+            'value': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+SkuAttributeFormset = forms.models.inlineformset_factory(
+    Sku, SkuAttribute, form=SkuAttributeForm, extra=8,can_delete=False
 )
