@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.template.defaultfilters import slugify
 
 from .controls import STATES
 
@@ -228,12 +229,17 @@ class PurchaseOrder(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return '%d-%s' % (self.id, self.creator.username)
+        return self.friendly_name
 
-    def has_been_received(self):
+    def _has_been_received(self):
         """checks if id in list of ids associated with received shipments"""
         shipments = Shipment.objects.values_list('purchase_order__id')
         return self.id in shipments[0]
+    has_been_received = property(_has_been_received)
+
+    def _friendly_name(self):
+        return slugify('%d %s' % (self.id, self.creator.username.strip('@doggyloot.com')))
+    friendly_name = property(_friendly_name)
 
 
 class PurchaseOrderLineItem(models.Model):
@@ -254,7 +260,11 @@ class Shipment(models.Model):
     received_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return '%d-%s' % (self.id, self.received_by.username)
+        return self.friendly_name
+
+    def _friendly_name(self):
+        return slugify('%d %s' % (self.id, self.received_by.username.strip('@doggyloot.com')))
+    friendly_name = property(_friendly_name)
 
 
 class ShipmentLineItem(models.Model):

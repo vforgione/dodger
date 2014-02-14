@@ -4,28 +4,32 @@
 <div class="table-responsive">
 
   {% if shipment %}
-  <h2>Shipment {{ shipment.slug }}</h2>
+  <h2>Shipment {{ shipment.friendly_name }}</h2>
     <table class="table table-striped detail-table">
       <tbody>
         <tr>
-          <td>ID</td><td>{{ shipment.id }}</td>
+          <th>ID</th><td>{{ shipment.id }}</td>
         </tr>
         <tr>
-          <td>PO ID</td><td><a href="{% url 'app:po__view' shipment.purchase_order.pk %}">{{ shipment.purchase_order.id }}</a></td>
+          <th>Friendly Name</th><td>{{ shipment.friendly_name }}</td>
         </tr>
         <tr>
-          <td>Received By</td><td>{{ shipment.received_by.username }}</td>
+          <th>PO Friendly Name</th><td><a href="{% url 'app:po__view' shipment.purchase_order.pk %}">{{ shipment.purchase_order.friendly_name }}</a></td>
         </tr>
         <tr>
-          <td>Received On</td><td>{{ shipment.received_on }}</td>
+          <th>Received By</th><td>{{ shipment.received_by.username }}</td>
+        </tr>
+        <tr>
+          <th>Received On</th><td>{{ shipment.received_on }}</td>
         </tr>
         <tr>
           <td colspan="2">
-            <h4>Products</h4>
+            <h4>Line Items</h4>
+            <div class="table-responsive">
             <table class="table table-condensed">
               <thead>
                 <tr>
-                  <th>Product</th><th>Qty Received</th>
+                  <th>SKU</th><th>Qty Received</th>
                 </tr>
               </thead>
               <tbody>
@@ -37,6 +41,7 @@
                 {% endfor %}
               </tbody>
             </table>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -48,14 +53,15 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>ID</th><th>PO ID</th><th>Received On</th><th>Received By</th>
+          <th>ID</th><th>Friendly Name</th><th>PO Friendly Name</th><th>Received On</th><th>Received By</th>
         </tr>
       </thead>
       <tbody>
         {% for ship in shipments %}
         <tr>
           <td><a href="{% url 'app:shipment__view' ship.pk %}">{{ ship.purchase_order.id }}</a></td>
-          <td><a href="{% url 'app:po__view' ship.purchase_order.pk %}">{{ ship.purchase_order.id }}</a></td>
+          <td><a href="{% url 'app:shipment__view' ship.pk %}">{{ ship.friendly_name }}</a></td>
+          <td><a href="{% url 'app:po__view' ship.purchase_order.pk %}">{{ ship.purchase_order.friendly_name }}</a></td>
           <td>{{ ship.received_on }}</td>
           <td>{{ ship.received_by }}</td>
         </tr>

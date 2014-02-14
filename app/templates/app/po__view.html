@@ -8,6 +8,7 @@
 <table class="table">
 <tbody>
   <tr><th>ID</th><td>{{ po.id }}</td></tr>
+  <tr><th>Friendly Name</th><td>{{ po.friendly_name }}</td></tr>
   <tr><th>Date Created</th><td>{{ po.created }}</td></tr>
   <tr><th>Creator</th><td>{{ po.creator.username }}</td></tr>
   <tr><th>Supplier</th><td>{{ po.supplier.name }}</td></tr>
@@ -16,6 +17,7 @@
   <tr>
     <td colspan="2">
       <h4>Line Items</h4>
+      <div class="table-responsive">
       <table class="table table-condensed table-striped">
       <thead>
         <tr>
@@ -30,6 +32,7 @@
         {% endfor %}
       </tbody>
       </table>
+      </div>
     </td>
   </tr>
 </tbody>
@@ -41,13 +44,14 @@
 <table class="table table-striped">
 <thead>
   <tr>
-    <th>ID</th><th>Date Created</th><th>Creator</th><th>Supplier</th><th>Contact</th><th>Comments</th>
+    <th>ID</th><th>Friendly Name</th><th>Date Created</th><th>Creator</th><th>Supplier</th><th>Contact</th><th>Comments</th>
   </tr>
 </thead>
 <tbody>
   {% for po in pos %}
   <tr>
     <td><a href="{% url 'app:po__view' po.pk %}">{{ po.id }}</a></td>
+    <td><a href="{% url 'app:po__view' po.pk %}">{{ po.friendly_name }}</a></td>
     <td>{{ po.created }}</td>
     <td>{{ po.creator.username }}</td>
     <td>{{ po.supplier.name }}</td>
