@@ -233,8 +233,11 @@ class PurchaseOrder(models.Model):
 
     def _has_been_received(self):
         """checks if id in list of ids associated with received shipments"""
-        shipments = Shipment.objects.values_list('purchase_order__id')
-        return self.id in shipments[0]
+        try:
+            Shipment.objects.get(purchase_order__id=self.id)
+            return True
+        except Shipment.DoesNotExist:
+            return False
     has_been_received = property(_has_been_received)
 
     def _friendly_name(self):
@@ -279,9 +282,9 @@ class ShipmentLineItem(models.Model):
         trace.sku = self.sku
         trace.new = trace.sku.qty_on_hand + self.qty_received
         trace.reason = QuantityAdjustmentReason.objects.get(name='Received Shipment')
-        trace.detail = 'received %d units on %s - po id #%d' % (
+        trace.detail = 'received %d units on %s - <a href="/purchase-order/%d/">PO %s</a>' % (
             self.qty_received, self.shipment.received_on.strftime('%Y-%m-%d %H:%M:%S'),
-            self.shipment.purchase_order.id
+            self.shipment.purchase_order.pk, self.shipment.purchase_order.friendly_name
         )
         trace.who = self.shipment.received_by
         trace.save()

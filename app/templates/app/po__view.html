@@ -10,10 +10,11 @@
   <tr><th>ID</th><td>{{ po.id }}</td></tr>
   <tr><th>Friendly Name</th><td>{{ po.friendly_name }}</td></tr>
   <tr><th>Date Created</th><td>{{ po.created }}</td></tr>
+  <tr><th>Received?</th><td>{% if po.has_been_received %}<a href="{% url 'app:shipment__view' po.shipment_set.all.0.pk %}">{{ po.shipment_set.all.0.friendly_name }}</a>{% else %}Not Yet{% endif %}</td></tr>
   <tr><th>Creator</th><td>{{ po.creator.username }}</td></tr>
   <tr><th>Supplier</th><td>{{ po.supplier.name }}</td></tr>
   <tr><th>Contact</th><td>{{ po.contact.name }}</td></tr>
-  <tr><th>Comments</th><td>{{ po.comments }}</td></tr>
+  <tr><th>Comments</th><td>{{ po.comments|safe }}</td></tr>
   <tr>
     <td colspan="2">
       <h4>Line Items</h4>
@@ -44,15 +45,16 @@
 <table class="table table-striped">
 <thead>
   <tr>
-    <th>ID</th><th>Friendly Name</th><th>Date Created</th><th>Creator</th><th>Supplier</th><th>Contact</th><th>Comments</th>
+    <th>ID</th><th>Friendly Name</th><th>Date Created</th><th>Received</th><th>Creator</th><th>Supplier</th><th>Contact</th><th>Comments</th>
   </tr>
 </thead>
 <tbody>
   {% for po in pos %}
   <tr>
-    <td><a href="{% url 'app:po__view' po.pk %}">{{ po.id }}</a></td>
+    <td>{{ po.id }}</td>
     <td><a href="{% url 'app:po__view' po.pk %}">{{ po.friendly_name }}</a></td>
     <td>{{ po.created }}</td>
+    <td>{% if po.has_been_received %}<a href="{% url 'app:shipment__view' po.shipment_set.all.0.pk %}">{{ po.shipment_set.all.0.friendly_name }}</a>{% else %}Not Yet{% endif %}</td>
     <td>{{ po.creator.username }}</td>
     <td>{{ po.supplier.name }}</td>
     <td>{{ po.contact.name }}</td>

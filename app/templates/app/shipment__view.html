@@ -59,7 +59,7 @@
       <tbody>
         {% for ship in shipments %}
         <tr>
-          <td><a href="{% url 'app:shipment__view' ship.pk %}">{{ ship.purchase_order.id }}</a></td>
+          <td>{{ ship.purchase_order.id }}</td>
           <td><a href="{% url 'app:shipment__view' ship.pk %}">{{ ship.friendly_name }}</a></td>
           <td><a href="{% url 'app:po__view' ship.purchase_order.pk %}">{{ ship.purchase_order.friendly_name }}</a></td>
           <td>{{ ship.received_on }}</td>
