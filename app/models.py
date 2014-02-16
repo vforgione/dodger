@@ -225,7 +225,7 @@ class PurchaseOrder(models.Model):
     contact = models.ForeignKey(Contact)
     receiver = models.ForeignKey(Receiver)
     creator = models.ForeignKey(User)
-    comments = models.TextField()
+    comments = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
