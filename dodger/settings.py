@@ -110,3 +110,9 @@ DATABASES = {
         'NAME': os.path.join(PROJ_DIR, 'db.sqlite3'),
     }
 }
+
+
+try:
+    from production_settings import *
+except ImportError:
+    pass
