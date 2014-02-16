@@ -44,9 +44,14 @@ undo_quantity_change.short_description = 'Undo Quantity Change'
 
 
 class QuantityAdjustmentReasonAdmin(admin.ModelAdmin):
-    """admin for creating a quantity change"""
+    """admin for creating a quantity change reasons"""
 
     exclude = ('old', 'when')
+
+
+class SkuQuantityAdjustmentAdmin(admin.ModelAdmin):
+    """admin for quantity changes"""
+
     actions = [undo_quantity_change, ]
 
 
@@ -76,7 +81,7 @@ admin.site.register(SkuAttribute)
 
 admin.site.register(QuantityAdjustmentReason, QuantityAdjustmentReasonAdmin)
 
-admin.site.register(SkuQuantityAdjustment)
+admin.site.register(SkuQuantityAdjustment, SkuQuantityAdjustmentAdmin)
 
 admin.site.register(ContactLabel)
 

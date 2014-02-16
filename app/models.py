@@ -162,6 +162,11 @@ class SkuQuantityAdjustment(models.Model):
         self.sku.qty_on_hand = self.new
         self.sku.save(qty_change=True)
 
+    def __str__(self):
+        return 'SKU %d : from %d to %d on %s by %s' % (
+            self.sku.id, self.old, self.new, self.when.strftime('%x'), self.who.username
+        )
+
 
 class ContactLabel(models.Model):
     """model for label control for contacts"""
