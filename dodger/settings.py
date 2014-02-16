@@ -1,7 +1,5 @@
 import os
 
-import djcelery
-
 
 # helpers
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -76,14 +74,6 @@ MIDDLEWARE_CLASSES = (
 SECRET_KEY = 'wzgv3s2)z2(ah2%t906z8%+dto6d%z&g+gtu)y1wc*52cv=1fv'
 
 
-# celery config
-djcelery.setup_loader()
-
-BROKER_URL = 'django://'
-
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
-
-
 # app config
 ROOT_URLCONF = 'dodger.urls'
 
@@ -120,3 +110,9 @@ DATABASES = {
         'NAME': os.path.join(PROJ_DIR, 'db.sqlite3'),
     }
 }
+
+
+try:
+    from production_settings import *
+except ImportError:
+    pass
