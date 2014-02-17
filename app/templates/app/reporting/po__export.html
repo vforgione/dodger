@@ -22,6 +22,8 @@ $(document).ready(function(){
 
   // form submit listener
   $('form').submit(function(){
+    $('#errors').html('');
+
     var start = $('#start').val();
     var end = $('#end').val();
 

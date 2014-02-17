@@ -22,6 +22,7 @@ def po__export(request):
     )
 
 
+@login_required
 def po__csv(request, start, end):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="purchase_orders__%s__%s.csv"' % (start, end)
