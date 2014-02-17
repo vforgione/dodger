@@ -18,4 +18,6 @@ urlpatterns = patterns(
 
     # skus
     url(r'^sku(?:/(?P<pk>\d+))?/$', 'skus.sku__view', name='sku__view'),
+    url(r'^sku/create/$', 'skus.sku__create', name='sku__create'),
+    url(r'^sku/update(?:/(?P<pk>\d+))?/$', 'skus.sku__update', name='sku__update'),
 )

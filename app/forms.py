@@ -81,12 +81,12 @@ ShipmentLineItemFormset = forms.models.inlineformset_factory(
 class SkuForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        super(ProductForm, self).__init__(*args, **kwargs)
+        super(SkuForm, self).__init__(*args, **kwargs)
         # dynamically restrict fields based on if create or update
         instance = getattr(self, 'instance', None)
-        if instance and instance.sku:
-            self.fields['cost'].widget.attrs['readonly'] = True
-            self.fields['price'].widget.attrs['readonly'] = True
+        if instance and instance.id:
+            # self.fields['cost'].widget.attrs['readonly'] = True
+            # self.fields['price'].widget.attrs['readonly'] = True
             self.fields['qty_on_hand'].widget.attrs['readonly'] = True
 
     class Meta:
@@ -97,8 +97,9 @@ class SkuForm(forms.ModelForm):
             'location', 'qty_on_hand'
         )
         widgets = {
+            'id': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'categories': forms.CheckboxSelectMultiple(),
+            'categories': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'supplier': forms.Select(attrs={'class': 'form-control'}),
             'brand': forms.Select(attrs={'class': 'form-control'}),
             'owner': forms.Select(attrs={'class': 'form-control'}),
@@ -124,5 +125,5 @@ class SkuAttributeForm(forms.ModelForm):
 
 
 SkuAttributeFormset = forms.models.inlineformset_factory(
-    Sku, SkuAttribute, form=SkuAttributeForm, extra=8,can_delete=False
+    Sku, SkuAttribute, form=SkuAttributeForm, extra=8, can_delete=False
 )

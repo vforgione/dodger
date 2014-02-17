@@ -44,6 +44,7 @@
 </tbody>
 </table>
 <a class="btn btn-primary default" href="{% url 'app:sku__view' %}">Back To List</a>
+<a class="btn btn-danger pull-right" href="{% url 'app:sku__update' sku.pk %}">Modify This SKU</a>
 
 {% elif skus %}
 <h3>View SKUs</h3>
