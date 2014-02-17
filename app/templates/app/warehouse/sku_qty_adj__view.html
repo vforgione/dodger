@@ -1,25 +1,25 @@
-{% extends 'dodger/base.html' %}
+{% extends 'app/warehouse/base.html' %}
 
 {% block content %}
 <div class="table-responsive">
 
-{% if trace %}
-<h3>Sku Quantity Adjustment #{{ trace.id }}</h3>
+{% if adj %}
+<h3>Sku Quantity Adjustment #{{ adj.id }}</h3>
   <table class="table">
   <tbody>
-    <tr><th>ID</th><td>{{ trace.id }}</td></tr>
-    <tr><th>When</th><td>{{ trace.when }}</td></tr>
-    <tr><th>SKU</th><td><a href="{% url 'app:sku__view' trace.sku.pk %}">{{ trace.sku.description }}</a></td></tr>
-    <tr><th>Who</th><td>{{ trace.who.username }}</td></tr>
-    <tr><th>Old</th><td>{{ trace.old }}</td></tr>
-    <tr><th>New</th><td>{{ trace.new }}</td></tr>
-    <tr><th>Reason</th><td>{{ trace.reason.name }}</td></tr>
-    <tr><th>Detail</th><td>{{ trace.detail|safe }}</td></tr>
+    <tr><th>ID</th><td>{{ adj.id }}</td></tr>
+    <tr><th>When</th><td>{{ adj.when }}</td></tr>
+    <tr><th>SKU</th><td><a href="{% url 'app:sku__view' adj.sku.pk %}">{{ adj.sku.description }}</a></td></tr>
+    <tr><th>Who</th><td>{{ adj.who.username }}</td></tr>
+    <tr><th>Old</th><td>{{ adj.old }}</td></tr>
+    <tr><th>New</th><td>{{ adj.new }}</td></tr>
+    <tr><th>Reason</th><td>{{ adj.reason.name }}</td></tr>
+    <tr><th>Detail</th><td>{{ adj.detail|safe }}</td></tr>
   </tbody>
   </table>
   <a class="btn btn-primary default" href="{% url 'app:sku_qty_adj__view' %}">Back To List</a>
 
-{% elif traces %}
+{% elif adjs %}
 <h3>View Sku Quantity Adjustments</h3>
 <table class="table table-striped">
 <thead>
@@ -28,30 +28,30 @@
   </tr>
 </thead>
 <tbody>
-  {% for trace in traces %}
+  {% for adj in adjs %}
   <tr>
-    <td><a href="{% url 'app:sku_qty_adj__view' trace.pk %}">{{ trace.id }}</a></td>
-    <td>{{ trace.when }}</td>
-    <td><a href="{% url 'app:sku__view' trace.sku.pk %}">{{ trace.sku.description }}</a></td>
-    <td>{{ trace.who.username }}</td>
-    <td>{{ trace.old }}</td>
-    <td>{{ trace.new }}</td>
-    <td>{{ trace.reason.name }}</td>
-    <td>{% if trace.detail|length > 20 %}{{ trace.detail|slice:":16" }}&nbsp;&hellip;{% else %}{{ trace.detail }}{% endif %}</td>
+    <td><a href="{% url 'app:sku_qty_adj__view' adj.pk %}">{{ adj.id }}</a></td>
+    <td>{{ adj.when }}</td>
+    <td><a href="{% url 'app:sku__view' adj.sku.pk %}">{{ adj.sku.description }}</a></td>
+    <td>{{ adj.who.username }}</td>
+    <td>{{ adj.old }}</td>
+    <td>{{ adj.new }}</td>
+    <td>{{ adj.reason.name }}</td>
+    <td>{% if adj.detail|length > 20 %}{{ adj.detail|slice:":16" }}&nbsp;&hellip;{% else %}{{ adj.detail }}{% endif %}</td>
   </tr>
   {% endfor %}
 </tbody>
 </table>
 
 <div class="container">
-  {% if traces.has_previous %}
-  <a class="btn btn-primary default" href="?page={{ traces.previous_page_number }}">Previous</a>
+  {% if adjs.has_previous %}
+  <a class="btn btn-primary default" href="?page={{ adjs.previous_page_number }}">Previous</a>
   {% endif %}
 
-  Page {{ traces.number }} of {{ traces.paginator.num_pages }}
+  Page {{ adjs.number }} of {{ adjs.paginator.num_pages }}
 
-  {% if traces.has_next %}
-  <a class="btn btn-primary default" href="?page={{ traces.next_page_number }}">Next</a>
+  {% if adjs.has_next %}
+  <a class="btn btn-primary default" href="?page={{ adjs.next_page_number }}">Next</a>
   {% endif %}
 </div>
 
