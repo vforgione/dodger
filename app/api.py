@@ -119,7 +119,6 @@ class SkuResource(ModelResource):
             'owner': ALL_WITH_RELATIONS,
             'reorder_threshold': ALL,
             'notify_at_threshold': ALL,
-            'price': ALL,
             'cost': ALL,
             'mfr_sku': ALL,
             'case_qty': ALL,

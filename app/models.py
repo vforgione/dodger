@@ -60,7 +60,6 @@ class Sku(models.Model):
     owner = models.ForeignKey(User)
     reorder_threshold = models.PositiveIntegerField(default=0)
     notify_at_threshold = models.BooleanField(default=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
     cost = models.DecimalField(max_digits=10, decimal_places=2)
     mfr_sku = models.CharField(max_length=255, blank=True, null=True)
     case_qty = models.PositiveIntegerField()

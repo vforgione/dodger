@@ -93,8 +93,7 @@ class SkuForm(forms.ModelForm):
         model = Sku
         fields = (
             'name', 'categories', 'supplier', 'brand', 'owner', 'reorder_threshold',
-            'notify_at_threshold', 'price', 'cost', 'mfr_sku', 'case_qty',
-            'location', 'qty_on_hand'
+            'notify_at_threshold', 'cost', 'mfr_sku', 'case_qty', 'location', 'qty_on_hand'
         )
         widgets = {
             'id': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),
@@ -104,7 +103,6 @@ class SkuForm(forms.ModelForm):
             'brand': forms.Select(attrs={'class': 'form-control'}),
             'owner': forms.Select(attrs={'class': 'form-control'}),
             'reorder_threshold': forms.TextInput(attrs={'class': 'form-control'}),
-            'price': forms.TextInput(attrs={'class': 'form-control'}),
             'cost': forms.TextInput(attrs={'class': 'form-control'}),
             'mfr_sku': forms.TextInput(attrs={'class': 'form-control'}),
             'case_qty': forms.TextInput(attrs={'class': 'form-control'}),

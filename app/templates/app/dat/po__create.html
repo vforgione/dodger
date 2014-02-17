@@ -20,7 +20,11 @@
         {% for form in formset %}
         <tr>
           {% for field in form %}
+          {% if forloop.counter < 5 %}
           <td class="col-lg-3">{{ field }}{{ field.errors }}</td>
+          {% else %}
+          <td style="display:none">{{ field }}</td>
+          {% endif %}
           {% endfor %}
         </tr>
         {% endfor %}

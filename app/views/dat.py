@@ -44,6 +44,7 @@ def po__view(request, pk=None):
 def po__create(request):
     form = PurchaseOrderForm()
     formset = PurchaseOrderLineItemFormset(instance=PurchaseOrder())
+    formset.forms[0].empty_permitted = False
 
     if request.method == 'GET':
         form.fields['creator'].initial = request.user
@@ -56,6 +57,7 @@ def po__create(request):
         if form.is_valid():
             po = form.save(commit=False)
             formset = PurchaseOrderLineItemFormset(request.POST, instance=po)
+            formset.forms[0].empty_permitted = False
             if formset.is_valid():
                 po.save()
                 formset.save()
