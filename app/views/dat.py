@@ -51,6 +51,7 @@ def po__create(request):
         form.fields['contact'].queryset = Contact.objects.filter(name='')
         for _form in formset:
             _form.fields['sku'].queryset = Sku.objects.filter(name='projectile vomit')
+            _form.fields['unit_cost'].initial = ''
 
     else:
         form = PurchaseOrderForm(request.POST)

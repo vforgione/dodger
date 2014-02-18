@@ -35,12 +35,13 @@ class PurchaseOrderLineItemForm(forms.ModelForm):
 
     class Meta:
         model = PurchaseOrderLineItem
-        fields = ('sku', 'qty_ordered', 'disc_percent', 'disc_dollar')
+        fields = ('sku', 'unit_cost', 'qty_ordered', 'disc_percent', 'disc_dollar')
         widgets = {
             'sku': forms.Select(attrs={'class': 'form-control sku'}),
             'disc_dollar': forms.TextInput(attrs={'class': 'form-control'}),
             'disc_percent': forms.TextInput(attrs={'class': 'form-control'}),
             'qty_ordered': forms.TextInput(attrs={'class': 'form-control'}),
+            'unit_cost': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 

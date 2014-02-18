@@ -32,10 +32,19 @@ def po__csv(request, start, end):
     )
 
     writer = csv.writer(response)
-    writer.writerow(['po id', 'sku id', 'qty ordered', 'unit cost', 'line total'])
+    writer.writerow(['po id', 'sku id', 'qty ordered', 'unit cost', 'line disc dollar', 'line disc percent', 'line total'])
     for item in items:
+        if item.disc_percent:
+            dp = float(item.disc_percent) / 100
+        else:
+            dp = 0.0
+        if item.disc_dollar:
+            dd = float(item.disc_dollar)
+        else:
+            dd = 0.0
+        total = (item.qty_ordered * float(item.unit_cost) - dd) * (1 - dp)
         writer.writerow([
-            item.purchase_order.id, item.sku.id, item.qty_ordered, item.sku.cost, item.qty_ordered * item.sku.cost
+            item.purchase_order.id, item.sku.id, item.qty_ordered, item.unit_cost, dd, dp, total
         ])
 
     return response

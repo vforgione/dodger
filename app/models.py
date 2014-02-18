@@ -257,6 +257,7 @@ class PurchaseOrderLineItem(models.Model):
     disc_dollar = models.FloatField(blank=True, null=True)
     disc_percent = models.FloatField(blank=True, null=True)
     qty_ordered = models.PositiveIntegerField()
+    unit_cost = models.DecimalField(max_digits=10, decimal_places=2)
 
 
 class Shipment(models.Model):

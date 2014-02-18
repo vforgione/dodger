@@ -13,15 +13,17 @@
     <table class="table table-condensed">
       <thead>
         <tr>
-          <th>Product</th><th>Qty Ordered</th><th>Disc Percent</th><th>Disc Dollar</th>
+          <th>Product</th><th>Unit Cost</th><th>Qty Ordered</th><th>Disc Percent</th><th>Disc Dollar</th>
         </tr>
       </thead>
       <tbody>
         {% for form in formset %}
         <tr>
           {% for field in form %}
-          {% if forloop.counter < 5 %}
-          <td class="col-lg-3">{{ field }}{{ field.errors }}</td>
+          {% if forloop.counter == 1 %}
+          <td class="col-lg-4">{{ field }}{{ field.errors }}</td>
+          {% elif forloop.counter < 6 %}
+          <td class="co-lg-2">{{ field }}{{ field.errors }}</td>
           {% else %}
           <td style="display:none">{{ field }}</td>
           {% endif %}

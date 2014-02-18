@@ -37,15 +37,15 @@ $(document).ready(function(){
   // listen for sku selection
   $(".sku").change(function(){
     var input = $(this);
+    input.parent().parent().after('');
     $.ajax({
       url: "/api/sku-service/skus/" + $(this).val() + "/",
       type: "GET",
       dataType: "json",
       success: function(xhr){
         var info = '<tr>' +
-          '<td class="col-xs-3"><b>Qty on Hand:</b> ' + xhr.qty_on_hand + '</td>' +
-          '<td class="col-xs-3"><b>Cost:</b> $' + xhr.cost + '</td>' +
-          '<td class="col-xs-3" colspan="2"><a target="_blank" href="/sku/' + xhr.id + '/">Detailed Info</a></td>' +
+          '<td><a target="_blank" href="/sku/' + xhr.id + '/">Detailed Info</a></td>' +
+          '<td colspan="4"><b>Cost:</b> $' + xhr.cost + '</td>' +
         '</tr>';
         input.parent().parent().after(info);
       },

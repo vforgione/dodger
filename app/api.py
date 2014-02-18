@@ -321,6 +321,7 @@ class PurchaseOrderLineItemResource(ModelResource):
             'disc_dollar': ALL,
             'disc_percent': ALL,
             'qty_ordered': ALL,
+            'unit_cost': ALL,
         }
         always_return_data = True
 
