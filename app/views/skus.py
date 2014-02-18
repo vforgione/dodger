@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 
-from app.forms import SkuForm, SkuAttributeFormset
+from app.forms.skus import SkuForm, SkuAttributeFormset
 from app.models import Sku
 
 

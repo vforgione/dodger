@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
 
-from .controls import STATES
+from .constants import STATES
 
 
 class Supplier(models.Model):

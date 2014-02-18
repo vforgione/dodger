@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 
-from app.forms import SkuQuantityAdjustmentForm, ShipmentForm, ShipmentLineItemFormset
+from app.forms.warehouse import SkuQuantityAdjustmentForm, ShipmentForm, ShipmentLineItemFormset
 from app.models import SkuQuantityAdjustment, Sku, Shipment, PurchaseOrder
 
 
