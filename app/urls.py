@@ -24,9 +24,4 @@ urlpatterns = patterns(
     url(r'^sku(?:/(?P<pk>\d+))?/$', 'skus.sku__view', name='sku__view'),
     url(r'^sku/create/$', 'skus.sku__create', name='sku__create'),
     url(r'^sku/update(?:/(?P<pk>\d+))?/$', 'skus.sku__update', name='sku__update'),
-
-    # suppliers
-    url(r'^suppliers(?:/(?P<pk>\d+))?/$', 'skus.supplier__view', name='supplier__view'),
-    url(r'^suppliers/create/$', 'skus.supplier__create', name='supplier__create'),
-    url(r'^suppliers/update(?:/(?P<pk>\d+))?/$', 'skus.supplier__update', name='supplier__update'),
 )
