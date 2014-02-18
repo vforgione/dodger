@@ -1,4 +1,4 @@
-STATES = (
+US_STATES = (
     ('AL', 'Alabama'),
     ('AK', 'Alaska'),
     ('AZ', 'Arizona'),
@@ -50,4 +50,11 @@ STATES = (
     ('WV', 'West Virginia'),
     ('WI', 'Wisconsin'),
     ('WY', 'Wyoming'),
+)
+
+
+SHIPMENT_STATUS = (
+    ('partial', 'Partial'),
+    ('closed', 'Partial (Closes PO)'),
+    ('full', 'Full Delivery'),
 )

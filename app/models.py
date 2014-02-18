@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
 
-from .constants import STATES
+from .constants import US_STATES, SHIPMENT_STATUS
 
 
 class Supplier(models.Model):
@@ -187,7 +187,7 @@ class Contact(models.Model):
     address2 = models.CharField(max_length=255, blank=True, null=True)
     address3 = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255)
-    state = models.CharField(max_length=255, choices=STATES)
+    state = models.CharField(max_length=255, choices=US_STATES)
     zipcode = models.CharField(max_length=255)
     country = models.CharField(max_length=255, default='United States')
     represents = models.ForeignKey(Supplier)
@@ -214,7 +214,7 @@ class Receiver(models.Model):
     address2 = models.CharField(max_length=255, blank=True, null=True)
     address3 = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255)
-    state = models.CharField(max_length=255, choices=STATES)
+    state = models.CharField(max_length=255, choices=US_STATES)
     zipcode = models.CharField(max_length=255)
     country = models.CharField(max_length=255, default='United States')
 
@@ -237,11 +237,9 @@ class PurchaseOrder(models.Model):
 
     def _has_been_received(self):
         """checks if id in list of ids associated with received shipments"""
-        try:
-            Shipment.objects.get(purchase_order__id=self.id)
-            return True
-        except Shipment.DoesNotExist:
-            return False
+        shipments = Shipment.objects.filter(purchase_order__id=self.id)
+        statuses = [shipment.status for shipment in shipments]
+        return 'full' in statuses or 'closed' in statuses
     has_been_received = property(_has_been_received)
 
     def _friendly_name(self):
@@ -266,6 +264,8 @@ class Shipment(models.Model):
     purchase_order = models.ForeignKey(PurchaseOrder)
     received_by = models.ForeignKey(User)
     received_on = models.DateTimeField(auto_now_add=True)
+    comments = models.TextField(blank=True, null=True)
+    status = models.CharField(max_length=255, choices=SHIPMENT_STATUS)
 
     def __str__(self):
         return self.friendly_name

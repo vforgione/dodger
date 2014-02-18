@@ -10,7 +10,18 @@
   <tr><th>ID</th><td>{{ po.id }}</td></tr>
   <tr><th>Friendly Name</th><td>{{ po.friendly_name }}</td></tr>
   <tr><th>Date Created</th><td>{{ po.created }}</td></tr>
-  <tr><th>Received?</th><td>{% if po.has_been_received %}<a href="{% url 'app:shipment__view' po.shipment_set.all.0.pk %}">{{ po.shipment_set.all.0.friendly_name }}</a>{% else %}Not Yet{% endif %}</td></tr>
+  <tr>
+    <th>Received?</th>
+    <td>
+      {% if po.shipment_set.all|length > 0 %}
+      {% for shipment in po.shipment_set.all %}
+      <a href="{% url 'app:shipment__view' shipment.pk %}">{{ shipment }}</a><br />
+      {% endfor %}
+      {% else %}
+      Not Yet
+      {% endif %}
+    </td>
+  </tr>
   <tr><th>Creator</th><td>{{ po.creator.username }}</td></tr>
   <tr><th>Supplier</th><td>{{ po.supplier.name }}</td></tr>
   <tr><th>Contact</th><td>{{ po.contact.name }}</td></tr>
@@ -28,7 +39,8 @@
       <tbody>
         {% for li in po.purchaseorderlineitem_set.all %}
         <tr>
-          <td><a href="{% url 'app:sku__view' li.sku.pk %}">{{ li.sku.description }}</a></td><td>{{ li.qty_ordered }}</td><td>{{ li.disc_percent }}</td><td>{{ li.disc_dollar }}</td>
+          <td><a href="{% url 'app:sku__view' li.sku.pk %}">{{ li.sku.description }}</a></td>
+          <td>{{ li.qty_ordered }}</td><td>{{ li.disc_percent }}</td><td>{{ li.disc_dollar }}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -45,7 +57,7 @@
 <table class="table table-striped">
 <thead>
   <tr>
-    <th>ID</th><th>Friendly Name</th><th>Date Created</th><th>Received</th><th>Creator</th><th>Supplier</th><th>Contact</th><th>Comments</th>
+    <th>ID</th><th>Friendly Name</th><th>Date Created</th><th>Received?</th><th>Creator</th><th>Supplier</th><th>Contact</th><th>Comments</th>
   </tr>
 </thead>
 <tbody>
@@ -54,7 +66,15 @@
     <td>{{ po.id }}</td>
     <td><a href="{% url 'app:po__view' po.pk %}">{{ po.friendly_name }}</a></td>
     <td>{{ po.created }}</td>
-    <td>{% if po.has_been_received %}<a href="{% url 'app:shipment__view' po.shipment_set.all.0.pk %}">{{ po.shipment_set.all.0.friendly_name }}</a>{% else %}Not Yet{% endif %}</td>
+    <td>
+      {% if po.shipment_set.all|length > 0 %}
+      {% for shipment in po.shipment_set.all %}
+      <a href="{% url 'app:shipment__view' shipment.pk %}">{{ shipment }}</a><br />
+      {% endfor %}
+      {% else %}
+      Not Yet
+      {% endif %}
+    </td>
     <td>{{ po.creator.username }}</td>
     <td>{{ po.supplier.name }}</td>
     <td>{{ po.contact.name }}</td>

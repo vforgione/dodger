@@ -101,7 +101,7 @@ def shipment__create(request):
 
     if request.method == 'GET':
         form.fields['received_by'].initial = request.user
-        received = [x.purchase_order.id for x in Shipment.objects.all()]
+        received = [x.purchase_order.id for x in Shipment.objects.filter(Q(status='closed') | Q(status='full'))]
         form.fields['purchase_order'].queryset = PurchaseOrder.objects.all().exclude(id__in=received)
         no_pos = len(form.fields['purchase_order'].queryset) == 0
         for _form in formset:

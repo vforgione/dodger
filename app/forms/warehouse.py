@@ -7,10 +7,12 @@ class ShipmentForm(forms.ModelForm):
 
     class Meta:
         model = Shipment
-        fields = ('received_by', 'purchase_order')
+        fields = ('received_by', 'purchase_order', 'status', 'comments')
         widgets = {
             'purchase_order': forms.Select(attrs={'class': 'form-control'}),
             'received_by': forms.Select(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-control'}),
+            'comments': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 

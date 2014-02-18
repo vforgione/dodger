@@ -345,6 +345,8 @@ class ShipmentResource(ModelResource):
             'purchase_order': ALL_WITH_RELATIONS,
             'received_by': ALL_WITH_RELATIONS,
             'received_on': ALL,
+            'comments': ALL,
+            'status': ALL,
         }
         always_return_data = True
 
