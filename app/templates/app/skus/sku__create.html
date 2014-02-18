@@ -2,35 +2,33 @@
 
 {% block content %}
 <h2>Create a New SKU</h2>
-<div class="container">
-  <form method="post" action="">
-    {% csrf_token %}
-    {% for field in form %}
-    <div class="form-group">
-      {{ field.label_tag }}{{ field }}{{ field.errors }}
-    </div>
-    {% endfor %}
-    {{ formset.management_form }}
-    <table class="table table-condensed">
-      <thead>
-        <tr>
-          <th>Attribute</th><th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for form in formset %}
-        <tr>
-          {% for field in form %}
-          <td class="col-lg-6">{{ field }}{{ field.errors }}</td>
-          {% endfor %}
-        </tr>
+<form method="post" action="">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field }}{{ field.errors }}
+  </div>
+  {% endfor %}
+  {{ formset.management_form }}
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Attribute</th><th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for form in formset %}
+      <tr>
+        {% for field in form %}
+        <td class="col-lg-6">{{ field }}{{ field.errors }}</td>
         {% endfor %}
-      </tbody>
-    </table>
-    <input type="submit" value="Save" class="btn btn-primary default" name="save">
-    <a class="btn btn-danger pull-right" href="{% url 'app:sku__view' %}">Cancel</a>
-  </form>
-</div>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <input type="submit" value="Save" class="btn btn-primary default" name="save">
+  <a class="btn btn-danger pull-right" href="{% url 'app:sku__view' %}">Cancel</a>
+</form>
 {% endblock %}
 
 {% block contentjs %}

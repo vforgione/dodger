@@ -13,7 +13,8 @@ urlpatterns = patterns(
     url(r'^purchase-order/create/$', 'dat.po__create', name='po__create'),
     # reporting
     url(r'purchase-order/export/$', 'reporting.po__export', name='po__export'),
-    url(r'purchase-order/csv/(?P<start>\d{4}\-\d{2}\-\d{2})/(?P<end>\d{4}\-\d{2}\-\d{2})/$', 'reporting.po__csv', name='po__csv'),
+    url(r'purchase-order/csv/(?P<start>\d{4}\-\d{2}\-\d{2})/(?P<end>\d{4}\-\d{2}\-\d{2})/$',
+        'reporting.po__csv', name='po__csv'),
 
     # shipments
     url(r'^shipment(?:/(?P<pk>\d+))?/$', 'warehouse.shipment__view', name='shipment__view'),
@@ -23,4 +24,9 @@ urlpatterns = patterns(
     url(r'^sku(?:/(?P<pk>\d+))?/$', 'skus.sku__view', name='sku__view'),
     url(r'^sku/create/$', 'skus.sku__create', name='sku__create'),
     url(r'^sku/update(?:/(?P<pk>\d+))?/$', 'skus.sku__update', name='sku__update'),
+
+    # suppliers
+    url(r'^suppliers(?:/(?P<pk>\d+))?/$', 'skus.supplier__view', name='supplier__view'),
+    url(r'^suppliers/create/$', 'skus.supplier__create', name='supplier__create'),
+    url(r'^suppliers/update(?:/(?P<pk>\d+))?/$', 'skus.supplier__update', name='supplier__update'),
 )

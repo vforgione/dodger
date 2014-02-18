@@ -64,8 +64,13 @@
               <ul class="dropdown-menu">
                 <li class="dropdown-header">SKUs</li>
                 <li><a href="{% url 'app:sku__view' %}">View SKUs</a></li>
-                <li><a href="{% url 'app:sku__create' %}">Create New SKU</a></li>
+                <li><a href="{% url 'app:sku__create' %}">Create a New SKU</a></li>
                 <li><a href="{% url 'app:sku__update' %}">Update SKUs</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Suppliers</li>
+                <li><a href="{% url 'app:supplier__view' %}">View Suppliers</a></li>
+                <li><a href="{% url 'app:supplier__create' %}">Create a New Supplier</a></li>
+                <li><a href="{% url 'app:supplier__update' %}">Update Suppliers</a></li>
               </ul>
             </li>
             <li class="dropdown" id="reporting-header">

@@ -1,0 +1,51 @@
+{% extends 'app/skus/base.html' %}
+
+{% block content %}
+<div class="table-responsive">
+
+{% if obj %}
+<h3>obj {{ obj.name }}</h3>
+<table class="table table-striped">
+<tbody>
+  <tr><th>Name</th><td>{{ obj.name }}</td></tr>
+</tbody>
+</table>
+<a class="btn btn-primary default" href="{% url 'app:obj__view' %}">Back To List</a>
+<a class="btn btn-danger pull-right" href="{% url 'app:obj__update' obj.pk %}">Modify This obj</a>
+
+{% elif objs %}
+<h3>objs</h3>
+<table class="table table-striped">
+<thead>
+  <tr>
+    <th>Name</th>
+  </tr>
+</thead>
+<tbody>
+  {% for obj in objs %}
+  <tr>
+    <td><a href="{% url 'app:obj__view' obj.pk %}">{{ obj.name }}</a></td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+
+<div class="container">
+  {% if objs.has_previous %}
+  <div class="button"><a href="?page={{ objs.previous_page_number }}">Previous</a></div>
+  {% endif %}
+
+  <div>Page {{ objs.number }} of {{ objs.paginator.num_pages }}</div>
+
+  {% if objs.has_next %}
+  <div class="button"><a href="?page={{ objs.next_page_number }}">Next</a></div>
+  {% endif %}
+</div>
+
+{% else %}
+<h3>View {% if plural %}{{ plural }}{% else %}{{ model }}s{% endif %}</h3>
+<p>No data received.</p>
+
+{% endif %}
+</div>
+{% endblock %}

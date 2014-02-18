@@ -86,8 +86,7 @@ class SkuForm(forms.ModelForm):
         # dynamically restrict fields based on if create or update
         instance = getattr(self, 'instance', None)
         if instance and instance.id:
-            # self.fields['cost'].widget.attrs['readonly'] = True
-            # self.fields['price'].widget.attrs['readonly'] = True
+            self.fields['cost'].widget.attrs['readonly'] = True
             self.fields['qty_on_hand'].widget.attrs['readonly'] = True
 
     class Meta:
@@ -126,3 +125,13 @@ class SkuAttributeForm(forms.ModelForm):
 SkuAttributeFormset = forms.models.inlineformset_factory(
     Sku, SkuAttribute, form=SkuAttributeForm, extra=8, can_delete=False
 )
+
+
+class SupplierForm(forms.ModelForm):
+
+    class Meta:
+        model = Supplier
+        fields = ('name', )
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
