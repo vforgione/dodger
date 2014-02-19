@@ -37,6 +37,7 @@
           <a class="navbar-brand" href="/">dodger</a>
         </div>
 
+        {% if user.is_active and user.is_authenticated %}
         <div class="navbar-collapse collapse navbar-left">
           <ul class="nav navbar-nav">
             <li class="dropdown" id="warehouse-header">
@@ -77,6 +78,7 @@
             </li>
           </ul>
         </div>
+        {% endif %}
 
         <div class="navbar-collapse collapse navbar-right">
           <ul class="nav navbar-nav">
