@@ -1,7 +1,7 @@
 {% extends 'app/reporting/base.html' %}
 
 {% block extrahead %}
-<style>table{font-size:0.8em;}</style>
+<style>table.data-table{font-size:0.8em;}</style>
 {% endblock %}
 
 {% block content %}
@@ -50,7 +50,7 @@
 
 <div class="pull-right"><a href="/sku/export/?{{ request.GET.urlencode }}" target="_blank" class="btn btn-primary default" >Export This Table</a></div>
 <div class="table-responsive">
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed data-table">
 <thead>
   <tr>
     <th>ID</th><th>Name</th><th>Categories</th><th>Brand</th><th>Supplier</th>

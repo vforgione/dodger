@@ -99,7 +99,7 @@ def sku__export(request):
         attrs = SkuAttribute.objects.filter(sku__id=sku.id)
         attrs = dict((attr.attribute.name, attr.value) for attr in attrs)
         writer.writerow([
-            sku.id, sku.name, ' '.join([cat.name for cat in sku.categories.all()]), sku.supplier, sku.brand, sku.owner.username,
+            sku.id, sku.name, ', '.join([cat.name for cat in sku.categories.all()]), sku.supplier, sku.brand, sku.owner.username,
             sku.reorder_threshold, sku.notify_at_threshold, sku.cost, sku.mfr_sku, sku.case_qty, sku.location,
             sku.qty_on_hand, sku.in_live_deal, sku.created.strftime('%m/%d/%Y'), sku.modified.strftime('%m/%d/%Y'),
             attrs.get('Color', ''), attrs.get('Size', ''), attrs.get('Style', ''), attrs.get('Flavor', ''),
