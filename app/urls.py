@@ -25,4 +25,6 @@ urlpatterns = patterns(
     url(r'^sku(?:/(?P<pk>\d+))?/$', 'skus.sku__view', name='sku__view'),
     url(r'^sku/create/$', 'skus.sku__create', name='sku__create'),
     url(r'^sku/update(?:/(?P<pk>\d+))?/$', 'skus.sku__update', name='sku__update'),
+    url(r'^sku/table/$', 'reporting.sku__table', name='sku__table'),
+    url(r'^sku/export/$', 'reporting.sku__export', name='sku_-export'),
 )

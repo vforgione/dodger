@@ -1,11 +1,113 @@
 import csv
 
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 
-from app.models import PurchaseOrderLineItem
+from app.models import PurchaseOrderLineItem, Sku, SkuAttribute
+
+
+PAGE_SIZE = 50
+
+
+# skus
+@login_required
+def sku__table(request):
+
+    name = request.GET.get('name', None)
+    category = request.GET.get('category', None)
+    brand = request.GET.get('brand', None)
+    owner = request.GET.get('owner', None)
+
+    skus = Sku.objects.order_by('-id')
+    params = []
+
+    if name:
+        skus = skus.filter(name__icontains=name)
+        params.append(name)
+
+    if category:
+        skus = skus.filter(categories__name__icontains=category)
+        params.append(category)
+
+    if brand:
+        skus = skus.filter(brand__name__icontains=brand)
+        params.append(brand)
+
+    if owner:
+        skus = skus.filter(owner__username__icontains=owner)
+        params.append(owner)
+
+    paginator = Paginator(skus, PAGE_SIZE)
+    page = request.GET.get('page', 1)
+    try:
+        skus = paginator.page(page)
+    except PageNotAnInteger:
+        skus = paginator.page(1)
+    except EmptyPage:
+        skus = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'app/reporting/sku__table.html',
+        {
+            'skus': skus,
+            'params': params,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+@login_required
+def sku__export(request):
+    name = request.GET.get('name', None)
+    category = request.GET.get('category', None)
+    brand = request.GET.get('brand', None)
+    owner = request.GET.get('owner', None)
+
+    skus = Sku.objects.order_by('-id')
+    params = []
+
+    if name:
+        skus = skus.filter(name__icontains=name)
+        params.append(name)
+
+    if category:
+        skus = skus.filter(categories__name__icontains=category)
+        params.append(category)
+
+    if brand:
+        skus = skus.filter(brand__name__icontains=brand)
+        params.append(brand)
+
+    if owner:
+        skus = skus.filter(owner__username__icontains=owner)
+        params.append(owner)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="skus__%s.csv"' % '_'.join(params)
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'id', 'name', 'categories', 'supplier', 'brand', 'owner', 'reorder threshold', 'notify at threshold', 'cost',
+        'mfr sku', 'case qty', 'location', 'qty on hand', 'in live deal', 'created', 'updated', 'color', 'size',
+        'style', 'flavor', 'weight', 'is bulk', 'expiration date', 'country of origin'
+    ])
+
+    for sku in skus:
+        attrs = SkuAttribute.objects.filter(sku__id=sku.id)
+        attrs = dict((attr.attribute.name, attr.value) for attr in attrs)
+        writer.writerow([
+            sku.id, sku.name, ' '.join([cat.name for cat in sku.categories.all()]), sku.supplier, sku.brand, sku.owner.username,
+            sku.reorder_threshold, sku.notify_at_threshold, sku.cost, sku.mfr_sku, sku.case_qty, sku.location,
+            sku.qty_on_hand, sku.in_live_deal, sku.created.strftime('%m/%d/%Y'), sku.modified.strftime('%m/%d/%Y'),
+            attrs.get('Color', ''), attrs.get('Size', ''), attrs.get('Style', ''), attrs.get('Flavor', ''),
+            attrs.get('Weight', ''), attrs.get('Is Bulk', ''), attrs.get('Expiration Date', ''),
+            attrs.get('Country of Origin', '')
+        ])
+
+    return response
 
 
 # purchase orders reports
