@@ -66,6 +66,7 @@ class Sku(models.Model):
     # inventory
     location = models.CharField(max_length=255, blank=True, null=True)
     qty_on_hand = models.IntegerField()
+    in_live_deal = models.BooleanField(default=False)
     # stamps
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

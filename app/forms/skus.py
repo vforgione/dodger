@@ -17,7 +17,7 @@ class SkuForm(forms.ModelForm):
         model = Sku
         fields = (
             'name', 'categories', 'supplier', 'brand', 'owner', 'reorder_threshold',
-            'notify_at_threshold', 'cost', 'mfr_sku', 'case_qty', 'location', 'qty_on_hand'
+            'notify_at_threshold', 'cost', 'mfr_sku', 'case_qty', 'location', 'qty_on_hand', 'in_live_deal',
         )
         widgets = {
             'id': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),

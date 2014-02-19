@@ -126,6 +126,7 @@ class SkuResource(ModelResource):
             'qty_on_hand': ALL,
             'created': ALL,
             'modified': ALL,
+            'in_live_deal': ALL,
         }
         always_return_data = True
 

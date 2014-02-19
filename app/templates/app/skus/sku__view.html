@@ -12,6 +12,7 @@
   <tr><th>Categories</th><td>{{ sku.categories.all|join:", " }}</td></tr>
   <tr><th>Brand</th><td>{{ sku.brand }}</td></tr>
   <tr><th>Location</th><td>{{ sku.location|default_if_none:' --- ' }}</td></tr>
+  <tr><th>In Live Deal</th><td>{{ sku.in_live_deal|yesno:"Yes,No" }}</td></tr>
   <tr><th>Qty on Hand</th><td>{{ sku.qty_on_hand }}</td></tr>
   <tr><th>Supplier</th><td>{{ sku.supplier }}</td></tr>
   <tr><th>Owner</th><td>{{ sku.owner.username }}</td></tr>
