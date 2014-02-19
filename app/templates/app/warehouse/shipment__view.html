@@ -1,4 +1,4 @@
-{% extends 'dodger/base.html' %}
+{% extends 'app/warehouse/base.html' %}
 
 {% block content %}
 <div class="table-responsive">
@@ -21,6 +21,9 @@
     </tr>
     <tr>
       <th>Received On</th><td>{{ shipment.received_on }}</td>
+    </tr>
+    <tr>
+      <th>Status</th><td>{{ shipment.status }}</td>
     </tr>
     <tr>
       <td colspan="2">
@@ -53,7 +56,7 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>ID</th><th>Friendly Name</th><th>PO Friendly Name</th><th>Received On</th><th>Received By</th>
+      <th>ID</th><th>Friendly Name</th><th>PO Friendly Name</th><th>Status</th><th>Received On</th><th>Received By</th>
     </tr>
   </thead>
   <tbody>
@@ -62,6 +65,7 @@
       <td>{{ ship.purchase_order.id }}</td>
       <td><a href="{% url 'app:shipment__view' ship.pk %}">{{ ship.friendly_name }}</a></td>
       <td><a href="{% url 'app:po__view' ship.purchase_order.pk %}">{{ ship.purchase_order.friendly_name }}</a></td>
+      <td>{{ ship.status }}</td>
       <td>{{ ship.received_on }}</td>
       <td>{{ ship.received_by }}</td>
     </tr>

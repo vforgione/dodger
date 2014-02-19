@@ -119,7 +119,6 @@ class SkuResource(ModelResource):
             'owner': ALL_WITH_RELATIONS,
             'reorder_threshold': ALL,
             'notify_at_threshold': ALL,
-            'price': ALL,
             'cost': ALL,
             'mfr_sku': ALL,
             'case_qty': ALL,
@@ -127,6 +126,7 @@ class SkuResource(ModelResource):
             'qty_on_hand': ALL,
             'created': ALL,
             'modified': ALL,
+            'in_live_deal': ALL,
         }
         always_return_data = True
 
@@ -322,6 +322,7 @@ class PurchaseOrderLineItemResource(ModelResource):
             'disc_dollar': ALL,
             'disc_percent': ALL,
             'qty_ordered': ALL,
+            'unit_cost': ALL,
         }
         always_return_data = True
 
@@ -345,6 +346,8 @@ class ShipmentResource(ModelResource):
             'purchase_order': ALL_WITH_RELATIONS,
             'received_by': ALL_WITH_RELATIONS,
             'received_on': ALL,
+            'comments': ALL,
+            'status': ALL,
         }
         always_return_data = True
 

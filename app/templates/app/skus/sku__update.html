@@ -1,0 +1,78 @@
+{% extends 'app/skus/base.html' %}
+
+{% block content %}
+{% if skus %}
+<div class="table-responsive">
+<h3>Select SKU to Update</h3>
+<table class="table table-striped">
+<thead>
+  <tr>
+    <th>Description</th><th>Qty on Hand</th><th>Location</th><th>Owner</th>
+  </tr>
+</thead>
+<tbody>
+  {% for sku in skus %}
+  <tr>
+    <td><a href="{% url 'app:sku__update' sku.pk %}">{{ sku.description }}</a></td>
+    <td>{{ sku.qty_on_hand }}</td>
+    <td>{{ sku.location }}</td>
+    <td>{{ sku.owner.username }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+
+<div class="container">
+  {% if skus.has_previous %}
+  <div class="button"><a href="?page={{ skus.previous_page_number }}">Previous</a></div>
+  {% endif %}
+
+  <div>Page {{ skus.number }} of {{ skus.paginator.num_pages }}</div>
+
+  {% if skus.has_next %}
+  <div class="button"><a href="?page={{ skus.next_page_number }}">Next</a></div>
+  {% endif %}
+</div>
+</div>
+
+{% else %}
+<h3>Update SKU</h3>
+<form method="post" action=".">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field }}{{ field.errors }}
+  </div>
+  {% endfor %}
+  {{ formset.management_form }}
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Attribute</th><th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for form in formset %}
+      <tr>
+        {% for field in form %}
+        <td class="col-lg-6">{{ field }}{{ field.errors }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <input type="submit" value="Save" class="btn btn-primary default" name="save">
+  <a class="btn btn-danger pull-right" href="{% url 'app:sku__view' %}">Cancel</a>
+</form>
+
+{% endif %}
+{% endblock %}
+
+{% block contentjs %}
+<script>
+$('#id_notify_at_threshold').addClass('form-control');
+$('#id_in_live_deal').addClass('form-control');
+
+// TODO: optimize brands based on supplier
+</script>
+{% endblock %}

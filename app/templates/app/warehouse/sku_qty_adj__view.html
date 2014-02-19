@@ -1,0 +1,63 @@
+{% extends 'app/warehouse/base.html' %}
+
+{% block content %}
+<div class="table-responsive">
+
+{% if adj %}
+<h3>Sku Quantity Adjustment #{{ adj.id }}</h3>
+  <table class="table">
+  <tbody>
+    <tr><th>ID</th><td>{{ adj.id }}</td></tr>
+    <tr><th>When</th><td>{{ adj.when }}</td></tr>
+    <tr><th>SKU</th><td><a href="{% url 'app:sku__view' adj.sku.pk %}">{{ adj.sku.description }}</a></td></tr>
+    <tr><th>Who</th><td>{{ adj.who.username }}</td></tr>
+    <tr><th>Old</th><td>{{ adj.old }}</td></tr>
+    <tr><th>New</th><td>{{ adj.new }}</td></tr>
+    <tr><th>Reason</th><td>{{ adj.reason.name }}</td></tr>
+    <tr><th>Detail</th><td>{{ adj.detail|safe }}</td></tr>
+  </tbody>
+  </table>
+  <a class="btn btn-primary default" href="{% url 'app:sku_qty_adj__view' %}">Back To List</a>
+
+{% elif adjs %}
+<h3>View Sku Quantity Adjustments</h3>
+<table class="table table-striped">
+<thead>
+  <tr>
+    <th>ID</th><th>When</th><th>SKU</th><th>Who</th><th>Old</th><th>New</th><th>Reason</th><th>Detail</th>
+  </tr>
+</thead>
+<tbody>
+  {% for adj in adjs %}
+  <tr>
+    <td><a href="{% url 'app:sku_qty_adj__view' adj.pk %}">{{ adj.id }}</a></td>
+    <td>{{ adj.when }}</td>
+    <td><a href="{% url 'app:sku__view' adj.sku.pk %}">{{ adj.sku.description }}</a></td>
+    <td>{{ adj.who.username }}</td>
+    <td>{{ adj.old }}</td>
+    <td>{{ adj.new }}</td>
+    <td>{{ adj.reason.name }}</td>
+    <td>{% if adj.detail|length > 20 %}{{ adj.detail|slice:":16" }}&nbsp;&hellip;{% else %}{{ adj.detail }}{% endif %}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+
+<div class="container">
+  {% if adjs.has_previous %}
+  <a class="btn btn-primary default" href="?page={{ adjs.previous_page_number }}">Previous</a>
+  {% endif %}
+
+  Page {{ adjs.number }} of {{ adjs.paginator.num_pages }}
+
+  {% if adjs.has_next %}
+  <a class="btn btn-primary default" href="?page={{ adjs.next_page_number }}">Next</a>
+  {% endif %}
+</div>
+
+{% else %}
+<p>No data received.</p>
+
+{% endif %}
+</div>
+{% endblock %}

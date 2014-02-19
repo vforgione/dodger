@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
 
-from .controls import STATES
+from .constants import US_STATES, SHIPMENT_STATUS
 
 
 class Supplier(models.Model):
@@ -60,13 +60,13 @@ class Sku(models.Model):
     owner = models.ForeignKey(User)
     reorder_threshold = models.PositiveIntegerField(default=0)
     notify_at_threshold = models.BooleanField(default=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
     cost = models.DecimalField(max_digits=10, decimal_places=2)
-    mfr_sku = models.CharField(max_length=255, blank=True, null=True)
+    mfr_sku = models.CharField(max_length=255, blank=True, null=True, unique=True)
     case_qty = models.PositiveIntegerField()
     # inventory
     location = models.CharField(max_length=255, blank=True, null=True)
     qty_on_hand = models.IntegerField()
+    in_live_deal = models.BooleanField(default=False)
     # stamps
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -188,7 +188,7 @@ class Contact(models.Model):
     address2 = models.CharField(max_length=255, blank=True, null=True)
     address3 = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255)
-    state = models.CharField(max_length=255, choices=STATES)
+    state = models.CharField(max_length=255, choices=US_STATES)
     zipcode = models.CharField(max_length=255)
     country = models.CharField(max_length=255, default='United States')
     represents = models.ForeignKey(Supplier)
@@ -215,7 +215,7 @@ class Receiver(models.Model):
     address2 = models.CharField(max_length=255, blank=True, null=True)
     address3 = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255)
-    state = models.CharField(max_length=255, choices=STATES)
+    state = models.CharField(max_length=255, choices=US_STATES)
     zipcode = models.CharField(max_length=255)
     country = models.CharField(max_length=255, default='United States')
 
@@ -238,11 +238,9 @@ class PurchaseOrder(models.Model):
 
     def _has_been_received(self):
         """checks if id in list of ids associated with received shipments"""
-        try:
-            Shipment.objects.get(purchase_order__id=self.id)
-            return True
-        except Shipment.DoesNotExist:
-            return False
+        shipments = Shipment.objects.filter(purchase_order__id=self.id)
+        statuses = [shipment.status for shipment in shipments]
+        return 'full' in statuses or 'closed' in statuses
     has_been_received = property(_has_been_received)
 
     def _friendly_name(self):
@@ -258,6 +256,7 @@ class PurchaseOrderLineItem(models.Model):
     disc_dollar = models.FloatField(blank=True, null=True)
     disc_percent = models.FloatField(blank=True, null=True)
     qty_ordered = models.PositiveIntegerField()
+    unit_cost = models.DecimalField(max_digits=10, decimal_places=2)
 
 
 class Shipment(models.Model):
@@ -266,6 +265,8 @@ class Shipment(models.Model):
     purchase_order = models.ForeignKey(PurchaseOrder)
     received_by = models.ForeignKey(User)
     received_on = models.DateTimeField(auto_now_add=True)
+    comments = models.TextField(blank=True, null=True)
+    status = models.CharField(max_length=255, choices=SHIPMENT_STATUS)
 
     def __str__(self):
         return self.friendly_name

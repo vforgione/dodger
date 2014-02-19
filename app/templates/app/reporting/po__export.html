@@ -1,0 +1,55 @@
+{% extends 'app/reporting/base.html' %}
+
+{% block content %}
+<div class="container">
+<div id="errors"></div>
+<form action="." method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="start">Start Date:</label><input type="date" name="start" id="start" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label for="end">End Date:</label><input type="date" name="end" id="end" class="form-control" />
+  </div>
+  <input type="submit" value="Export POs" class="btn btn-primary default" name="submit" id="submit">
+</form>
+</div>
+{% endblock %}
+
+{% block contentjs %}
+<script>
+$(document).ready(function(){
+
+  // form submit listener
+  $('form').submit(function(){
+    $('#errors').html('');
+
+    var start = $('#start').val();
+    var end = $('#end').val();
+
+    var startDate = Date.parse(start);
+    var endDate = Date.parse(end);
+
+    var errors = Array();
+
+    if (isNaN(startDate)){ errors.push("start date is invalid"); }
+    if (isNaN(endDate)){ errors.push("end date is invalid"); }
+
+    if ((startDate - endDate) > 0){ errors.push("end date must be on or after start date"); }
+
+    if (errors.length > 0){
+      var errorlist = '<h4>Fix the following errors:</h4><ul class="errorlist">';
+      for (var i=0; i<errors.length; i++){
+        errorlist += '<li>' + errors[i] + '</li>';
+      }
+      errorlist += '</ul>';
+      $('#errors').html(errorlist);
+      return false;
+    }
+
+    return true;
+  });
+
+});
+</script>
+{% endblock %}

@@ -1,3 +1,55 @@
+{% extends 'app/warehouse/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Receive A Shipment</h2>
+
+  {% if no_pos %}
+  <h4>There are no outstanding POs right now.</h4>
+
+  {% else %}
+  <form method="post" action="">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      {{ field.label_tag }}{{ field }}{{ field.errors }}
+    </div>
+    {% endfor %}
+    <input type="hidden" id="supplier" />
+    <div id="po-info" class="table-responsive"></div>
+    {{ formset.management_form }}
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>SKU</th><th>Qty Received</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for form in formset %}
+        <tr>
+          {% for field in form %}
+          {% if forloop.counter < 3 %}
+          <td class="col-lg-6">{{ field }}{{ field.errors }}</td>
+          {% else %}
+          <td style="display:none">{{ field }}{{ field.errors }}</td>
+          {% endif %}
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <input type="submit" value="Save" class="btn btn-primary default" name="save">
+    <a class="btn btn-danger pull-right" href="{% url 'app:shipment__view' %}">Cancel</a>
+  </form>
+
+  <div id="order-info"></div>
+
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block contentjs %}
+<script>
 $(document).ready(function(){
   // global scope options
   var options = '<option></option>';
@@ -93,3 +145,6 @@ $(document).ready(function(){
   });
 
 });
+
+</script>
+{% endblock %}

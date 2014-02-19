@@ -1,7 +1,8 @@
-{% extends 'dodger/base.html' %}
+{% extends 'app/skus/base.html' %}
 
 {% block content %}
 <div class="table-responsive">
+
 {% if sku %}
 <h3>SKU {{ sku.id }}</h3>
 <table class="table table-striped">
@@ -10,13 +11,13 @@
   <tr><th>Name</th><td>{{ sku.name }}</td></tr>
   <tr><th>Categories</th><td>{{ sku.categories.all|join:", " }}</td></tr>
   <tr><th>Brand</th><td>{{ sku.brand }}</td></tr>
-  <tr><th>Location</th><td>{{ sku.location }}</td></tr>
+  <tr><th>Location</th><td>{{ sku.location|default_if_none:' --- ' }}</td></tr>
+  <tr><th>In Live Deal</th><td>{{ sku.in_live_deal|yesno:"Yes,No" }}</td></tr>
   <tr><th>Qty on Hand</th><td>{{ sku.qty_on_hand }}</td></tr>
   <tr><th>Supplier</th><td>{{ sku.supplier }}</td></tr>
   <tr><th>Owner</th><td>{{ sku.owner.username }}</td></tr>
   <tr><th>Reorder Threshold</th><td>{{ sku.reorder_threshold }}</td></tr>
   <tr><th>Notify Owner</th><td>{{ sku.notify_at_threshold|yesno:"Yes,No" }}</td></tr>
-  <tr><th>Price</th><td>${{ sku.price }}</td></tr>
   <tr><th>Cost</th><td>${{ sku.cost }}</td></tr>
   <tr><th>Mfr SKU</th><td>{{ sku.mfr_sku }}</td></tr>
   <tr><th>Case Qty</th><td>{{ sku.case_qty }}</td></tr>
@@ -44,6 +45,7 @@
 </tbody>
 </table>
 <a class="btn btn-primary default" href="{% url 'app:sku__view' %}">Back To List</a>
+<a class="btn btn-danger pull-right" href="{% url 'app:sku__update' sku.pk %}">Modify This SKU</a>
 
 {% elif skus %}
 <h3>View SKUs</h3>
@@ -58,7 +60,7 @@
   <tr>
     <td><a href="{% url 'app:sku__view' sku.pk %}">{{ sku.description }}</a></td>
     <td>{{ sku.qty_on_hand }}</td>
-    <td>{{ sku.location }}</td>
+    <td>{{ sku.location|default_if_none:' --- ' }}</td>
     <td>{{ sku.owner.username }}</td>
   </tr>
   {% endfor %}

@@ -1,0 +1,45 @@
+{% extends 'app/skus/base.html' %}
+
+{% block content %}
+{% if suppliers %}
+<div class="table-responsive">
+<h3>Select Supplier to Update</h3>
+<table class="table table-striped">
+<thead>
+  <tr><td>Name</td></tr>
+</thead>
+<tbody>
+  {% for supplier in suppliers %}
+  <tr><td><a href="{% url 'app:supplier__update' supplier.pk %}">{{ supplier.name }}</a></td></tr>
+  {% endfor %}
+</tbody>
+</table>
+
+<div class="container">
+  {% if suppliers.has_previous %}
+  <div class="button"><a href="?page={{ suppliers.previous_page_number }}">Previous</a></div>
+  {% endif %}
+
+  <div>Page {{ suppliers.number }} of {{ suppliers.paginator.num_pages }}</div>
+
+  {% if suppliers.has_next %}
+  <div class="button"><a href="?page={{ suppliers.next_page_number }}">Next</a></div>
+  {% endif %}
+</div>
+</div>
+
+{% else %}
+<h3>Update Supplier</h3>
+<form action="." method="post">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field }}{{ field.errors }}
+  </div>
+  {% endfor %}
+  <input type="submit" value="Save" class="btn btn-primary default" name="save">
+  <a class="btn btn-danger pull-right" href="{% url 'app:supplier__view' %}">Cancel</a>
+</form>
+
+{% endif %}
+{% endblock %}
