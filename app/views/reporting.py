@@ -90,7 +90,7 @@ def sku__export(request):
 
     writer = csv.writer(response)
     writer.writerow([
-        'id', 'name', 'categories', 'supplier', 'brand', 'owner', 'reorder threshold', 'notify at threshold', 'cost',
+        'id', 'name', 'categories', 'supplier', 'brand', 'owner', 'reorder threshold', 'notify_at_threshold at threshold', 'cost',
         'mfr sku', 'case qty', 'location', 'qty on hand', 'in live deal', 'created', 'updated', 'color', 'size',
         'style', 'flavor', 'weight', 'is bulk', 'expiration date', 'country of origin'
     ])

@@ -1,30 +1,95 @@
 from django.conf.urls import patterns, url
+from tastypie.api import Api
+
+from api import *
+
+
+auth_api = Api(api_name='auth')
+auth_api.register(UserResource())
+
+app_api = Api(api_name='sku_service')
+app_api.register(AttributeResource())
+app_api.register(BrandResource())
+app_api.register(CategoryResource())
+app_api.register(ContactLabelResource())
+app_api.register(CostAdjustmentReasonResource())
+app_api.register(QuantityAdjustmentReasonResource())
+app_api.register(SupplierResource())
+app_api.register(CostAdjustmentResource())
+app_api.register(QuantityAdjustmentResource())
+app_api.register(ContactResource())
+app_api.register(ReceiverResource())
+app_api.register(SkuResource())
+app_api.register(SkuAttributeResource())
+app_api.register(PurchaseOrderResource())
+app_api.register(PurchaseOrderLineItemResource())
+app_api.register(ShipmentResource())
+app_api.register(ShipmentLineItemResource())
 
 
 urlpatterns = patterns(
+    '',
+    url(r'^api/', include(auth_api.urls + app_api.urls)),
+)
+
+urlpatterns += patterns(
     'app.views',
 
-    # sku quantity change trace
-    url(r'^sku-quantity-adjustment(?:/(?P<pk>\d+))?/$', 'warehouse.sku_qty_adj__view', name='sku_qty_adj__view'),
-    url(r'^sku-quantity-adjustment/create/$', 'warehouse.sku_qty_adj__create', name='sku_qty_adj__create'),
+    ## adjustments
+    # cost adjustments
+    url(r'^cost_adjustments(?:/(?P<pk>\d+))?/', 'cost_adjustment__view', name='cost_adjustment__view'),
+    url(r'^cost_adjustments/create/', 'cost_adjustment__create', name='cost_adjustment__create'),
+    url(r'^cost_adjustments/update(?:/(?P<pk>\d+))?/', 'cost_adjustment__update', name='cost_adjustment__update'),
+    url(r'^cost_adjustments/table/', 'cost_adjustment__table', name='cost_adjustment__table'),
+    url(r'^cost_adjustments/export/', 'cost_adjustment__export', name='cost_adjustment__export'),
 
-    # purchase orders
-    url(r'^purchase-order(?:/(?P<pk>\d+))?/$', 'dat.po__view', name='po__view'),
-    url(r'^purchase-order/create/$', 'dat.po__create', name='po__create'),
+    # quantity adjustments
+    url(r'^quantity_adjustments(?:/(?P<pk>\d+))?/', 'quantity_adjustment__view', name='quantity_adjustment__view'),
+    url(r'^quantity_adjustments/create/', 'quantity_adjustment__create', name='quantity_adjustment__create'),
+    url(r'^quantity_adjustments/update(?:/(?P<pk>\d+))?/', 'quantity_adjustment__update', name='quantity_adjustment__update'),
+    url(r'^quantity_adjustments/table/', 'quantity_adjustment__table', name='quantity_adjustment__table'),
+    url(r'^quantity_adjustments/export/', 'quantity_adjustment__export', name='quantity_adjustment__export'),
 
-    # reporting
-    url(r'purchase-order/export/$', 'reporting.po__export', name='po__export'),
-    url(r'purchase-order/csv/(?P<start>\d{4}\-\d{2}\-\d{2})/(?P<end>\d{4}\-\d{2}\-\d{2})/$',
-        'reporting.po__csv', name='po__csv'),
-
-    # shipments
-    url(r'^shipment(?:/(?P<pk>\d+))?/$', 'warehouse.shipment__view', name='shipment__view'),
-    url(r'^shipment/create/$', 'warehouse.shipment__create', name='shipment__create'),
-
+    ##
     # skus
-    url(r'^sku(?:/(?P<pk>\d+))?/$', 'skus.sku__view', name='sku__view'),
-    url(r'^sku/create/$', 'skus.sku__create', name='sku__create'),
-    url(r'^sku/update(?:/(?P<pk>\d+))?/$', 'skus.sku__update', name='sku__update'),
-    url(r'^sku/table/$', 'reporting.sku__table', name='sku__table'),
-    url(r'^sku/export/$', 'reporting.sku__export', name='sku_-export'),
+    url(r'^skus(?:/(?P<pk>\d+))?/', 'sku__view', name='sku__view'),
+    url(r'^skus/create/', 'sku__create', name='sku__create'),
+    url(r'^skus/update(?:/(?P<pk>\d+))?/', 'sku__update', name='sku__update'),
+    url(r'^skus/table/', 'sku__table', name='sku__table'),
+    url(r'^skus/export/', 'sku__export', name='sku__export'),
+
+    ##
+    # purchase orders
+    url(r'^purchase_orders(?:/(?P<pk>\d+))?/', 'purchase_order__view', name='purchase_order__view'),
+    url(r'^purchase_orders/create/', 'purchase_order__create', name='purchase_order__create'),
+    url(r'^purchase_orders/update(?:/(?P<pk>\d+))?/', 'purchase_order__update', name='purchase_order__update'),
+    url(r'^purchase_orders/table/', 'purchase_order__table', name='purchase_order__table'),
+    url(r'^purchase_orders/export/', 'purchase_order__export', name='purchase_order__export'),
+
+    ##
+    # shipments
+    url(r'^shipments(?:/(?P<pk>\d+))?/', 'shipment__view', name='shipment__view'),
+    url(r'^shipments/create/', 'shipment__create', name='shipment__create'),
+    url(r'^shipments/update(?:/(?P<pk>\d+))?/', 'shipment__update', name='shipment__update'),
+    url(r'^shipments/table/', 'shipment__table', name='shipment__table'),
+    url(r'^shipments/export/', 'shipment__export', name='shipment__export'),
+
+    ## controls
+    # attributes
+
+    # brands
+
+    # categories
+
+    # contacts
+
+    # contact labels
+
+    # cost adj reasons
+
+    # quantity adj reasons
+
+    # receivers
+
+    # suppliers
 )
