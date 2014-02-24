@@ -67,7 +67,7 @@ class Sku(models.Model):
 
     class Meta:
         unique_together = (
-            ('brand', 'mfr_sku')
+            ('brand', 'supplier_sku')
         )
 
     # id
@@ -114,7 +114,7 @@ class Sku(models.Model):
     def get_absolute_url(self):
         return reverse('app:sku__view', args=[str(self.pk)])
 
-    def __str__(self):
+    def _attributes(self):
         attrs = []
         qs = SkuAttribute.objects.filter(sku=self)
         for obj in qs:
@@ -124,6 +124,11 @@ class Sku(models.Model):
                 attrs.append('(%s) %s' % (obj.attribute.name.split()[0], obj.value.strftime('%x')))
             else:
                 attrs.append(obj.value)
+        return attrs
+    attributes = property(_attributes)
+
+    def __str__(self):
+        attrs = self.attributes
         if len(attrs):
             return '[%d] %s : %s' % (self.id, self.name, ', '.join(attrs))
         else:

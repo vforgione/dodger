@@ -1,0 +1,42 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+<div class="table-responsive">
+
+{% if adj %}
+<h3>Detail View of Quantity Adjustment #{{ adj.id }}</h3>
+<table class="table">
+  <tbody>
+  <tr><th>When</th><td>{{ adj.when }}</td></tr>
+  <tr><th>Who</th><td>{{ adj.who.username }}</td></tr>
+  <tr><th>SKU</th><td><a href="{{ adj.sku.get_absolute_url }}">{{ adj.sku }}</a></td></tr>
+  <tr><th>Old Cost</th><td>{{ adj.old }}</td></tr>
+  <tr><th>New Cost</th><td>{{ adj.new }}</td></tr>
+  <tr><th>Reason</th><td>{{ adj.reason }}</td></tr>
+  <tr><th>Detail</th><td>{{ adj.detail|safe }}</td></tr>
+  </tbody>
+</table>
+<a class="btn btn-primary default" href="{% url 'app:quantity_adjustment__view' %}">Back To List</a>
+
+{% elif adjs %}
+<h3>View Quantity Adjustments</h3>
+<table class="table table-striped">
+  <thead>
+  <tr><th>&nbsp;</th><th>When</th><th>Who</th></tr>
+  </thead>
+  <tbody>
+  {% for adj in adjs %}
+  <tr>
+    <td><a href="{{ adj.get_absolute_url }}">{{ adj }}</a></td><td>{{ adj.when }}</td><td>{{ adj.who.username }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+<h3>View Quantity Adjustments</h3>
+<p>No data received.</p>
+
+{% endif %}
+</div>
+{% endblock %}

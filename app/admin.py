@@ -23,7 +23,7 @@ class PurchaseOrderEndpointAdmin(admin.ModelAdmin):
 class SkuAttributeInline(admin.TabularInline):
 
     model = SkuAttribute
-    exclude = 8
+    extra = 8
 
 
 class SkuAdmin(admin.ModelAdmin):

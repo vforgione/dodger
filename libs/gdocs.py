@@ -15,7 +15,7 @@ from django.db.utils import IntegrityError
 from django.contrib.auth.models import User
 import gspread
 
-from app.models import Sku, QuantityAdjustmentReason, SkuQuantityAdjustment, \
+from app.models import Sku, QuantityAdjustmentReason, QuantityAdjustment, \
     Supplier, Brand, Category, Attribute, SkuAttribute
 
 
@@ -115,7 +115,7 @@ def rip_doc(doc):
             except:
                 qty = sku.qty_on_hand
             if sku.qty_on_hand != qty:
-                adj = SkuQuantityAdjustment()
+                adj = QuantityAdjustment()
                 adj.sku = sku
                 adj.who = User.objects.get(username='vince@doggyloot.com')
                 adj.reason = QuantityAdjustmentReason.objects.get(name='Tracker Sync')

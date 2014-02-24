@@ -40,41 +40,40 @@
         {% if user.is_active and user.is_authenticated %}
         <div class="navbar-collapse collapse navbar-left">
           <ul class="nav navbar-nav">
-            <li class="dropdown" id="warehouse-header">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Warehouse<b class="caret"></b></a>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Shipments<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li class="dropdown-header">Sku Qty Adjustments</li>
-                <li><a href="{% url 'app:sku_qty_adj__view' %}">View Adjustments</a></li>
-                <li><a href="{% url 'app:sku_qty_adj__create' %}">Make an Adjustment</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Shipments</li>
                 <li><a href="{% url 'app:shipment__view' %}">View Shipments</a></li>
                 <li><a href="{% url 'app:shipment__create' %}">Checkin a Shipment</a></li>
+                <li><a href="{% url 'app:shipment__update' %}">Update a Shipment</a></li>
+                <li><a href="#">Export Shipment Data</a></li>
               </ul>
             </li>
-            <li class="dropdown" id="dat-header">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">DAT<b class="caret"></b></a>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Purchase Orders<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li class="dropdown-header">Purchase Orders</li>
-                <li><a href="{% url 'app:po__view' %}">View Purchase Orders</a></li>
-                <li><a href="{% url 'app:po__create' %}">Create a Purchase Order</a></li>
+                <li><a href="{% url 'app:purchase_order__view' %}">View Purchase Orders</a></li>
+                <li><a href="{% url 'app:purchase_order__create' %}">Create a Purchase Orders</a></li>
+                <li><a href="{% url 'app:purchase_order__update' %}">Update a Purchase Orders</a></li>
+                <li><a href="#">Export Purchase Order Data</a></li>
               </ul>
             </li>
-            <li class="dropdown" id="skus-header">
+            <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">SKU Manager<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li class="dropdown-header">SKUs</li>
                 <li><a href="{% url 'app:sku__view' %}">View SKUs</a></li>
-                <li><a href="{% url 'app:sku__create' %}">Create a New SKU</a></li>
-                <li><a href="{% url 'app:sku__update' %}">Update SKUs</a></li>
-              </ul>
-            </li>
-            <li class="dropdown" id="reporting-header">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reporting<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="dropdown-header">Spreadsheets</li>
-                <li><a href="{% url 'app:po__export' %}">Export POs</a></li>
-                <li><a href="{% url 'app:sku__table' %}">Export SKUs</a></li>
+                <li><a href="{% url 'app:sku__create' %}">Create a SKU</a></li>
+                <li><a href="{% url 'app:sku__update' %}">Update a SKU</a></li>
+                <li><a href="#">Export SKU Data</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Quantity Adjustments</li>
+                <li><a href="{% url 'app:quantity_adjustment__view' %}">View Qty Adjustments</a></li>
+                <li><a href="{% url 'app:quantity_adjustment__create' %}">Create Qty Adjustment</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Cost Adjustments</li>
+                <li><a href="{% url 'app:cost_adjustment__view' %}">View Cost Adjustments</a></li>
+                <li><a href="{% url 'app:cost_adjustment__create' %}">Create Cost Adjustment</a></li>
               </ul>
             </li>
           </ul>

@@ -1,0 +1,55 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+<div class="table-responsive">
+
+{% if ship %}
+<h3>Detail View of Shipment #{{ ship.id }}</h3>
+<table class="table">
+<tbody>
+  <tr><th>Creator</th><td>{{ ship.creator.username }}</td></tr>
+  <tr><th>Purchase Order</th><td></td></tr>
+  <tr><th>Note</th><td>{{ ship.note|safe }}</td></tr>
+  <tr><th>Date Created</th><td>{{ ship.created }}</td></tr>
+</tbody>
+</table>
+<a class="btn btn-primary default" href="{% url 'app:purchase_order__view' %}">Back To List</a>
+<a class="btn btn-danger pull-right" href="{% url 'app:purchase_order__update' ship.pk %}">Modify This ship</a>
+
+{% elif ships %}
+<h3>View Shipments</h3>
+<table class="table table-striped">
+<thead>
+  <tr><th>&nbsp;</th><th>PO Ref</th><th>Date Created</th></tr>
+</thead>
+<tbody>
+  {% for ship in ships %}
+  <tr><td><a href="{{ ship.get_absolute_url }}">{{ ship }}</a></td><td><a href="{{ ship.purchase_order.get_absolute_url }}">{{ ship.purchase_order }}</a></td><td>{{ ship.create }}</td></tr>
+  {% endfor %}
+</tbody>
+</table>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      {% if ships.has_previous %}
+      <a href="?page={{ ships.previous_page_number }}" class="btn btn-primary">&laquo; Previous</a>
+      {% endif %}
+    </div>
+    <div class="col-lg-4">
+      Page {{ ships.number }} of {{ ships.paginator.num_pages }}
+    </div>
+    <div class="col-lg-4">
+      {% if ships.has_next %}
+      <a href="?page={{ ships.next_page_number }}" class="btn btn-primary">&raquo; Previous</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% else %}
+<h3>View Shipments</h3>
+<p>No data received.</p>
+
+{% endif %}
+</div>
+{% endblock %}

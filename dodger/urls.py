@@ -27,7 +27,7 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
 
     # api
-    url(r'^api/', include('app.api')),
+    url(r'^api/', include('app.urls')),
 
     # app views
     url(r'^', include('app.urls', namespace='app')),

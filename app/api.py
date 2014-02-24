@@ -87,43 +87,6 @@ class SupplierResource(ControlModelResource):
         queryset = Supplier.objects.all()
 
 
-# adjustment model resources
-class AdjustmentModelResource(SecureResource):
-
-    sku = fields.ForeignKey(SkuResource, 'sku')
-    who = fields.ForeignKey(UserResource, 'who')
-
-    class Meta:
-        filtering = {
-            'id': ALL,
-            'sku': ALL_WITH_RELATIONS,
-            'old': ALL,
-            'new': ALL,
-            'who': ALL_WITH_RELATIONS,
-            'reason': ALL_WITH_RELATIONS,
-            'detail': ALL,
-            'created': ALL,
-        }
-
-
-class CostAdjustmentResource(AdjustmentModelResource):
-
-    reason = fields.ForeignKey(CostAdjustmentReasonResource, 'reason')
-
-    class Meta:
-        resource_name = 'cost_adjustments'
-        queryset = CostAdjustment.objects.all()
-
-
-class QuantityAdjustmentResource(AdjustmentModelResource):
-
-    reason = fields.ForeignKey(QuantityAdjustmentReasonResource, 'reason')
-
-    class Meta:
-        resource_name = 'quantity_adjustments'
-        queryset = QuantityAdjustment.objects.all()
-
-
 # po endpoint model resources
 class PurchaseOrderEndpointModelResource(SecureResource):
 
@@ -149,13 +112,22 @@ class ContactResource(PurchaseOrderEndpointModelResource):
     class Meta:
         resource_name = 'contacts'
         queryset = Contact.objects.all()
-        filtering.update({
+        filtering = {
+            'id': ALL,
+            'name': ALL,
+            'address1': ALL,
+            'address2': ALL,
+            'address3': ALL,
+            'city': ALL,
+            'state': ALL,
+            'zipcode': ALL,
+            'country': ALL,
             'email': ALL,
             'phone': ALL,
             'fax': ALL,
             'represents': ALL_WITH_RELATIONS,
             'label': ALL_WITH_RELATIONS,
-        })
+        }
 
 
 class ReceiverResource(PurchaseOrderEndpointModelResource):
@@ -286,3 +258,40 @@ class ShipmentLineItemResource(SecureResource):
             'sku': ALL_WITH_RELATIONS,
             'quantity_received': ALL,
         }
+
+
+# adjustment model resources
+class AdjustmentModelResource(SecureResource):
+
+    sku = fields.ForeignKey(SkuResource, 'sku')
+    who = fields.ForeignKey(UserResource, 'who')
+
+    class Meta:
+        filtering = {
+            'id': ALL,
+            'sku': ALL_WITH_RELATIONS,
+            'old': ALL,
+            'new': ALL,
+            'who': ALL_WITH_RELATIONS,
+            'reason': ALL_WITH_RELATIONS,
+            'detail': ALL,
+            'created': ALL,
+        }
+
+
+class CostAdjustmentResource(AdjustmentModelResource):
+
+    reason = fields.ForeignKey(CostAdjustmentReasonResource, 'reason')
+
+    class Meta:
+        resource_name = 'cost_adjustments'
+        queryset = CostAdjustment.objects.all()
+
+
+class QuantityAdjustmentResource(AdjustmentModelResource):
+
+    reason = fields.ForeignKey(QuantityAdjustmentReasonResource, 'reason')
+
+    class Meta:
+        resource_name = 'quantity_adjustments'
+        queryset = QuantityAdjustment.objects.all()

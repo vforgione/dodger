@@ -1,0 +1,36 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+<h3>Create a Purchase Order</h3>
+<form action="." method="post">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field.errors }}{{ field }}
+  </div>
+  {% endfor %}
+  {{ formset.management_form }}
+  <div class="table-responsive">
+    <table class="table table-condensed">
+    <thead>
+        <tr><th>SKU</th><th>Qty Ordered</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th></tr>
+      </thead>
+      <tbody>
+        {% for field in form %}
+        <tr>
+          {% if forloop.counter == 1 %}
+          <td class="col-lg-4">{{ field }}</td>
+          {% elif forloop.counter < 6 %}
+          <td class="col-lg-2">{{ field }}</td>
+          {% else %}
+          <td style="display:none">{{ field }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <input type="submit" name="submit" value="Create PO" class="btn btn-primary" />
+  <a href="{% url 'app:purchase_order__view' %}" class="btn btn-danger pull-right">Cancel</a>
+</form>
+{% endblock %}

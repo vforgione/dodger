@@ -1,0 +1,69 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+{% if po %}
+<h3>Update Shipment {{ po }}</h3>
+<form action="." method="post">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field.errors }}{{ field }}
+  </div>
+  {% endfor %}
+  {{ formset.management_form }}
+  <div class="table-responsive">
+    <table class="table table-condensed">
+    <thead>
+        <tr><th>SKU</th><th>Qty Received</th></tr>
+      </thead>
+      <tbody>
+        {% for field in form %}
+        <tr>
+          {% if forloop.counter < 3 %}
+          <td class="col-lg-6">{{ field }}</td>
+          {% else %}
+          <td style="display:none">{{ field }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <input type="submit" name="submit" value="Create Shipment" class="btn btn-primary" />
+  <a href="{% url 'app:shipment__view' %}" class="btn btn-danger pull-right">Cancel</a>
+</form>
+
+{% else %}
+<div class="table-responsive">
+<h3>Select a Purchase Order to Update</h3>
+<table class="table table-striped">
+<thead>
+  <tr><th>&nbsp;</th><th>PO Ref</th><th>Date Created</th></tr>
+</thead>
+<tbody>
+  {% for ship in ships %}
+  <tr><td><a href="{% url 'app:shipment__updated' ship.pk %}">{{ ship }}</a></td><td><a href="{{ ship.purchase_order.get_absolute_url }}">{{ ship.purchase_order }}</a></td><td>{{ ship.create }}</td></tr>
+  {% endfor %}
+</tbody>
+</table>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      {% if ships.has_previous %}
+      <a href="?page={{ ships.previous_page_number }}" class="btn btn-primary">&laquo; Previous</a>
+      {% endif %}
+    </div>
+    <div class="col-lg-4">
+      Page {{ ships.number }} of {{ ships.paginator.num_pages }}
+    </div>
+    <div class="col-lg-4">
+      {% if ships.has_next %}
+      <a href="?page={{ ships.next_page_number }}" class="btn btn-primary">&raquo; Previous</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+</div>
+
+{% endif %}
+{% endblock %}

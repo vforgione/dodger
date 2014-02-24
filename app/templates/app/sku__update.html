@@ -1,0 +1,85 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+{% if sku %}
+<h3>Update SKU {{ sku.id }}</h3>
+<form action="." method="post">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field.errors }}{{ field }}
+  </div>
+  {% endfor %}
+  {{ formset.management_form }}
+  <div class="table-responsive">
+    <table class="table table-condensed">
+    <thead>
+      <tr><th>Attribute</th><th>Value</th></tr>
+    </thead>
+    <tbody>
+      {% for form in formset %}
+      <tr>
+        {% for field in form %}
+        {% if forloop.counter < 3 %}
+        <td class="col-lg-6">{{ field }}{{ field.errors }}</td>
+        {% else %}
+        <td style="display:none">{{ field }}{{ field.errors }}</td>
+        {% endif %}
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+  <input type="submit" name="submit" value="Create SKU" class="btn btn-primary" />
+  <a href="{% url 'app:sku__view' %}" class="btn btn-danger pull-right">Cancel</a>
+</form>
+
+{% else %}
+<h3>Select a SKU to Updated</h3>
+<div class="table-responsive">
+  <table class="table table-striped">
+  <thead>
+    <tr><th>&nbsp;</th><th>Qty on Hand</th><th>Location</th><th>Owner</th></tr>
+  </thead>
+  <tbody>
+    {% for sku in skus %}
+    <tr><td><a href="{% url 'app:sku__update' sku.pk %}">{{ sku }}</a></td><td>{{ sku.quantity_on_hand }}</td><td>{{ sku.location }}</td><td>{{ sku.owner.username }}</td></tr>
+    {% endfor %}
+  </tbody>
+  </table>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      {% if skus.has_previous %}
+      <a href="?page={{ skus.previous_page_number }}" class="btn btn-primary">&laquo; Previous</a>
+      {% endif %}
+    </div>
+    <div class="col-lg-4">
+      Page {{ skus.number }} of {{ skus.paginator.num_pages }}
+    </div>
+    <div class="col-lg-4">
+      {% if skus.has_next %}
+      <a href="?page={{ skus.next_page_number }}" class="btn btn-primary">&raquo; Previous</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endif %}
+{% endblock %}
+
+{% block contentjs %}
+<script>
+$(document).ready(function(){
+
+  // add classes to check boxes
+  $('#id_notify_at_threshold').addClass('form-control');
+  $('#id_in_live_deal').addClass('form-control');
+
+  // TODO: optimize brands based on supplier
+
+});
+</script>
+{% endblock %}

@@ -8,19 +8,12 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Supplier'
-        db.create_table(u'app_supplier', (
+        # Adding model 'Attribute'
+        db.create_table(u'app_attribute', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
         ))
-        db.send_create_signal(u'app', ['Supplier'])
-
-        # Adding model 'Category'
-        db.create_table(u'app_category', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
-        ))
-        db.send_create_signal(u'app', ['Category'])
+        db.send_create_signal(u'app', ['Attribute'])
 
         # Adding model 'Brand'
         db.create_table(u'app_brand', (
@@ -29,32 +22,65 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'app', ['Brand'])
 
-        # Adding model 'Attribute'
-        db.create_table(u'app_attribute', (
+        # Adding model 'Category'
+        db.create_table(u'app_category', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
         ))
-        db.send_create_signal(u'app', ['Attribute'])
+        db.send_create_signal(u'app', ['Category'])
+
+        # Adding model 'ContactLabel'
+        db.create_table(u'app_contactlabel', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
+        ))
+        db.send_create_signal(u'app', ['ContactLabel'])
+
+        # Adding model 'CostAdjustmentReason'
+        db.create_table(u'app_costadjustmentreason', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
+        ))
+        db.send_create_signal(u'app', ['CostAdjustmentReason'])
+
+        # Adding model 'QuantityAdjustmentReason'
+        db.create_table(u'app_quantityadjustmentreason', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
+        ))
+        db.send_create_signal(u'app', ['QuantityAdjustmentReason'])
+
+        # Adding model 'Supplier'
+        db.create_table(u'app_supplier', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
+        ))
+        db.send_create_signal(u'app', ['Supplier'])
 
         # Adding model 'Sku'
         db.create_table(u'app_sku', (
             ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('supplier', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.Supplier'])),
+            ('upc', self.gf('django.db.models.fields.CharField')(max_length=255, unique=True, null=True, blank=True)),
             ('brand', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.Brand'])),
-            ('owner', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('reorder_threshold', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
-            ('notify_at_threshold', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('price', self.gf('django.db.models.fields.DecimalField')(max_digits=10, decimal_places=2)),
-            ('cost', self.gf('django.db.models.fields.DecimalField')(max_digits=10, decimal_places=2)),
-            ('mfr_sku', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('case_qty', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('quantity_on_hand', self.gf('django.db.models.fields.IntegerField')()),
             ('location', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('qty_on_hand', self.gf('django.db.models.fields.IntegerField')()),
+            ('owner', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('supplier', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.Supplier'])),
+            ('lead_time', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('minimum_quantity', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('notify_at_threshold', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('cost', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
+            ('supplier_sku', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
+            ('case_quantity', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('in_live_deal', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
         ))
         db.send_create_signal(u'app', ['Sku'])
+
+        # Adding unique constraint on 'Sku', fields ['brand', 'supplier_sku']
+        db.create_unique(u'app_sku', ['brand_id', 'supplier_sku'])
 
         # Adding M2M table for field categories on 'Sku'
         m2m_table_name = db.shorten_name(u'app_sku_categories')
@@ -77,15 +103,21 @@ class Migration(SchemaMigration):
         # Adding unique constraint on 'SkuAttribute', fields ['sku', 'attribute']
         db.create_unique(u'app_skuattribute', ['sku_id', 'attribute_id'])
 
-        # Adding model 'QuantityAdjustmentReason'
-        db.create_table(u'app_quantityadjustmentreason', (
+        # Adding model 'CostAdjustment'
+        db.create_table(u'app_costadjustment', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
+            ('sku', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.Sku'])),
+            ('old', self.gf('django.db.models.fields.FloatField')()),
+            ('new', self.gf('django.db.models.fields.FloatField')()),
+            ('who', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('reason', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.CostAdjustmentReason'])),
+            ('detail', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
-        db.send_create_signal(u'app', ['QuantityAdjustmentReason'])
+        db.send_create_signal(u'app', ['CostAdjustment'])
 
-        # Adding model 'SkuQuantityAdjustment'
-        db.create_table(u'app_skuquantityadjustment', (
+        # Adding model 'QuantityAdjustment'
+        db.create_table(u'app_quantityadjustment', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('sku', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.Sku'])),
             ('old', self.gf('django.db.models.fields.IntegerField')()),
@@ -93,22 +125,15 @@ class Migration(SchemaMigration):
             ('who', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('reason', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.QuantityAdjustmentReason'])),
             ('detail', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('when', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
-        db.send_create_signal(u'app', ['SkuQuantityAdjustment'])
-
-        # Adding model 'ContactLabel'
-        db.create_table(u'app_contactlabel', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
-        ))
-        db.send_create_signal(u'app', ['ContactLabel'])
+        db.send_create_signal(u'app', ['QuantityAdjustment'])
 
         # Adding model 'Contact'
         db.create_table(u'app_contact', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('email', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('email', self.gf('django.db.models.fields.EmailField')(max_length=255)),
             ('phone', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('fax', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
             ('address1', self.gf('django.db.models.fields.CharField')(max_length=255)),
@@ -143,12 +168,14 @@ class Migration(SchemaMigration):
         # Adding model 'PurchaseOrder'
         db.create_table(u'app_purchaseorder', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('creator', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('supplier', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.Supplier'])),
             ('contact', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.Contact'])),
             ('receiver', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.Receiver'])),
-            ('creator', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('comments', self.gf('django.db.models.fields.TextField')()),
+            ('note', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('expected_arrival', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
+            ('terms', self.gf('django.db.models.fields.CharField')(max_length=255)),
         ))
         db.send_create_signal(u'app', ['PurchaseOrder'])
 
@@ -157,18 +184,20 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('purchase_order', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.PurchaseOrder'])),
             ('sku', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.Sku'])),
-            ('disc_dollar', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
-            ('disc_percent', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
-            ('qty_ordered', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('quantity_ordered', self.gf('django.db.models.fields.IntegerField')()),
+            ('unit_cost', self.gf('django.db.models.fields.FloatField')()),
+            ('discount_percent', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
+            ('discount_dollar', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
         ))
         db.send_create_signal(u'app', ['PurchaseOrderLineItem'])
 
         # Adding model 'Shipment'
         db.create_table(u'app_shipment', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('creator', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('purchase_order', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.PurchaseOrder'])),
-            ('received_by', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('received_on', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('note', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
         db.send_create_signal(u'app', ['Shipment'])
 
@@ -177,7 +206,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('shipment', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.Shipment'])),
             ('sku', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.Sku'])),
-            ('qty_received', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('quantity_received', self.gf('django.db.models.fields.IntegerField')()),
         ))
         db.send_create_signal(u'app', ['ShipmentLineItem'])
 
@@ -189,17 +218,29 @@ class Migration(SchemaMigration):
         # Removing unique constraint on 'SkuAttribute', fields ['sku', 'attribute']
         db.delete_unique(u'app_skuattribute', ['sku_id', 'attribute_id'])
 
-        # Deleting model 'Supplier'
-        db.delete_table(u'app_supplier')
+        # Removing unique constraint on 'Sku', fields ['brand', 'supplier_sku']
+        db.delete_unique(u'app_sku', ['brand_id', 'supplier_sku'])
 
-        # Deleting model 'Category'
-        db.delete_table(u'app_category')
+        # Deleting model 'Attribute'
+        db.delete_table(u'app_attribute')
 
         # Deleting model 'Brand'
         db.delete_table(u'app_brand')
 
-        # Deleting model 'Attribute'
-        db.delete_table(u'app_attribute')
+        # Deleting model 'Category'
+        db.delete_table(u'app_category')
+
+        # Deleting model 'ContactLabel'
+        db.delete_table(u'app_contactlabel')
+
+        # Deleting model 'CostAdjustmentReason'
+        db.delete_table(u'app_costadjustmentreason')
+
+        # Deleting model 'QuantityAdjustmentReason'
+        db.delete_table(u'app_quantityadjustmentreason')
+
+        # Deleting model 'Supplier'
+        db.delete_table(u'app_supplier')
 
         # Deleting model 'Sku'
         db.delete_table(u'app_sku')
@@ -210,14 +251,11 @@ class Migration(SchemaMigration):
         # Deleting model 'SkuAttribute'
         db.delete_table(u'app_skuattribute')
 
-        # Deleting model 'QuantityAdjustmentReason'
-        db.delete_table(u'app_quantityadjustmentreason')
+        # Deleting model 'CostAdjustment'
+        db.delete_table(u'app_costadjustment')
 
-        # Deleting model 'SkuQuantityAdjustment'
-        db.delete_table(u'app_skuquantityadjustment')
-
-        # Deleting model 'ContactLabel'
-        db.delete_table(u'app_contactlabel')
+        # Deleting model 'QuantityAdjustment'
+        db.delete_table(u'app_quantityadjustment')
 
         # Deleting model 'Contact'
         db.delete_table(u'app_contact')
@@ -261,7 +299,7 @@ class Migration(SchemaMigration):
             'address3': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'city': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'country': ('django.db.models.fields.CharField', [], {'default': "u'United States'", 'max_length': '255'}),
-            'email': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'email': ('django.db.models.fields.EmailField', [], {'max_length': '255'}),
             'fax': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'label': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.ContactLabel']"}),
@@ -276,24 +314,54 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
         },
+        u'app.costadjustment': {
+            'Meta': {'object_name': 'CostAdjustment'},
+            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'detail': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'new': ('django.db.models.fields.FloatField', [], {}),
+            'old': ('django.db.models.fields.FloatField', [], {}),
+            'reason': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.CostAdjustmentReason']"}),
+            'sku': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Sku']"}),
+            'who': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
+        u'app.costadjustmentreason': {
+            'Meta': {'object_name': 'CostAdjustmentReason'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
+        },
         u'app.purchaseorder': {
             'Meta': {'object_name': 'PurchaseOrder'},
-            'comments': ('django.db.models.fields.TextField', [], {}),
             'contact': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Contact']"}),
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'creator': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
+            'expected_arrival': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'note': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'receiver': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Receiver']"}),
-            'supplier': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Supplier']"})
+            'supplier': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Supplier']"}),
+            'terms': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
         u'app.purchaseorderlineitem': {
             'Meta': {'object_name': 'PurchaseOrderLineItem'},
-            'disc_dollar': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'disc_percent': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
+            'discount_dollar': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
+            'discount_percent': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'purchase_order': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.PurchaseOrder']"}),
-            'qty_ordered': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'sku': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Sku']"})
+            'quantity_ordered': ('django.db.models.fields.IntegerField', [], {}),
+            'sku': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Sku']"}),
+            'unit_cost': ('django.db.models.fields.FloatField', [], {})
+        },
+        u'app.quantityadjustment': {
+            'Meta': {'object_name': 'QuantityAdjustment'},
+            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'detail': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'new': ('django.db.models.fields.IntegerField', [], {}),
+            'old': ('django.db.models.fields.IntegerField', [], {}),
+            'reason': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.QuantityAdjustmentReason']"}),
+            'sku': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Sku']"}),
+            'who': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
         u'app.quantityadjustmentreason': {
             'Meta': {'object_name': 'QuantityAdjustmentReason'},
@@ -314,36 +382,39 @@ class Migration(SchemaMigration):
         },
         u'app.shipment': {
             'Meta': {'object_name': 'Shipment'},
+            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'creator': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'purchase_order': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.PurchaseOrder']"}),
-            'received_by': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
-            'received_on': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'})
+            'note': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'purchase_order': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.PurchaseOrder']"})
         },
         u'app.shipmentlineitem': {
             'Meta': {'object_name': 'ShipmentLineItem'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'qty_received': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'quantity_received': ('django.db.models.fields.IntegerField', [], {}),
             'shipment': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Shipment']"}),
             'sku': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Sku']"})
         },
         u'app.sku': {
-            'Meta': {'object_name': 'Sku'},
+            'Meta': {'unique_together': "((u'brand', u'supplier_sku'),)", 'object_name': 'Sku'},
             'brand': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Brand']"}),
-            'case_qty': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'case_quantity': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'categories': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['app.Category']", 'symmetrical': 'False'}),
-            'cost': ('django.db.models.fields.DecimalField', [], {'max_digits': '10', 'decimal_places': '2'}),
+            'cost': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'}),
+            'in_live_deal': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'lead_time': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'location': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'mfr_sku': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'minimum_quantity': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'notify_at_threshold': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'notify_at_threshold': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'owner': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
-            'price': ('django.db.models.fields.DecimalField', [], {'max_digits': '10', 'decimal_places': '2'}),
-            'qty_on_hand': ('django.db.models.fields.IntegerField', [], {}),
-            'reorder_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'supplier': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Supplier']"})
+            'quantity_on_hand': ('django.db.models.fields.IntegerField', [], {}),
+            'supplier': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Supplier']"}),
+            'supplier_sku': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'upc': ('django.db.models.fields.CharField', [], {'max_length': '255', 'unique': 'True', 'null': 'True', 'blank': 'True'})
         },
         u'app.skuattribute': {
             'Meta': {'unique_together': "((u'sku', u'attribute'),)", 'object_name': 'SkuAttribute'},
@@ -351,17 +422,6 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'sku': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Sku']"}),
             'value': ('django.db.models.fields.CharField', [], {'max_length': '255'})
-        },
-        u'app.skuquantityadjustment': {
-            'Meta': {'object_name': 'SkuQuantityAdjustment'},
-            'detail': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'new': ('django.db.models.fields.IntegerField', [], {}),
-            'old': ('django.db.models.fields.IntegerField', [], {}),
-            'reason': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.QuantityAdjustmentReason']"}),
-            'sku': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Sku']"}),
-            'when': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'who': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
         u'app.supplier': {
             'Meta': {'object_name': 'Supplier'},

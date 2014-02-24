@@ -1,9 +1,9 @@
 [
 {
-  "pk": 1, 
-  "model": "app.supplier", 
+  "pk": 1,
+  "model": "app.supplier",
   "fields": {
-    "name": "(Unknown)"
+    "name": "(unknown)"
   }
 }
 ]

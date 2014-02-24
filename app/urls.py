@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import include, patterns, url
 from tastypie.api import Api
 
 from api import *
@@ -39,14 +39,12 @@ urlpatterns += patterns(
     # cost adjustments
     url(r'^cost_adjustments(?:/(?P<pk>\d+))?/', 'cost_adjustment__view', name='cost_adjustment__view'),
     url(r'^cost_adjustments/create/', 'cost_adjustment__create', name='cost_adjustment__create'),
-    url(r'^cost_adjustments/update(?:/(?P<pk>\d+))?/', 'cost_adjustment__update', name='cost_adjustment__update'),
     url(r'^cost_adjustments/table/', 'cost_adjustment__table', name='cost_adjustment__table'),
     url(r'^cost_adjustments/export/', 'cost_adjustment__export', name='cost_adjustment__export'),
 
     # quantity adjustments
     url(r'^quantity_adjustments(?:/(?P<pk>\d+))?/', 'quantity_adjustment__view', name='quantity_adjustment__view'),
     url(r'^quantity_adjustments/create/', 'quantity_adjustment__create', name='quantity_adjustment__create'),
-    url(r'^quantity_adjustments/update(?:/(?P<pk>\d+))?/', 'quantity_adjustment__update', name='quantity_adjustment__update'),
     url(r'^quantity_adjustments/table/', 'quantity_adjustment__table', name='quantity_adjustment__table'),
     url(r'^quantity_adjustments/export/', 'quantity_adjustment__export', name='quantity_adjustment__export'),
 
