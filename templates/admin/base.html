@@ -65,35 +65,7 @@
 
           <div class="navbar-collapse collapse navbar-left">
             <ul class="nav navbar-nav">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">App<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="/admin/app/">Main Page</a></li>
-                  <li class="divider"></li>
-                  <li class="dropdown-header">SKUs &amp; Attributes</li>
-                  <li><a href="/admin/app/sku/">Skus</a></li>
-                  <li><a href="/admin/app/attribute/">Attributes</a></li>
-                  <li><a href="/admin/app/skuattribute/">Sku Attributes</a></li>
-                  <li><a href="/admin/app/brand/">Brands</a></li>
-                  <li><a href="/admin/app/category/">Categories</a></li>
-                  <li class="divider"></li>
-                  <li class="dropdown-header">POs &amp; Shipments</li>
-                  <li><a href="/admin/app/purchaseorder/">Purchase Orders</a></li>
-                  <li><a href="/admin/app/shipment/">Shipments</a></li>
-                  <li><a href="/admin/app/purchaseorderlineitem/">PO Line Items</a></li>
-                  <li><a href="/admin/app/shipmentlineitem/">Shipment Line Items</a></li>
-                  <li class="divider"></li>
-                  <li class="dropdown-header">SKU Adjustments</li>
-                  <li><a href="/admin/app/skuquantityadjustment/">Quantity Adjs</a></li>
-                  <li><a href="/admin/app/quantityadjustmentreason/">Qty Adj Reasons</a></li>
-                  <li class="divider"></li>
-                  <li class="dropdown-header">Suppliers &amp; Contacts</li>
-                  <li><a href="/admin/app/supplier/">Suppliers</a></li>
-                  <li><a href="/admin/app/contact/">Contacts</a></li>
-                  <li><a href="/admin/app/contactlabel/">Contact Labels</a></li>
-                  <li><a href="/admin/app/receiver/">Receivers</a></li>
-                </ul>
-              </li>
+              <li><a href="/admin/app/">App</a></li>
               {% if user.is_superuser %}
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auth<b class="caret"></b></a>
@@ -118,7 +90,7 @@
 
           <div class="navbar-collapse collapse navbar-right">
             <ul class="nav navbar-nav">
-              <li><a href="/">Dodger Main Site</a></li>
+              <li><a href="/" target="_blank">Dodger Main Site</a></li>
               <li><a href="/accounts/logout/">{% trans 'Logout' %}</a></li>
             </ul>
 

@@ -17,8 +17,9 @@
         <tr><th>SKU</th><th>Qty Ordered</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th></tr>
       </thead>
       <tbody>
-        {% for field in form %}
+      {% for form in formset %}
         <tr>
+        {% for field in form %}
           {% if forloop.counter == 1 %}
           <td class="col-lg-4">{{ field }}</td>
           {% elif forloop.counter < 6 %}
@@ -26,14 +27,16 @@
           {% else %}
           <td style="display:none">{{ field }}</td>
           {% endif %}
-        </tr>
         {% endfor %}
+        </tr>
+      {% endfor %}
       </tbody>
     </table>
   </div>
   <input type="submit" name="submit" value="Create PO" class="btn btn-primary" />
   <a href="{% url 'app:purchase_order__view' %}" class="btn btn-danger pull-right">Cancel</a>
 </form>
+
 {% else %}
 <div class="table-responsive">
 <h3>Select a Purchase Order to Update</h3>

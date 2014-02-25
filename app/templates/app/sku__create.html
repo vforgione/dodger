@@ -19,7 +19,7 @@
       {% for form in formset %}
       <tr>
         {% for field in form %}
-        {% if forloop.counter < 3 %}
+        {% if forloop.counter < 4 and forloop.counter != 1 %}
         <td class="col-lg-6">{{ field }}{{ field.errors }}</td>
         {% else %}
         <td style="display:none">{{ field }}{{ field.errors }}</td>

@@ -43,6 +43,10 @@ class AttributeResource(ControlModelResource):
     class Meta:
         resource_name = 'attributes'
         queryset = Attribute.objects.all()
+        filtering = {
+            'id': ALL,
+            'name': ALL,
+        }
 
 
 class BrandResource(ControlModelResource):
@@ -50,6 +54,10 @@ class BrandResource(ControlModelResource):
     class Meta:
         resource_name = 'brands'
         queryset = Brand.objects.all()
+        filtering = {
+            'id': ALL,
+            'name': ALL,
+        }
 
 
 class CategoryResource(ControlModelResource):
@@ -57,6 +65,10 @@ class CategoryResource(ControlModelResource):
     class Meta:
         resource_name = 'categories'
         queryset = Category.objects.all()
+        filtering = {
+            'id': ALL,
+            'name': ALL,
+        }
 
 
 class ContactLabelResource(ControlModelResource):
@@ -64,6 +76,10 @@ class ContactLabelResource(ControlModelResource):
     class Meta:
         resource_name = 'contact_labels'
         queryset = ContactLabel.objects.all()
+        filtering = {
+            'id': ALL,
+            'name': ALL,
+        }
 
 
 class CostAdjustmentReasonResource(ControlModelResource):
@@ -71,6 +87,10 @@ class CostAdjustmentReasonResource(ControlModelResource):
     class Meta:
         resource_name = 'cost_adjustment_reasons'
         queryset = CostAdjustmentReason.objects.all()
+        filtering = {
+            'id': ALL,
+            'name': ALL,
+        }
 
 
 class QuantityAdjustmentReasonResource(ControlModelResource):
@@ -78,6 +98,10 @@ class QuantityAdjustmentReasonResource(ControlModelResource):
     class Meta:
         resource_name = 'quantity_adjustment_reasons'
         queryset = QuantityAdjustmentReason.objects.all()
+        filtering = {
+            'id': ALL,
+            'name': ALL,
+        }
 
 
 class SupplierResource(ControlModelResource):
@@ -85,6 +109,10 @@ class SupplierResource(ControlModelResource):
     class Meta:
         resource_name = 'suppliers'
         queryset = Supplier.objects.all()
+        filtering = {
+            'id': ALL,
+            'name': ALL,
+        }
 
 
 # po endpoint model resources
@@ -144,6 +172,7 @@ class SkuResource(SecureResource):
     categories = fields.ManyToManyField(CategoryResource, 'categories')
     owner = fields.ForeignKey(UserResource, 'owner')
     supplier = fields.ForeignKey(SupplierResource, 'supplier')
+    description = fields.CharField(attribute='_description', readonly=True)
 
     class Meta:
         resource_name = 'skus'
@@ -295,3 +324,36 @@ class QuantityAdjustmentResource(AdjustmentModelResource):
     class Meta:
         resource_name = 'quantity_adjustments'
         queryset = QuantityAdjustment.objects.all()
+
+
+# url conf
+from django.conf.urls import include, patterns, url
+from tastypie.api import Api
+from api import *
+
+auth_api = Api(api_name='auth')
+auth_api.register(UserResource())
+
+app_api = Api(api_name='sku_service')
+app_api.register(AttributeResource())
+app_api.register(BrandResource())
+app_api.register(CategoryResource())
+app_api.register(ContactLabelResource())
+app_api.register(CostAdjustmentReasonResource())
+app_api.register(QuantityAdjustmentReasonResource())
+app_api.register(SupplierResource())
+app_api.register(CostAdjustmentResource())
+app_api.register(QuantityAdjustmentResource())
+app_api.register(ContactResource())
+app_api.register(ReceiverResource())
+app_api.register(SkuResource())
+app_api.register(SkuAttributeResource())
+app_api.register(PurchaseOrderResource())
+app_api.register(PurchaseOrderLineItemResource())
+app_api.register(ShipmentResource())
+app_api.register(ShipmentLineItemResource())
+
+urlpatterns = patterns(
+    '',
+    url(r'^', include(auth_api.urls + app_api.urls)),
+)

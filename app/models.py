@@ -121,18 +121,22 @@ class Sku(models.Model):
             if obj.attribute.name.lower().endswith('bulk'):
                 attrs.append('Bulk')
             elif obj.attribute.name.lower().endswith('date'):
-                attrs.append('(%s) %s' % (obj.attribute.name.split()[0], obj.value.strftime('%x')))
+                attrs.append('(%s) %s' % (obj.attribute.name.split()[0], obj.value))
             else:
                 attrs.append(obj.value)
         return attrs
     attributes = property(_attributes)
 
-    def __str__(self):
+    def _description(self):
         attrs = self.attributes
         if len(attrs):
-            return '[%d] %s : %s' % (self.id, self.name, ', '.join(attrs))
+            return '[%d] %s %s : %s' % (self.id, self.brand, self.name, ', '.join(attrs))
         else:
-            return '[%d] %s' % (self.id, self.name)
+            return '[%d] %s %s' % (self.id, self.brand, self.name)
+    description = property(_description)
+
+    def __str__(self):
+        return ''.join([c for c in self.description if ord(c) < 128])
 
 
 class SkuAttribute(models.Model):
@@ -264,10 +268,11 @@ class PurchaseOrder(models.Model):
             (li.sku.id, li.quantity_ordered) for li
             in PurchaseOrderLineItem.objects.filter(purchase_order=self)
         )
-        ship_li = dict(
-            (li.sku.id, li.quantity_received) for li
-            in ShipmentLineItem.objects.filter(shipment__purchase_order=self)
-        )
+        qs = ShipmentLineItem.objects.filter(shipment__purchase_order=self)
+        ship_li = {}
+        for li in qs:
+            ship_li.setdefault(li.sku.id, 0)
+            ship_li[li.sku.id] += li.quantity_received
         for sku, qty in po_li.iteritems():
             if sku in ship_li:
                 if qty > ship_li[sku]:
@@ -277,7 +282,7 @@ class PurchaseOrder(models.Model):
         return True
 
     def __str__(self):
-        return '%d-%s' % (self.id, self.created.username)
+        return '%d-%s' % (self.id, self.creator.username)
 
 
 class PurchaseOrderLineItem(models.Model):
@@ -307,7 +312,7 @@ class Shipment(models.Model):
         return reverse('app:shipment__view', args=[str(self.pk)])
 
     def __str__(self):
-        return '%d-%s' % (self.id, self.created.username)
+        return '%d-%s' % (self.id, self.creator.username)
 
 
 class ShipmentLineItem(models.Model):

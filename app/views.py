@@ -371,7 +371,7 @@ def purchase_order__update(request, pk=None):
             formset = PurchaseOrderLineItemFormset(request.POST, instance=po)
 
     return render_to_response(
-        'app/sku__update.html',
+        'app/purchase_order__update.html',
         {
             'po': po,
             'pos': None,
@@ -424,7 +424,8 @@ def shipment__view(request, pk=None):
 
 @login_required
 def shipment__create(request):
-    pos = filter(lambda po: po.is_fully_received(), PurchaseOrder.objects.all())
+    received = [po.id for po in PurchaseOrder.objects.all() if po.is_fully_received]
+    pos = PurchaseOrder.objects.filter(~Q(id__in=received))
     if not len(pos):
         return render_to_response(
             'app/shipment__create.html',
@@ -482,7 +483,7 @@ def shipment__update(request, pk=None):
             ships = paginator.page(paginator.num_pages)
 
         return render_to_response(
-            'app/purchase_order__update.html',
+            'app/shipment__update.html',
             {
                 'ship': None,
                 'ships': ships,
@@ -512,7 +513,7 @@ def shipment__update(request, pk=None):
             formset = ShipmentLineItemFormset(request.POST, instance=ship)
 
     return render_to_response(
-        'app/sku__update.html',
+        'app/shipment__update.html',
         {
             'ship': ship,
             'ships': None,

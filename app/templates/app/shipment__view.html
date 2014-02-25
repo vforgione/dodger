@@ -8,23 +8,45 @@
 <table class="table">
 <tbody>
   <tr><th>Creator</th><td>{{ ship.creator.username }}</td></tr>
-  <tr><th>Purchase Order</th><td></td></tr>
+  <tr><th>Purchase Order</th><td><a href="{{ ship.purchase_order.get_absolute_url }}" target="_blank">{{ ship.purchase_order }}</a></td></tr>
   <tr><th>Note</th><td>{{ ship.note|safe }}</td></tr>
   <tr><th>Date Created</th><td>{{ ship.created }}</td></tr>
+  <tr>
+    <td colspan="2">
+      <h4>Line Items</h4>
+      <div class="table-responsive">
+        <table class="table table-condensed">
+        <thead>
+          <tr><th>SKU</th><th>Qty Received</th></tr>
+        </thead>
+        <tbody>
+          {% for li in ship.shipmentlineitem_set.all %}
+          <tr>
+            <td class="col-lg-6"><a href="{{ li.sku.get_absolute_url }}" target="_blank">{{ li.sku }}</a></td>
+            <td class="col-lg-6">{{ li.quantity_received }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+      </div>
+    </td>
+  </tr>
 </tbody>
 </table>
-<a class="btn btn-primary default" href="{% url 'app:purchase_order__view' %}">Back To List</a>
-<a class="btn btn-danger pull-right" href="{% url 'app:purchase_order__update' ship.pk %}">Modify This ship</a>
+<a class="btn btn-primary default" href="{% url 'app:shipment__view' %}">Back To List</a>
+<a class="btn btn-danger pull-right" href="{% url 'app:shipment__update' ship.pk %}">Modify This Shipment</a>
 
 {% elif ships %}
 <h3>View Shipments</h3>
 <table class="table table-striped">
 <thead>
-  <tr><th>&nbsp;</th><th>PO Ref</th><th>Date Created</th></tr>
+  <tr><th>&nbsp;</th><th>PO Reference</th><th>Date Created</th></tr>
 </thead>
 <tbody>
   {% for ship in ships %}
-  <tr><td><a href="{{ ship.get_absolute_url }}">{{ ship }}</a></td><td><a href="{{ ship.purchase_order.get_absolute_url }}">{{ ship.purchase_order }}</a></td><td>{{ ship.create }}</td></tr>
+  <tr><td><a href="{{ ship.get_absolute_url }}">{{ ship }}</a></td>
+    <td><a href="{{ ship.purchase_order.get_absolute_url }}" target="_blank">{{ ship.purchase_order }}</a></td>
+    <td>{{ ship.created }}</td></tr>
   {% endfor %}
 </tbody>
 </table>
@@ -40,7 +62,7 @@
     </div>
     <div class="col-lg-4">
       {% if ships.has_next %}
-      <a href="?page={{ ships.next_page_number }}" class="btn btn-primary">&raquo; Previous</a>
+      <a href="?page={{ ships.next_page_number }}" class="btn btn-primary">Next &raquo;</a>
       {% endif %}
     </div>
   </div>

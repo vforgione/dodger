@@ -56,9 +56,10 @@ class SupplierForm(ControlModelForm):
 
 
 # adjustment models
-class GenericAdjustmentForm(forms.ModelForm):
+class CostAdjustmentForm(forms.ModelForm):
 
     class Meta:
+        model = CostAdjustment
         fields = ('who', 'sku', 'new', 'reason', 'detail')
         widgets = {
             'sku': forms.Select(attrs={'class': 'form-control sku'}),
@@ -70,16 +71,19 @@ class GenericAdjustmentForm(forms.ModelForm):
         }
 
 
-class CostAdjustmentForm(GenericAdjustmentForm):
+class QuantityAdjustmentForm(forms.ModelForm):
 
     class Meta:
-        models = CostAdjustment
-
-
-class QuantityAdjustmentForm(GenericAdjustmentForm):
-
-    class Meta:
-        models = QuantityAdjustment
+        model = QuantityAdjustment
+        fields = ('who', 'sku', 'new', 'reason', 'detail')
+        widgets = {
+            'sku': forms.Select(attrs={'class': 'form-control sku'}),
+            'old': forms.TextInput(attrs={'class': 'form-control old'}),
+            'new': forms.TextInput(attrs={'class': 'form-control new'}),
+            'who': forms.Select(attrs={'class': 'form-control who'}),
+            'reason': forms.Select(attrs={'class': 'form-control reason'}),
+            'detail': forms.TextInput(attrs={'class': 'form-control detail'}),
+        }
 
 
 # detailed models
@@ -88,12 +92,11 @@ class SkuForm(forms.ModelForm):
     class Meta:
         model = Sku
         fields = (
-            'id', 'name', 'upc', 'brand', 'categories', 'quantity_on_hand', 'location', 'owner', 'supplier',
+            'name', 'upc', 'brand', 'categories', 'quantity_on_hand', 'location', 'owner', 'supplier',
             'lead_time', 'minimum_quantity', 'notify_at_threshold', 'cost', 'supplier_sku', 'case_quantity',
             'in_live_deal'
         )
         widgets = {
-            'id': forms.TextInput(attrs={'class': 'form-control id'}),
             'name': forms.TextInput(attrs={'class': 'form-control name'}),
             'upc': forms.TextInput(attrs={'class': 'form-control upc'}),
             'brand': forms.Select(attrs={'class': 'form-control brand'}),
@@ -104,12 +107,18 @@ class SkuForm(forms.ModelForm):
             'supplier': forms.Select(attrs={'class': 'form-control supplier'}),
             'lead_time': forms.TextInput(attrs={'class': 'form-control lead-time'}),
             'minimum_quantity': forms.TextInput(attrs={'class': 'form-control minimum-quantity'}),
-            'notify_at_threshold': forms.BooleanField(),
             'cost': forms.TextInput(attrs={'class': 'form-control cost'}),
             'supplier_sku': forms.TextInput(attrs={'class': 'form-control supplier-sku'}),
             'case_quantity': forms.TextInput(attrs={'class': 'form-control case-quantity'}),
-            'in_live_deal': forms.BooleanField(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(SkuForm, self).__init__(*args, **kwargs)
+        # dynamically restrict fields based on if create or update
+        instance = getattr(self, 'instance', None)
+        if instance and instance.id:
+            self.fields['cost'].widget.attrs['readonly'] = True
+            self.fields['quantity_on_hand'].widget.attrs['readonly'] = True
 
 
 class SkuAttributeForm(forms.ModelForm):
@@ -170,11 +179,12 @@ class PurchaseOrderForm(forms.ModelForm):
 
     class Meta:
         model = PurchaseOrder
-        fields = ('creator', 'supplier', 'contact', 'terms', 'expected_arrival', 'note')
+        fields = ('creator', 'receiver', 'supplier', 'contact', 'terms', 'expected_arrival', 'note')
         widgets = {
             'creator': forms.Select(attrs={'class': 'form-control creator'}),
             'supplier': forms.Select(attrs={'class': 'form-control supplier'}),
             'contact': forms.Select(attrs={'class': 'form-control contact'}),
+            'receiver': forms.Select(attrs={'class': 'form-control receiver'}),
             'terms': forms.TextInput(attrs={'class': 'form-control terms'}),
             'expected_arrival': forms.TextInput(attrs={'class': 'form-control expected-arrival'}),
             'note': forms.TextInput(attrs={'class': 'form-control note'}),

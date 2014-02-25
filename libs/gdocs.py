@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dodger.settings')
-
 # normally i hate shit like this, but the path hack is necessary
 import sys
-sys.path.insert(0, '/home/deploy/dodger-env/dodger')
+sys.path.insert(0, '/Users/vince/Development/dodger-env/dodger')
+
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dodger.settings')
 
 from datetime import datetime, timedelta
 import re

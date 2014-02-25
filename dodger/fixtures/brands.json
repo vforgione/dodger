@@ -1,9 +1,3985 @@
 [
 {
-  "pk": 1,
-  "model": "app.brand",
+  "pk": 1, 
+  "model": "app.brand", 
   "fields": {
     "name": "(unknown)"
+  }
+},
+{
+  "pk": 2, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Miracle Corp"
+  }
+},
+{
+  "pk": 3, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Artvark"
+  }
+},
+{
+  "pk": 4, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bones Galore"
+  }
+},
+{
+  "pk": 5, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Isle of Dogs"
+  }
+},
+{
+  "pk": 6, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "As Seen on TV"
+  }
+},
+{
+  "pk": 7, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Kong"
+  }
+},
+{
+  "pk": 8, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Greens"
+  }
+},
+{
+  "pk": 9, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Plato's"
+  }
+},
+{
+  "pk": 10, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "JW Pet"
+  }
+},
+{
+  "pk": 11, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Petrageous"
+  }
+},
+{
+  "pk": 12, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Premier"
+  }
+},
+{
+  "pk": 13, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "3 ft. Duck Chews"
+  }
+},
+{
+  "pk": 14, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "GoDog"
+  }
+},
+{
+  "pk": 15, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "PetLife"
+  }
+},
+{
+  "pk": 16, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Get A Grip"
+  }
+},
+{
+  "pk": 17, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Tyson"
+  }
+},
+{
+  "pk": 18, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Warm Ups"
+  }
+},
+{
+  "pk": 19, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Haute Diggity Dog"
+  }
+},
+{
+  "pk": 20, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "ADK Antler Products"
+  }
+},
+{
+  "pk": 21, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Petsafe"
+  }
+},
+{
+  "pk": 22, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bones Galore "
+  }
+},
+{
+  "pk": 23, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Terrabone"
+  }
+},
+{
+  "pk": 24, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Funbites"
+  }
+},
+{
+  "pk": 25, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Jones Natural Chews"
+  }
+},
+{
+  "pk": 26, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Projekt"
+  }
+},
+{
+  "pk": 27, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Cloud Star"
+  }
+},
+{
+  "pk": 28, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Grriggles"
+  }
+},
+{
+  "pk": 29, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Zanies"
+  }
+},
+{
+  "pk": 30, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Van Ness"
+  }
+},
+{
+  "pk": 31, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Three Dog Bakery"
+  }
+},
+{
+  "pk": 32, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "NoviPet"
+  }
+},
+{
+  "pk": 33, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Feel Good Treats"
+  }
+},
+{
+  "pk": 34, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Feel Good Treat Co."
+  }
+},
+{
+  "pk": 35, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Feelgood Treat Co."
+  }
+},
+{
+  "pk": 36, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Unique Petz"
+  }
+},
+{
+  "pk": 37, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Zendog"
+  }
+},
+{
+  "pk": 38, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Lincoln Bark"
+  }
+},
+{
+  "pk": 39, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Carousel"
+  }
+},
+{
+  "pk": 40, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Quaker Pet Group"
+  }
+},
+{
+  "pk": 41, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Platinum Pets"
+  }
+},
+{
+  "pk": 42, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Busy Buddy"
+  }
+},
+{
+  "pk": 43, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "VIP"
+  }
+},
+{
+  "pk": 44, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Head"
+  }
+},
+{
+  "pk": 45, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Project"
+  }
+},
+{
+  "pk": 46, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "SafeMade Pet"
+  }
+},
+{
+  "pk": 47, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "SafePlay"
+  }
+},
+{
+  "pk": 48, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Tuffy Jr's"
+  }
+},
+{
+  "pk": 49, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Mighty Pet"
+  }
+},
+{
+  "pk": 50, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Kyjen"
+  }
+},
+{
+  "pk": 51, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Quaker"
+  }
+},
+{
+  "pk": 52, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "VIP Pet"
+  }
+},
+{
+  "pk": 53, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet sport"
+  }
+},
+{
+  "pk": 54, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Jolly Pets"
+  }
+},
+{
+  "pk": 55, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "PetStages"
+  }
+},
+{
+  "pk": 56, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Petstages"
+  }
+},
+{
+  "pk": 57, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "The Green Pet Shop"
+  }
+},
+{
+  "pk": 58, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "The Natural Dog Co"
+  }
+},
+{
+  "pk": 59, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bissell"
+  }
+},
+{
+  "pk": 60, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Burt's Bees"
+  }
+},
+{
+  "pk": 61, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "K & H Manufacturing"
+  }
+},
+{
+  "pk": 62, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Natural Balance"
+  }
+},
+{
+  "pk": 63, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Multipet"
+  }
+},
+{
+  "pk": 64, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Wild Sky"
+  }
+},
+{
+  "pk": 65, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Wholesome Hide"
+  }
+},
+{
+  "pk": 66, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Jones Natural Chews Co."
+  }
+},
+{
+  "pk": 67, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Zippy Paws"
+  }
+},
+{
+  "pk": 68, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Omaha Bullies"
+  }
+},
+{
+  "pk": 69, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Whole Jerky"
+  }
+},
+{
+  "pk": 70, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Soggy Doggy"
+  }
+},
+{
+  "pk": 71, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Whole Life"
+  }
+},
+{
+  "pk": 72, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Top Dog Treats nd Chews"
+  }
+},
+{
+  "pk": 73, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Cruisin Companion"
+  }
+},
+{
+  "pk": 74, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Carolina Prime"
+  }
+},
+{
+  "pk": 75, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "doggyloot"
+  }
+},
+{
+  "pk": 76, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "HappyTails"
+  }
+},
+{
+  "pk": 77, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Indigo"
+  }
+},
+{
+  "pk": 78, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "High Hopes For Pets"
+  }
+},
+{
+  "pk": 79, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Chewmax"
+  }
+},
+{
+  "pk": 80, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Fetch"
+  }
+},
+{
+  "pk": 81, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "DC Comics"
+  }
+},
+{
+  "pk": 82, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Mushers"
+  }
+},
+{
+  "pk": 83, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Fromm Family Foods"
+  }
+},
+{
+  "pk": 84, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Spotty"
+  }
+},
+{
+  "pk": 85, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dogtek"
+  }
+},
+{
+  "pk": 86, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Fruitables"
+  }
+},
+{
+  "pk": 87, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nandog Pet Gear"
+  }
+},
+{
+  "pk": 88, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Rottie & Doxie"
+  }
+},
+{
+  "pk": 89, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "The World's FInest"
+  }
+},
+{
+  "pk": 90, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Barkworthies"
+  }
+},
+{
+  "pk": 91, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Fidobiotics"
+  }
+},
+{
+  "pk": 92, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Super Pet Expo"
+  }
+},
+{
+  "pk": 93, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Loving Pets"
+  }
+},
+{
+  "pk": 94, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Otomik"
+  }
+},
+{
+  "pk": 95, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "High Viz"
+  }
+},
+{
+  "pk": 96, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bags on Board"
+  }
+},
+{
+  "pk": 97, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pawz"
+  }
+},
+{
+  "pk": 98, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Alzoo"
+  }
+},
+{
+  "pk": 99, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Cycle Dog"
+  }
+},
+{
+  "pk": 100, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Healthy Dogma"
+  }
+},
+{
+  "pk": 101, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Orka"
+  }
+},
+{
+  "pk": 102, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nutrisource"
+  }
+},
+{
+  "pk": 103, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Etta Says"
+  }
+},
+{
+  "pk": 104, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Qwerks"
+  }
+},
+{
+  "pk": 105, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bow Wow Pet"
+  }
+},
+{
+  "pk": 106, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Acadia Antlers"
+  }
+},
+{
+  "pk": 107, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "The Pound Bakery"
+  }
+},
+{
+  "pk": 108, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "American Dog Toys"
+  }
+},
+{
+  "pk": 109, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pure Life"
+  }
+},
+{
+  "pk": 110, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Exclusively Pet"
+  }
+},
+{
+  "pk": 111, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "U.S. Hide"
+  }
+},
+{
+  "pk": 112, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Muttluks"
+  }
+},
+{
+  "pk": 113, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Happytails Canine Spa"
+  }
+},
+{
+  "pk": 114, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Rotti and Doxie"
+  }
+},
+{
+  "pk": 115, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Best Bully Sticks"
+  }
+},
+{
+  "pk": 116, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "KONG"
+  }
+},
+{
+  "pk": 117, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Marla Knows Best"
+  }
+},
+{
+  "pk": 118, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Hyper Pet"
+  }
+},
+{
+  "pk": 119, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Blue Buffalo"
+  }
+},
+{
+  "pk": 120, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Field and Stream"
+  }
+},
+{
+  "pk": 121, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Crooked Creek Antlers"
+  }
+},
+{
+  "pk": 122, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Mulligan Stew"
+  }
+},
+{
+  "pk": 123, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Train N Praise"
+  }
+},
+{
+  "pk": 124, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Red Barn Pet Products"
+  }
+},
+{
+  "pk": 125, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet safe"
+  }
+},
+{
+  "pk": 126, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Paws Aboard"
+  }
+},
+{
+  "pk": 127, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Licks Joint and Heart"
+  }
+},
+{
+  "pk": 128, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Venison Joe's"
+  }
+},
+{
+  "pk": 129, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Superior Farms"
+  }
+},
+{
+  "pk": 130, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Loopies"
+  }
+},
+{
+  "pk": 131, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Factory"
+  }
+},
+{
+  "pk": 132, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "So Bright"
+  }
+},
+{
+  "pk": 133, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "M. Isaac Mizrahi"
+  }
+},
+{
+  "pk": 134, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Softflex"
+  }
+},
+{
+  "pk": 135, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Todd's BBI"
+  }
+},
+{
+  "pk": 136, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Jump Your Bones"
+  }
+},
+{
+  "pk": 137, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Hydration People"
+  }
+},
+{
+  "pk": 138, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Mammoth"
+  }
+},
+{
+  "pk": 139, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Solvit Products"
+  }
+},
+{
+  "pk": 140, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Horgan Harness"
+  }
+},
+{
+  "pk": 141, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Yeti"
+  }
+},
+{
+  "pk": 142, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nootie"
+  }
+},
+{
+  "pk": 143, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Starmark"
+  }
+},
+{
+  "pk": 144, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Priority Pet"
+  }
+},
+{
+  "pk": 145, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Guard"
+  }
+},
+{
+  "pk": 146, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Tuff Enuff"
+  }
+},
+{
+  "pk": 147, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Real Meat"
+  }
+},
+{
+  "pk": 148, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nifty Pet"
+  }
+},
+{
+  "pk": 149, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Doggles"
+  }
+},
+{
+  "pk": 150, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Planet Dog"
+  }
+},
+{
+  "pk": 151, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Diggin' Your Dog"
+  }
+},
+{
+  "pk": 152, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nite Ize"
+  }
+},
+{
+  "pk": 153, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Paww"
+  }
+},
+{
+  "pk": 154, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Smokehouse"
+  }
+},
+{
+  "pk": 155, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Climbers"
+  }
+},
+{
+  "pk": 156, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nerf Pet"
+  }
+},
+{
+  "pk": 157, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Synergy Fooey"
+  }
+},
+{
+  "pk": 158, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Natural Do Company"
+  }
+},
+{
+  "pk": 159, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Glow"
+  }
+},
+{
+  "pk": 160, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Safemade"
+  }
+},
+{
+  "pk": 161, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "PetLou"
+  }
+},
+{
+  "pk": 162, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Scout & Zoe's"
+  }
+},
+{
+  "pk": 163, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Scout and Zoe"
+  }
+},
+{
+  "pk": 164, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Scout & Zoes"
+  }
+},
+{
+  "pk": 165, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Smartcatcher Mats"
+  }
+},
+{
+  "pk": 166, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Plato"
+  }
+},
+{
+  "pk": 167, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "NataLulu"
+  }
+},
+{
+  "pk": 168, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "K9 Cakery"
+  }
+},
+{
+  "pk": 169, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Mammoth Pet Products"
+  }
+},
+{
+  "pk": 170, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nature's Own"
+  }
+},
+{
+  "pk": 171, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Mountain Dog Chews"
+  }
+},
+{
+  "pk": 172, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nina Ottosson"
+  }
+},
+{
+  "pk": 173, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Zuke's"
+  }
+},
+{
+  "pk": 174, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Freezy Pups"
+  }
+},
+{
+  "pk": 175, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Simply Fido"
+  }
+},
+{
+  "pk": 176, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Hare of the Dog"
+  }
+},
+{
+  "pk": 177, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "The Natural Dog Company"
+  }
+},
+{
+  "pk": 178, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "R2P Pet"
+  }
+},
+{
+  "pk": 179, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Doggyloot"
+  }
+},
+{
+  "pk": 180, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Moody Pet"
+  }
+},
+{
+  "pk": 181, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Free Range Eco Naturals"
+  }
+},
+{
+  "pk": 182, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Ethical Pet"
+  }
+},
+{
+  "pk": 183, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Zukes"
+  }
+},
+{
+  "pk": 184, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Isacc Mizrahi"
+  }
+},
+{
+  "pk": 185, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Top Dog Treats & Chews"
+  }
+},
+{
+  "pk": 186, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Natural Touch"
+  }
+},
+{
+  "pk": 187, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Quaker Pet"
+  }
+},
+{
+  "pk": 188, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Roasting Shack"
+  }
+},
+{
+  "pk": 189, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Alaska Naturals"
+  }
+},
+{
+  "pk": 190, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Smart N Tasty"
+  }
+},
+{
+  "pk": 191, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Darford Holistic"
+  }
+},
+{
+  "pk": 192, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Raw Bistro"
+  }
+},
+{
+  "pk": 193, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Vetericyn"
+  }
+},
+{
+  "pk": 194, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Marvel Comics"
+  }
+},
+{
+  "pk": 195, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Stella & Chewys"
+  }
+},
+{
+  "pk": 196, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Safe"
+  }
+},
+{
+  "pk": 197, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Cakes"
+  }
+},
+{
+  "pk": 198, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Durango"
+  }
+},
+{
+  "pk": 199, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Kurgo"
+  }
+},
+{
+  "pk": 200, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet N Shape"
+  }
+},
+{
+  "pk": 201, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "PetSafe"
+  }
+},
+{
+  "pk": 202, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Disney"
+  }
+},
+{
+  "pk": 203, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Green"
+  }
+},
+{
+  "pk": 204, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Tarheel"
+  }
+},
+{
+  "pk": 205, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Paw Paw"
+  }
+},
+{
+  "pk": 206, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Yuppie Puppy"
+  }
+},
+{
+  "pk": 207, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Four Paws"
+  }
+},
+{
+  "pk": 208, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Excel"
+  }
+},
+{
+  "pk": 209, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Perfect Coat"
+  }
+},
+{
+  "pk": 210, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Hartz"
+  }
+},
+{
+  "pk": 211, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "ZiwiPeak"
+  }
+},
+{
+  "pk": 212, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Ball Boy"
+  }
+},
+{
+  "pk": 213, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Hi-Viz"
+  }
+},
+{
+  "pk": 214, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Playrageous"
+  }
+},
+{
+  "pk": 215, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Primal"
+  }
+},
+{
+  "pk": 216, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dale Edgar Brand"
+  }
+},
+{
+  "pk": 217, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Unbreakoball"
+  }
+},
+{
+  "pk": 218, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Tyson Pet Products"
+  }
+},
+{
+  "pk": 219, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "ABO Gear"
+  }
+},
+{
+  "pk": 220, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nandog"
+  }
+},
+{
+  "pk": 221, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Ego"
+  }
+},
+{
+  "pk": 222, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Manny the Frenchie"
+  }
+},
+{
+  "pk": 223, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Red Dog Co."
+  }
+},
+{
+  "pk": 224, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dura Doggie"
+  }
+},
+{
+  "pk": 225, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "DEI Pet"
+  }
+},
+{
+  "pk": 226, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Kumfy Tailz"
+  }
+},
+{
+  "pk": 227, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Gingerbread Man"
+  }
+},
+{
+  "pk": 228, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "LM Farms"
+  }
+},
+{
+  "pk": 229, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "The Company of Animals"
+  }
+},
+{
+  "pk": 230, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Fetch Innovations"
+  }
+},
+{
+  "pk": 231, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dakota Dog Company"
+  }
+},
+{
+  "pk": 232, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Fizzion"
+  }
+},
+{
+  "pk": 233, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Paw Paw Pet Products"
+  }
+},
+{
+  "pk": 234, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Buddies"
+  }
+},
+{
+  "pk": 235, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Rottie and Doxie"
+  }
+},
+{
+  "pk": 236, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Sureswivel"
+  }
+},
+{
+  "pk": 237, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Tuffy "
+  }
+},
+{
+  "pk": 238, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Charming Pet"
+  }
+},
+{
+  "pk": 239, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Blue Ridge Naturals"
+  }
+},
+{
+  "pk": 240, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Chase N Chomp"
+  }
+},
+{
+  "pk": 241, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Arctic Paws"
+  }
+},
+{
+  "pk": 242, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Tuffy"
+  }
+},
+{
+  "pk": 243, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Jolly"
+  }
+},
+{
+  "pk": 244, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Tuff Tuff"
+  }
+},
+{
+  "pk": 245, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bionic"
+  }
+},
+{
+  "pk": 246, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Body Glove Pet"
+  }
+},
+{
+  "pk": 247, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Casual Canine"
+  }
+},
+{
+  "pk": 248, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Tuffy's"
+  }
+},
+{
+  "pk": 249, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Mighty Dog Toys"
+  }
+},
+{
+  "pk": 250, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Starmark "
+  }
+},
+{
+  "pk": 251, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Hello Kitty"
+  }
+},
+{
+  "pk": 252, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Chewy Louie"
+  }
+},
+{
+  "pk": 253, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "PAWZ"
+  }
+},
+{
+  "pk": 254, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Addiction Pet Food"
+  }
+},
+{
+  "pk": 255, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Hyper-Pet"
+  }
+},
+{
+  "pk": 256, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Touchdog"
+  }
+},
+{
+  "pk": 257, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Cloudstar"
+  }
+},
+{
+  "pk": 258, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "PetZoom"
+  }
+},
+{
+  "pk": 259, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Soft Flex"
+  }
+},
+{
+  "pk": 260, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Chuck It"
+  }
+},
+{
+  "pk": 261, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Caitec"
+  }
+},
+{
+  "pk": 262, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bergan"
+  }
+},
+{
+  "pk": 263, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "The Paws Republic"
+  }
+},
+{
+  "pk": 264, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Smart Pup"
+  }
+},
+{
+  "pk": 265, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Petsport USA"
+  }
+},
+{
+  "pk": 266, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Front Porch Pets"
+  }
+},
+{
+  "pk": 267, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Quiet Spot"
+  }
+},
+{
+  "pk": 268, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Omega Paw"
+  }
+},
+{
+  "pk": 269, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Mascot"
+  }
+},
+{
+  "pk": 270, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Top Dog Treats and Chews"
+  }
+},
+{
+  "pk": 271, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "GoDog Outfitters"
+  }
+},
+{
+  "pk": 272, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Silly Squeakers"
+  }
+},
+{
+  "pk": 273, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Krijon"
+  }
+},
+{
+  "pk": 274, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Vital Essentials"
+  }
+},
+{
+  "pk": 275, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Snooks"
+  }
+},
+{
+  "pk": 276, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Safe Release"
+  }
+},
+{
+  "pk": 277, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dog Gone Smart"
+  }
+},
+{
+  "pk": 278, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Cain and Able"
+  }
+},
+{
+  "pk": 279, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Sam's Yams"
+  }
+},
+{
+  "pk": 280, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "NANDOG Pet Gear"
+  }
+},
+{
+  "pk": 281, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Jack's All Natural"
+  }
+},
+{
+  "pk": 282, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Herbsmith "
+  }
+},
+{
+  "pk": 283, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Blue Ridge Natural"
+  }
+},
+{
+  "pk": 284, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Frostybowlz"
+  }
+},
+{
+  "pk": 285, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Outward Hound"
+  }
+},
+{
+  "pk": 286, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Red Barn"
+  }
+},
+{
+  "pk": 287, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "BB Meats"
+  }
+},
+{
+  "pk": 288, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Greens Treats"
+  }
+},
+{
+  "pk": 289, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Kinn"
+  }
+},
+{
+  "pk": 290, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pawabunga"
+  }
+},
+{
+  "pk": 291, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Vitakraft"
+  }
+},
+{
+  "pk": 292, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Silver Tail"
+  }
+},
+{
+  "pk": 293, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Grandma Lucy's"
+  }
+},
+{
+  "pk": 294, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Sherpa"
+  }
+},
+{
+  "pk": 295, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Chuck It!"
+  }
+},
+{
+  "pk": 296, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Imagine This Co."
+  }
+},
+{
+  "pk": 297, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pawsitvely Lightning"
+  }
+},
+{
+  "pk": 298, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "PetSport USA"
+  }
+},
+{
+  "pk": 299, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Red Barn "
+  }
+},
+{
+  "pk": 300, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Hyperflite"
+  }
+},
+{
+  "pk": 301, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nylabone"
+  }
+},
+{
+  "pk": 302, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Crooked Creek"
+  }
+},
+{
+  "pk": 303, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Treevers"
+  }
+},
+{
+  "pk": 304, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Soft Bite"
+  }
+},
+{
+  "pk": 305, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Wild Ropes"
+  }
+},
+{
+  "pk": 306, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "The Missing Link"
+  }
+},
+{
+  "pk": 307, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Wigzi"
+  }
+},
+{
+  "pk": 308, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dr. Becker's"
+  }
+},
+{
+  "pk": 309, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Miracle Eyes"
+  }
+},
+{
+  "pk": 310, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Ferrera Farms"
+  }
+},
+{
+  "pk": 311, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Complete Natural Nutrition"
+  }
+},
+{
+  "pk": 312, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Canine Butcher Shop"
+  }
+},
+{
+  "pk": 313, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Red Dog Company"
+  }
+},
+{
+  "pk": 314, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Tarheel Dog Treats"
+  }
+},
+{
+  "pk": 315, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "CPA Systems Inc."
+  }
+},
+{
+  "pk": 316, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Paw Plunger"
+  }
+},
+{
+  "pk": 317, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Herbsmith"
+  }
+},
+{
+  "pk": 318, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Thundershirt"
+  }
+},
+{
+  "pk": 319, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Eddie Bauer"
+  }
+},
+{
+  "pk": 320, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nudges"
+  }
+},
+{
+  "pk": 321, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Lou"
+  }
+},
+{
+  "pk": 322, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Charming Pet Products"
+  }
+},
+{
+  "pk": 323, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Ok Corral"
+  }
+},
+{
+  "pk": 324, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Jobar"
+  }
+},
+{
+  "pk": 325, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "GoughNuts"
+  }
+},
+{
+  "pk": 326, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nutri-Vet"
+  }
+},
+{
+  "pk": 327, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "ChuckIt!"
+  }
+},
+{
+  "pk": 328, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Thompson Pet Supply"
+  }
+},
+{
+  "pk": 329, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Ronald Feed and Supply"
+  }
+},
+{
+  "pk": 330, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Potty Time Chime"
+  }
+},
+{
+  "pk": 331, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "American Kennel Club"
+  }
+},
+{
+  "pk": 332, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "In Clover"
+  }
+},
+{
+  "pk": 333, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dr. Harvey's"
+  }
+},
+{
+  "pk": 334, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Radio Systems"
+  }
+},
+{
+  "pk": 335, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Solid Gold"
+  }
+},
+{
+  "pk": 336, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Aussie Naturals"
+  }
+},
+{
+  "pk": 337, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Life"
+  }
+},
+{
+  "pk": 338, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Ettat Says"
+  }
+},
+{
+  "pk": 339, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pawps"
+  }
+},
+{
+  "pk": 340, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Clear Conscience"
+  }
+},
+{
+  "pk": 341, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Hyper"
+  }
+},
+{
+  "pk": 342, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Your Dog's Diner"
+  }
+},
+{
+  "pk": 343, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Fido"
+  }
+},
+{
+  "pk": 344, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Salmon Paws"
+  }
+},
+{
+  "pk": 345, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dog for Dog"
+  }
+},
+{
+  "pk": 346, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Mountain Dog"
+  }
+},
+{
+  "pk": 347, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Give A Dog A Bone"
+  }
+},
+{
+  "pk": 348, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Central Park Pups"
+  }
+},
+{
+  "pk": 349, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Gerrard Larriet"
+  }
+},
+{
+  "pk": 350, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dr. Becker"
+  }
+},
+{
+  "pk": 351, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet 'n Shape"
+  }
+},
+{
+  "pk": 352, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Silly Squeaker"
+  }
+},
+{
+  "pk": 353, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Colorado Naturals"
+  }
+},
+{
+  "pk": 354, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Best Buy Bones"
+  }
+},
+{
+  "pk": 355, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Litey Leash"
+  }
+},
+{
+  "pk": 356, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Boreal "
+  }
+},
+{
+  "pk": 357, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Fido Fruits"
+  }
+},
+{
+  "pk": 358, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Paw wash"
+  }
+},
+{
+  "pk": 359, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Little Gifts, Inc."
+  }
+},
+{
+  "pk": 360, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Orijen"
+  }
+},
+{
+  "pk": 361, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Immune IQ"
+  }
+},
+{
+  "pk": 362, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pure Life 4 Pets"
+  }
+},
+{
+  "pk": 363, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Naturals of Vermont"
+  }
+},
+{
+  "pk": 364, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Biologic Vet"
+  }
+},
+{
+  "pk": 365, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Heartland Premium LLC"
+  }
+},
+{
+  "pk": 366, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Boreal"
+  }
+},
+{
+  "pk": 367, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bag of Bones"
+  }
+},
+{
+  "pk": 368, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Good Habit Pet Products"
+  }
+},
+{
+  "pk": 369, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Enchanted Home Pet"
+  }
+},
+{
+  "pk": 370, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Rockin Green Soap"
+  }
+},
+{
+  "pk": 371, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Wag More Bark Less"
+  }
+},
+{
+  "pk": 372, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Elk Antler Dog Treats"
+  }
+},
+{
+  "pk": 373, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Powzer"
+  }
+},
+{
+  "pk": 374, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bravo!"
+  }
+},
+{
+  "pk": 375, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Lazy Dog"
+  }
+},
+{
+  "pk": 376, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Goodlife"
+  }
+},
+{
+  "pk": 377, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dog Not Gone"
+  }
+},
+{
+  "pk": 378, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Kajo's Pets"
+  }
+},
+{
+  "pk": 379, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "ADK Antlers"
+  }
+},
+{
+  "pk": 380, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Buckarooz"
+  }
+},
+{
+  "pk": 381, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Wisdom Panel"
+  }
+},
+{
+  "pk": 382, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Snack 21"
+  }
+},
+{
+  "pk": 383, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Water Walker"
+  }
+},
+{
+  "pk": 384, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Center Inc."
+  }
+},
+{
+  "pk": 385, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Organic Oscar"
+  }
+},
+{
+  "pk": 386, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "SafeMade"
+  }
+},
+{
+  "pk": 387, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Ruffwear"
+  }
+},
+{
+  "pk": 388, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Orapups"
+  }
+},
+{
+  "pk": 389, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Evangers"
+  }
+},
+{
+  "pk": 390, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Hugs Pet Products"
+  }
+},
+{
+  "pk": 391, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Briogroom"
+  }
+},
+{
+  "pk": 392, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "kyjen"
+  }
+},
+{
+  "pk": 393, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Fido Cookies"
+  }
+},
+{
+  "pk": 394, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Think!"
+  }
+},
+{
+  "pk": 395, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Perfect Pet"
+  }
+},
+{
+  "pk": 396, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Luther's Naturals"
+  }
+},
+{
+  "pk": 397, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Think Dog"
+  }
+},
+{
+  "pk": 398, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Darford"
+  }
+},
+{
+  "pk": 399, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "ProDen"
+  }
+},
+{
+  "pk": 400, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Angus Moo"
+  }
+},
+{
+  "pk": 401, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dog Gone"
+  }
+},
+{
+  "pk": 402, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "American Pet Food Company"
+  }
+},
+{
+  "pk": 403, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Royal Pet"
+  }
+},
+{
+  "pk": 404, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Wapiti Labs"
+  }
+},
+{
+  "pk": 405, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Paws & Co."
+  }
+},
+{
+  "pk": 406, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "PetProjekt"
+  }
+},
+{
+  "pk": 407, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Hugs Pet "
+  }
+},
+{
+  "pk": 408, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Homeopet"
+  }
+},
+{
+  "pk": 409, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Novi-Pet"
+  }
+},
+{
+  "pk": 410, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Soft-Flex"
+  }
+},
+{
+  "pk": 411, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "River Dog Naturals"
+  }
+},
+{
+  "pk": 412, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "VIP Pets"
+  }
+},
+{
+  "pk": 413, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Sentry"
+  }
+},
+{
+  "pk": 414, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Greenies"
+  }
+},
+{
+  "pk": 415, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "PetzLife"
+  }
+},
+{
+  "pk": 416, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Green Beef"
+  }
+},
+{
+  "pk": 417, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "JW"
+  }
+},
+{
+  "pk": 418, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Sojourner Farms"
+  }
+},
+{
+  "pk": 419, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Earth Rated Poo Bags"
+  }
+},
+{
+  "pk": 420, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Earth Rated"
+  }
+},
+{
+  "pk": 421, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Exclusively Pet Inc."
+  }
+},
+{
+  "pk": 422, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Jones Natural"
+  }
+},
+{
+  "pk": 423, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bone Mat"
+  }
+},
+{
+  "pk": 424, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Hyper - Pet"
+  }
+},
+{
+  "pk": 425, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nutrivet"
+  }
+},
+{
+  "pk": 426, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "FrostyBowlz"
+  }
+},
+{
+  "pk": 427, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Haus of Fame"
+  }
+},
+{
+  "pk": 428, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "VIP Products"
+  }
+},
+{
+  "pk": 429, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "True Dog LLC"
+  }
+},
+{
+  "pk": 430, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bentley & Bunny"
+  }
+},
+{
+  "pk": 431, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Wooferman"
+  }
+},
+{
+  "pk": 432, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Wet Noses"
+  }
+},
+{
+  "pk": 433, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Zippy Paws "
+  }
+},
+{
+  "pk": 434, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bite My Biscuit"
+  }
+},
+{
+  "pk": 435, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Goughnuts"
+  }
+},
+{
+  "pk": 436, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Varsity Pets"
+  }
+},
+{
+  "pk": 437, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dennis East International"
+  }
+},
+{
+  "pk": 438, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Slumber Pet"
+  }
+},
+{
+  "pk": 439, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pup Chips"
+  }
+},
+{
+  "pk": 440, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Aikiou"
+  }
+},
+{
+  "pk": 441, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bixbi"
+  }
+},
+{
+  "pk": 442, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Mighty"
+  }
+},
+{
+  "pk": 443, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Adidog"
+  }
+},
+{
+  "pk": 444, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Fresh Dog"
+  }
+},
+{
+  "pk": 445, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Sport It LLC"
+  }
+},
+{
+  "pk": 446, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Green Pet Shop"
+  }
+},
+{
+  "pk": 447, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Michigan Fine Herbs"
+  }
+},
+{
+  "pk": 448, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "American Pet Food Co."
+  }
+},
+{
+  "pk": 449, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nina Ottoson"
+  }
+},
+{
+  "pk": 450, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Loyal Lux"
+  }
+},
+{
+  "pk": 451, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Puppy Cake"
+  }
+},
+{
+  "pk": 452, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Sunshine Mills"
+  }
+},
+{
+  "pk": 453, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Musher's Secret"
+  }
+},
+{
+  "pk": 454, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "GoGo Pets"
+  }
+},
+{
+  "pk": 455, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "K9 Cookhouse"
+  }
+},
+{
+  "pk": 456, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Christmas Bear"
+  }
+},
+{
+  "pk": 457, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pridebites"
+  }
+},
+{
+  "pk": 458, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Mammoth Pet"
+  }
+},
+{
+  "pk": 459, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Caitech"
+  }
+},
+{
+  "pk": 460, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Canine Classic"
+  }
+},
+{
+  "pk": 461, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Whimzee"
+  }
+},
+{
+  "pk": 462, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Ascenta"
+  }
+},
+{
+  "pk": 463, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "MooChews"
+  }
+},
+{
+  "pk": 464, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Shout Pets"
+  }
+},
+{
+  "pk": 465, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Biogroom"
+  }
+},
+{
+  "pk": 466, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "TropiClean"
+  }
+},
+{
+  "pk": 467, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "KaJo Pet's"
+  }
+},
+{
+  "pk": 468, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "PetLinks"
+  }
+},
+{
+  "pk": 469, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Cool Lap"
+  }
+},
+{
+  "pk": 470, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Samsung"
+  }
+},
+{
+  "pk": 471, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Otomik Pets"
+  }
+},
+{
+  "pk": 472, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Silver Lining Herbs"
+  }
+},
+{
+  "pk": 473, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Ranch Rewards"
+  }
+},
+{
+  "pk": 474, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Tim Flach"
+  }
+},
+{
+  "pk": 475, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Smart Pet"
+  }
+},
+{
+  "pk": 476, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "HTBrush"
+  }
+},
+{
+  "pk": 477, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bones Gallore"
+  }
+},
+{
+  "pk": 478, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Distinctive Dog"
+  }
+},
+{
+  "pk": 479, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "PetBuddies"
+  }
+},
+{
+  "pk": 480, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Epipet"
+  }
+},
+{
+  "pk": 481, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Safe Paw"
+  }
+},
+{
+  "pk": 482, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "FlexiUSA"
+  }
+},
+{
+  "pk": 483, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bark +"
+  }
+},
+{
+  "pk": 484, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Leanlix"
+  }
+},
+{
+  "pk": 485, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "ChewMax"
+  }
+},
+{
+  "pk": 486, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Chew Max"
+  }
+},
+{
+  "pk": 487, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Keeper Secrets"
+  }
+},
+{
+  "pk": 488, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Best Bully?"
+  }
+},
+{
+  "pk": 489, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Chewish Treats"
+  }
+},
+{
+  "pk": 490, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Wilson Pet Supply"
+  }
+},
+{
+  "pk": 491, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Earthbath"
+  }
+},
+{
+  "pk": 492, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Addiction Pet Foods"
+  }
+},
+{
+  "pk": 493, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Angel Eyes"
+  }
+},
+{
+  "pk": 494, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dogs for Dog"
+  }
+},
+{
+  "pk": 495, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Okinawan"
+  }
+},
+{
+  "pk": 496, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Parade"
+  }
+},
+{
+  "pk": 497, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Cranimals"
+  }
+},
+{
+  "pk": 498, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Primal Pet Food Inc."
+  }
+},
+{
+  "pk": 499, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bingo Pet"
+  }
+},
+{
+  "pk": 500, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "HealthPro Hygiene"
+  }
+},
+{
+  "pk": 501, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "ADK"
+  }
+},
+{
+  "pk": 502, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Kind"
+  }
+},
+{
+  "pk": 503, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Himalayan Dog Chew"
+  }
+},
+{
+  "pk": 504, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Cohiba"
+  }
+},
+{
+  "pk": 505, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dogsavers"
+  }
+},
+{
+  "pk": 506, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Companion Gear"
+  }
+},
+{
+  "pk": 507, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bionic Pet"
+  }
+},
+{
+  "pk": 508, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Chuckit!"
+  }
+},
+{
+  "pk": 509, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Orijen "
+  }
+},
+{
+  "pk": 510, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Safechew"
+  }
+},
+{
+  "pk": 511, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Ezy Dog"
+  }
+},
+{
+  "pk": 512, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "QT Dog"
+  }
+},
+{
+  "pk": 513, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Garmin"
+  }
+},
+{
+  "pk": 514, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Kissable"
+  }
+},
+{
+  "pk": 515, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "A Dog's Life"
+  }
+},
+{
+  "pk": 516, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bedtime Bones"
+  }
+},
+{
+  "pk": 517, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "H2Fido"
+  }
+},
+{
+  "pk": 518, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pouncey Pets"
+  }
+},
+{
+  "pk": 519, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Go Dog"
+  }
+},
+{
+  "pk": 520, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Heartland Premium"
+  }
+},
+{
+  "pk": 521, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dr. Emmo's"
+  }
+},
+{
+  "pk": 522, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bocce's Bakery"
+  }
+},
+{
+  "pk": 523, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Mystic Sea"
+  }
+},
+{
+  "pk": 524, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nature's Deli"
+  }
+},
+{
+  "pk": 525, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Blue Dog Bakery"
+  }
+},
+{
+  "pk": 526, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Classic Accessories"
+  }
+},
+{
+  "pk": 527, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Wag'N Enterprises"
+  }
+},
+{
+  "pk": 528, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Zack & Zoey"
+  }
+},
+{
+  "pk": 529, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pets at Play"
+  }
+},
+{
+  "pk": 530, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "VIP/Tuffy's"
+  }
+},
+{
+  "pk": 531, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Dirty and Hairy"
+  }
+},
+{
+  "pk": 532, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Animo"
+  }
+},
+{
+  "pk": 533, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Prozyme"
+  }
+},
+{
+  "pk": 534, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Epi-Pet"
+  }
+},
+{
+  "pk": 535, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Safemade Pet"
+  }
+},
+{
+  "pk": 536, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Mountain Dog Chew"
+  }
+},
+{
+  "pk": 537, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Snicky Snack"
+  }
+},
+{
+  "pk": 538, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "MIU Color"
+  }
+},
+{
+  "pk": 539, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Trixie"
+  }
+},
+{
+  "pk": 540, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Nature's Miracle"
+  }
+},
+{
+  "pk": 541, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "NPIC"
+  }
+},
+{
+  "pk": 542, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Pet Links"
+  }
+},
+{
+  "pk": 543, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Free range Eco Naturals"
+  }
+},
+{
+  "pk": 544, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Smart Pet Solutions"
+  }
+},
+{
+  "pk": 545, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "JJ Fuds "
+  }
+},
+{
+  "pk": 546, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "JJ Fuds"
+  }
+},
+{
+  "pk": 547, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Health Pro"
+  }
+},
+{
+  "pk": 548, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Canine Connected"
+  }
+},
+{
+  "pk": 549, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Poochie Bells"
+  }
+},
+{
+  "pk": 550, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Bark 4 Green"
+  }
+},
+{
+  "pk": 551, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Crumps Naturals"
+  }
+},
+{
+  "pk": 552, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Modgy"
+  }
+},
+{
+  "pk": 553, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Doggie Dental Solutions"
+  }
+},
+{
+  "pk": 554, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Plotz"
+  }
+},
+{
+  "pk": 555, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "ThunderWorks"
+  }
+},
+{
+  "pk": 556, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "ORKA"
+  }
+},
+{
+  "pk": 557, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "PureBites"
+  }
+},
+{
+  "pk": 558, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Wild Chewz"
+  }
+},
+{
+  "pk": 559, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Grizzly Nu Treats"
+  }
+},
+{
+  "pk": 560, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Chammyz"
+  }
+},
+{
+  "pk": 561, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Waggo"
+  }
+},
+{
+  "pk": 562, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "I'm A Little Teacup"
+  }
+},
+{
+  "pk": 563, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Arm and Hammer"
+  }
+},
+{
+  "pk": 564, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Easy Dog"
+  }
+},
+{
+  "pk": 565, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Arm & Hammer"
+  }
+},
+{
+  "pk": 566, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "CocoTherapy"
+  }
+},
+{
+  "pk": 567, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Whimzees"
+  }
+},
+{
+  "pk": 568, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Drinkwell"
+  }
+},
+{
+  "pk": 569, 
+  "model": "app.brand", 
+  "fields": {
+    "name": "Petz Life"
   }
 }
 ]

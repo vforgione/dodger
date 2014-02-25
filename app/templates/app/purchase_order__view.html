@@ -10,21 +10,21 @@
   <tr><th>Creator</th><td>{{ po.creator.username }}</td></tr>
   <tr><th>Supplier</th><td>{{ po.supplier }}</td></tr>
   <tr><th>Terms</th><td>{{ po.terms }}</td></tr>
-  <tr><th>Contact</th><td>{{ po.contact }}</td></tr>
+  <tr><th>Contact</th><td>{{ po.contact.name }}</td></tr>
   <tr><th>Receiver</th><td>{{ po.receiver }}</td></tr>
   <tr><th>Note</th><td>{{ po.note|safe }}</td></tr>
   <tr><th>Date Created</th><td>{{ po.created }}</td></tr>
   <tr><th>Expected Arrival</th><td>{{ po.expected_arrival }}</td></tr>
   <tr><th>Shipments</th><td>
-    {% if po.shipment_set|length %}
+    {% if po.shipment_set.all|length %}
     {% for ship in po.shipment_set.all %}
-    <a href="{{ ship.get_absolute_url }}">{{ ship }}</a><br />
+    <a href="{{ ship.get_absolute_url }}" target="_blank">{{ ship }}</a><br />
     {% endfor %}
     {% else %}
     Nothing received yet.
     {% endif %}
   </td></tr>
-  {% if po.purchaseorderlineitem_set|length %}
+  {% if po.purchaseorderlineitem_set.all|length %}
   <tr>
     <td colspan="2">
       <h4>Line Items</h4>
@@ -36,14 +36,11 @@
         <tbody>
           {% for li in po.purchaseorderlineitem_set.all %}
           <tr>
-            {% if forloop.counter == 1 %}
-            <td class="col-lg-4"><a href="{{ attr.sku.get_absolute_url }}">{{ attr.sku }}</a></td>
-            {% else %}
-            <td class="col-lg-2">{{ attr.quantity_ordered }}</td>
-            <td class="col-lg-2">{{ attr.unit_cost }}</td>
-            <td class="col-lg-2">{{ attr.discount_percent }}</td>
-            <td class="col-lg-2">{{ attr.discount_dollar }}</td>
-            {% endif %}
+            <td class="col-lg-4"><a href="{{ li.sku.get_absolute_url }}" target="_blank">{{ li.sku }}</a></td>
+            <td class="col-lg-2">{{ li.quantity_ordered }}</td>
+            <td class="col-lg-2">{{ li.unit_cost }}</td>
+            <td class="col-lg-2">{{ li.discount_percent }}</td>
+            <td class="col-lg-2">{{ li.discount_dollar }}</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -61,11 +58,11 @@
 <h3>View Purchase Orders</h3>
 <table class="table table-striped">
 <thead>
-  <tr><th>&nbsp;</th><th>Date Created</th><th>Creator</th></tr>
+  <tr><th>&nbsp;</th><th>Date Created</th><th>SKUs</th></tr>
 </thead>
 <tbody>
   {% for po in pos %}
-  <tr><td><a href="{{ po.get_absolute_url }}">{{ po }}</a></td><td>{{ po.created }}</td><td>{{ po.owner.username }}</td></tr>
+  <tr><td><a href="{{ po.get_absolute_url }}">{{ po }}</a></td><td>{{ po.created }}</td><td>{{ po.purchaseorderlineitem_set.all|join:", " }}</td></tr>
   {% endfor %}
 </tbody>
 </table>
@@ -81,7 +78,7 @@
     </div>
     <div class="col-lg-4">
       {% if pos.has_next %}
-      <a href="?page={{ pos.next_page_number }}" class="btn btn-primary">&raquo; Previous</a>
+      <a href="?page={{ pos.next_page_number }}" class="btn btn-primary">Next &raquo;</a>
       {% endif %}
     </div>
   </div>

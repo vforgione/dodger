@@ -53,8 +53,8 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Purchase Orders<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="{% url 'app:purchase_order__view' %}">View Purchase Orders</a></li>
-                <li><a href="{% url 'app:purchase_order__create' %}">Create a Purchase Orders</a></li>
-                <li><a href="{% url 'app:purchase_order__update' %}">Update a Purchase Orders</a></li>
+                <li><a href="{% url 'app:purchase_order__create' %}">Create a Purchase Order</a></li>
+                <li><a href="{% url 'app:purchase_order__update' %}">Update a Purchase Order</a></li>
                 <li><a href="#">Export Purchase Order Data</a></li>
               </ul>
             </li>
@@ -82,10 +82,6 @@
 
         <div class="navbar-collapse collapse navbar-right">
           <ul class="nav navbar-nav">
-            {% if user.is_active and user.is_staff %}
-            <li><a href="/admin">Admin</a></li>
-            {% endif %}
-
             {% if user.is_active and user.is_authenticated %}
             <li><a href="/accounts/logout/">Logout</a></li>
             {% elif not user.is_authenticated %}
