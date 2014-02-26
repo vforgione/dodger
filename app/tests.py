@@ -221,3 +221,245 @@ class PurchaseOrderModelTests(TestCase):
         )
         s2_li1.save()
         self.assertTrue(self.po.is_fully_received())
+
+
+class AbsoluteUrlTests(TestCase):
+
+    def setUp(self):
+        self.user = User(username='test user', email='name@place.com', is_staff=True)
+        self.user.save()
+
+        self.attribute = Attribute(name='test')
+        self.attribute.save()
+
+        self.brand = Brand(name='test')
+        self.brand.save()
+
+        self.category = Category(name='test')
+        self.category.save()
+
+        self.label = ContactLabel(name='test')
+        self.label.save()
+
+        self.cost_reason = CostAdjustmentReason(name='test')
+        self.cost_reason.save()
+
+        self.qty_reason = QuantityAdjustmentReason(name='Received Shipment')  # explicitly needed later for shipment
+        self.qty_reason.save()
+
+        self.supplier = Supplier(name='test')
+        self.supplier.save()
+
+        self.sku = Sku(
+            id=123,
+            name='test',
+            brand=self.brand,
+            quantity_on_hand=0,
+            owner=self.user,
+            supplier=self.supplier,
+            cost=12.22
+        )
+        self.sku.save(gdocs=True)
+
+        self.sku_attr = SkuAttribute(sku=self.sku, attribute=self.attribute, value='hola')
+        self.sku_attr.save()
+
+        self.cost_adj = CostAdjustment(
+            sku=self.sku,
+            reason=self.cost_reason,
+            who=self.user,
+            new=12.98
+        )
+        self.cost_adj.save()
+
+        self.qty_adj = QuantityAdjustment(
+            sku=self.sku,
+            reason=self.qty_reason,
+            who=self.user,
+            new=1000
+        )
+        self.qty_adj.save()
+
+        self.contact = Contact(
+            name='test contact',
+            email='name@place.com',
+            phone='312 555 0123',
+            address1='123 Fake St',
+            city='Anytown',
+            state='OH',
+            zipcode='12345',
+            represents=self.supplier,
+            label=self.label
+        )
+        self.contact.save()
+
+        self.receiver = Receiver(
+            name='test receiver',
+            address1='321 Fake St',
+            city='Anytown',
+            state='OH',
+            zipcode='12345',
+        )
+        self.receiver.save()
+
+        self.po = PurchaseOrder(
+            creator=self.user,
+            supplier=self.supplier,
+            contact=self.contact,
+            receiver=self.receiver,
+            terms='NET 1000'
+        )
+        self.po.save()
+
+        self.po_li = PurchaseOrderLineItem(
+            purchase_order=self.po,
+            sku=self.sku,
+            quantity_ordered=50,
+            unit_cost=10
+        )
+        self.po_li.save()
+
+        self.shipment = Shipment(
+            creator=self.user,
+            purchase_order=self.po
+        )
+        self.shipment.save()
+
+        self.ship_li = ShipmentLineItem(
+            shipment=self.shipment,
+            sku=self.sku,
+            quantity_received=50
+        )
+        self.ship_li.save()
+
+    @expectedFailure
+    def test_attribute_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.attribute.get_absolute_url(),
+            '/attributes/1/'
+        )
+
+    @expectedFailure
+    def test_brand_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.brand.get_absolute_url(),
+            '/brands/1/'
+        )
+
+    @expectedFailure
+    def test_category_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.category.get_absolute_url(),
+            '/categories/1/'
+        )
+
+    @expectedFailure
+    def test_contact_label_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.label.get_absolute_url(),
+            '/contact_labels/1/'
+        )
+
+    @expectedFailure
+    def test_cost_adjustment_reason_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.cost_reason.get_absolute_url(),
+            '/cost_adjustment_reasons/1/'
+        )
+
+    @expectedFailure
+    def test_quantity_adjustment_reason_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.qty_reason.get_absolute_url(),
+            '/quantity_adjustment_reasons/1/'
+        )
+
+    @expectedFailure
+    def test_supplier_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.supplier.get_absolute_url(),
+            '/suppliers/1/'
+        )
+
+    def test_sku_url(self):
+        self.assertEqual(
+            self.sku.get_absolute_url(),
+            '/skus/123/'  # from above - note the id field is explicitly set
+        )
+
+    @expectedFailure
+    def test_sku_attr_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.sku_attr.get_absolute_url(),
+            '/sku_attributes/1/'
+        )
+
+    @expectedFailure
+    def test_cost_adjustment_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.cost_adj.get_absolute_url(),
+            '/cost_adjustments/1/'
+        )
+
+    @expectedFailure
+    def test_quantity_adjustment_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.qty_adj.get_absolute_url(),
+            '/quantity_adjustments/1/'
+        )
+
+    @expectedFailure
+    def test_contact_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.contact.get_absolute_url(),
+            '/contacts/1/'
+        )
+
+    @expectedFailure
+    def test_receiver_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.receiver.get_absolute_url(),
+            '/receivers/1/'
+        )
+
+    def test_purchase_order_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.po.get_absolute_url(),
+            '/purchase_orders/1/'
+        )
+
+    @expectedFailure
+    def test_purchase_order_line_item_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.po_li.get_absolute_url(),
+            '/purchase_order_line_items/1/'
+        )
+
+    def test_shipment_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.shipment.get_absolute_url(),
+            '/shipments/1/'
+        )
+
+    @expectedFailure
+    def test_shipment_line_item_url(self):
+        """not in url conf"""
+        self.assertEqual(
+            self.ship_li.get_absolute_url(),
+            '/shipment_line_items/1/'
+        )
