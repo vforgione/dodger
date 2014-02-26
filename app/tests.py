@@ -3,6 +3,7 @@ from unittest import expectedFailure
 from django.contrib.auth.models import User
 from django.test import TestCase
 
+from forms import SkuForm
 from models import *
 
 
@@ -463,3 +464,37 @@ class AbsoluteUrlTests(TestCase):
             self.ship_li.get_absolute_url(),
             '/shipment_line_items/1/'
         )
+
+
+class SkuFormTests(TestCase):
+
+    def setUp(self):
+        self.user = User(username='test user', email='name@place.com', is_staff=True)
+        self.user.save()
+
+        self.brand = Brand(name='test')
+        self.brand.save()
+
+        self.supplier = Supplier(name='test')
+        self.supplier.save()
+
+        self.sku = Sku(
+            id=123,
+            name='test',
+            brand=self.brand,
+            quantity_on_hand=0,
+            owner=self.user,
+            supplier=self.supplier,
+            cost=12.22
+        )
+        self.sku.save(gdocs=True)
+
+    def test_create_form(self):
+        form = SkuForm()
+        self.assertNotIn('readonly', form.fields['cost'].widget.attrs)
+        self.assertNotIn('readonly', form.fields['quantity_on_hand'].widget.attrs)
+
+    def test_update_form(self):
+        form = SkuForm(instance=self.sku)
+        self.assertTrue(form.fields['cost'].widget.attrs['readonly'])
+        self.assertTrue(form.fields['quantity_on_hand'].widget.attrs['readonly'])
