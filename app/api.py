@@ -13,6 +13,7 @@ class SecureResource(ModelResource):
     class Meta:
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
         always_return_data = True
 
 

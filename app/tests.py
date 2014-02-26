@@ -1,7 +1,10 @@
+import json
 from unittest import expectedFailure
 
 from django.contrib.auth.models import User
 from django.test import TestCase
+from tastypie.models import ApiKey
+from tastypie.test import ResourceTestCase
 
 from forms import SkuForm
 from models import *
@@ -539,3 +542,204 @@ class SkuFormTests(TestCase):
         form = SkuForm(instance=self.sku)
         self.assertTrue(form.fields['cost'].widget.attrs['readonly'])
         self.assertTrue(form.fields['quantity_on_hand'].widget.attrs['readonly'])
+
+
+# ===============================================
+#                   API TESTS
+# -----------------------------------------------
+#
+# -----------------------------------------------
+class ApiResourceTests(ResourceTestCase):
+    """abstract class to make resource-specific tests more concise"""
+
+    def setUp(self):
+        super(ApiResourceTests, self).setUp()
+
+        self.user = User.objects.create_superuser('test user', 'name@place.com', 'password')
+        self.api_key = ApiKey(user=self.user)
+        self.api_key.save()
+
+        try:
+            obj = self.model(name='test')
+            obj.save()
+
+            self.list_uri = '/api/sku_service/%s/' % self.uri_spec
+            self.detail_uri = self.list_uri + '1/'
+        except Exception:
+            pass
+
+        self.payload = json.dumps({'name': 'test'})
+
+    def get_credentials(self):
+        return self.create_apikey(self.user.username, self.api_key)
+
+    @expectedFailure
+    def test_get_list(self):
+        response = self.api_client.get(self.list_uri, authentication=self.get_credentials())
+        self.assertHttpOK(response)
+
+    @expectedFailure
+    def test_get_list_unauthorized(self):
+        response = self.api_client.get(self.list_uri)
+        self.assertHttpUnauthorized(response)
+
+    @expectedFailure
+    def test_get_detail(self):
+        response = self.api_client.get(self.detail_uri, authentication=self.get_credentials())
+        self.assertHttpOK(response)
+
+    @expectedFailure
+    def test_get_detail_unauthorized(self):
+        response = self.api_client.get(self.detail_uri)
+        self.assertHttpUnauthorized(response)
+
+    @expectedFailure
+    def test_other_methods(self):
+        response = self.api_client.delete(self.detail_uri, authentication=self.get_credentials())
+        self.assertHttpMethodNotAllowed(response)
+
+        response = self.api_client.patch(self.detail_uri, data=self.payload, authentication=self.get_credentials())
+        self.assertHttpMethodNotAllowed(response)
+
+        response = self.api_client.post(self.detail_uri, data=self.payload, authentication=self.get_credentials())
+        self.assertHttpMethodNotAllowed(response)
+
+        response = self.api_client.put(self.detail_uri, data=self.payload, authentication=self.get_credentials())
+        self.assertHttpMethodNotAllowed(response)
+
+
+class AttributeResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = Attribute
+        self.uri_spec = 'attributes'
+        super(AttributeResourceTests, self).setUp()
+
+
+class BrandResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = Brand
+        self.uri_spec = 'brands'
+        super(BrandResourceTests, self).setUp()
+
+
+class CategoryResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = Category
+        self.uri_spec = 'categories'
+        super(CategoryResourceTests, self).setUp()
+
+
+class ContactLabelResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = ContactLabel
+        self.uri_spec = 'contact_labels'
+        super(ContactLabelResourceTests, self).setUp()
+
+
+class CostAdjustmentReasonResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = CostAdjustmentReason
+        self.uri_spec = 'cost_adjustment_reason'
+        super(CostAdjustmentReasonResourceTests, self).setUp()
+
+
+class QuantityAdjustmentReasonResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = QuantityAdjustmentReason
+        self.uri_spec = 'quantity_adjustment_reason'
+        super(QuantityAdjustmentReasonResourceTests, self).setUp()
+
+
+class SupplierResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = Supplier
+        self.uri_spec = 'suppliers'
+        super(SupplierResourceTests, self).setUp()
+
+
+class SkuResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = Sku
+        self.uri_spec = 'skus'
+        super(SkuResourceTests, self).setUp()
+
+
+class SkuAttributeTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = SkuAttribute
+        self.uri_spec = 'sku_attributes'
+        super(SkuAttributeTests, self).setUp()
+
+
+class CostAdjustmentResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = CostAdjustment
+        self.uri_spec = 'cost_adjustments'
+        super(CostAdjustmentResourceTests, self).setUp()
+
+
+class QuantityAdjustmentResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = QuantityAdjustment
+        self.uri_spec = 'quantity_adjustments'
+        super(QuantityAdjustmentResourceTests, self).setUp()
+
+
+class ContactResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = Contact
+        self.uri_spec = 'contacts'
+        super(ContactResourceTests, self).setUp()
+
+
+class ReceiverResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = Receiver
+        self.uri_spec = 'receivers'
+        super(ReceiverResourceTests, self).setUp()
+
+
+class PurchaseOrderResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = PurchaseOrder
+        self.uri_spec = 'purchase_orders'
+        super(PurchaseOrderResourceTests, self).setUp()
+
+
+class PurchaseOrderLineItemResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = PurchaseOrderLineItem
+        self.uri_spec = 'purchase_order_line_items'
+        super(PurchaseOrderLineItemResourceTests, self).setUp()
+
+
+class ShipmentResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = Shipment
+        self.uri_spec = 'shipments'
+        super(ShipmentResourceTests, self).setUp()
+
+
+class ShipmentLineItemResourceTests(ApiResourceTests):
+
+    def setUp(self):
+        self.model = ShipmentLineItem
+        self.uri_spec = 'shipment_line_items'
+        super(ShipmentLineItemResourceTests, self).setUp()
+
