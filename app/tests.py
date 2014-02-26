@@ -105,3 +105,119 @@ class SkuModelTests(TestCase):
         qty_adj.save()
         self.assertEqual(self.sku.quantity_on_hand, qty_adj.new)
         self.assertEqual(qty_adj.old, old)
+
+
+class PurchaseOrderModelTests(TestCase):
+
+    def setUp(self):
+        self.brand = Brand(name='test brand')
+        self.brand.save()
+
+        self.category = Category(name='test category')
+        self.category.save()
+
+        self.user = User(username='test user', email='name@place.com', is_staff=True)
+        self.user.save()
+
+        self.supplier = Supplier(name='test supplier')
+        self.supplier.save()
+
+        self.label = ContactLabel(name='test label')
+        self.label.save()
+
+        self.contact = Contact(
+            name='test contact',
+            email='name@place.com',
+            phone='312 555 0123',
+            address1='123 Fake St',
+            city='Anytown',
+            state='OH',
+            zipcode='12345',
+            represents=self.supplier,
+            label=self.label
+        )
+        self.contact.save()
+
+        self.receiver = Receiver(
+            name='test receiver',
+            address1='321 Fake St',
+            city='Anytown',
+            state='OH',
+            zipcode='12345',
+        )
+        self.receiver.save()
+
+        self.qty_reason = QuantityAdjustmentReason(name='Received Shipment')
+        self.qty_reason.save()
+
+        # hack to get skus in -- system assumes initial sku population from synced doc
+        self.sku1 = Sku(
+            id=123,
+            name='test sku 1',
+            brand=self.brand,
+            quantity_on_hand=174,
+            owner=self.user,
+            supplier=self.supplier
+        )
+        self.sku1.save(gdocs=True)
+
+        self.sku2 = Sku(
+            name='test sku 2',
+            brand=self.brand,
+            quantity_on_hand=0,
+            owner=self.user,
+            supplier=self.supplier
+        )
+        self.sku2.save()
+
+        self.po = PurchaseOrder(
+            creator=self.user,
+            supplier=self.supplier,
+            contact=self.contact,
+            receiver=self.receiver,
+            terms='NET 1000'
+        )
+        self.po.save()
+
+        self.po_li1 = PurchaseOrderLineItem(
+            purchase_order=self.po,
+            sku=self.sku1,
+            quantity_ordered=50,
+            unit_cost=10
+        )
+        self.po_li1.save()
+
+        self.po_li2 = PurchaseOrderLineItem(
+            purchase_order=self.po,
+            sku=self.sku2,
+            quantity_ordered=50,
+            unit_cost=10
+        )
+        self.po_li2.save()
+
+    def test_is_fully_received(self):
+        self.assertFalse(self.po.is_fully_received())
+        shipment1 = Shipment(
+            creator=self.user,
+            purchase_order=self.po
+        )
+        shipment1.save()
+        s1_li1 = ShipmentLineItem(
+            shipment=shipment1,
+            sku=self.sku1,
+            quantity_received=50
+        )
+        s1_li1.save()
+        self.assertFalse(self.po.is_fully_received())
+        shipment2 = Shipment(
+            creator=self.user,
+            purchase_order=self.po
+        )
+        shipment2.save()
+        s2_li1 = ShipmentLineItem(
+            shipment=shipment1,
+            sku=self.sku2,
+            quantity_received=50
+        )
+        s2_li1.save()
+        self.assertTrue(self.po.is_fully_received())
