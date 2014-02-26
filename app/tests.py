@@ -7,6 +7,17 @@ from forms import SkuForm
 from models import *
 
 
+# ===============================================
+#               SKU MODEL TESTS
+# -----------------------------------------------
+#   test update
+#   test update with illegal qty change
+#   test update with illegal cost change
+#   test attributes property
+#   test description property
+#   test cost adjustment
+#   test quantity adjustment
+# -----------------------------------------------
 class SkuModelTests(TestCase):
 
     def setUp(self):
@@ -108,6 +119,11 @@ class SkuModelTests(TestCase):
         self.assertEqual(qty_adj.old, old)
 
 
+# ===============================================
+#               PO MODEL TESTS
+# -----------------------------------------------
+#   test is fully received method
+# -----------------------------------------------
 class PurchaseOrderModelTests(TestCase):
 
     def setUp(self):
@@ -224,6 +240,27 @@ class PurchaseOrderModelTests(TestCase):
         self.assertTrue(self.po.is_fully_received())
 
 
+# ===============================================
+#           ABSOLUTE URL METHOD TESTS
+# -----------------------------------------------
+#   test attribute - expect failure
+#   test brand - expect failure
+#   test category - expect failure
+#   test contact label - expect failure
+#   test cost adjustment reason - expect failure
+#   test quantity adjustment reason - expect failure
+#   test supplier - expect failure
+#   test sku
+#   test sku attribute - expect failure
+#   test cost adjustment
+#   test quantity adjustment
+#   test contact - expect failure
+#   test receiver - expect failure
+#   test purchase order
+#   test po line item - expect failure
+#   test shipment
+#   test shipment line item - expect failure
+# -----------------------------------------------
 class AbsoluteUrlTests(TestCase):
 
     def setUp(self):
@@ -403,7 +440,6 @@ class AbsoluteUrlTests(TestCase):
             '/sku_attributes/1/'
         )
 
-    @expectedFailure
     def test_cost_adjustment_url(self):
         """not in url conf"""
         self.assertEqual(
@@ -411,7 +447,6 @@ class AbsoluteUrlTests(TestCase):
             '/cost_adjustments/1/'
         )
 
-    @expectedFailure
     def test_quantity_adjustment_url(self):
         """not in url conf"""
         self.assertEqual(
@@ -466,6 +501,12 @@ class AbsoluteUrlTests(TestCase):
         )
 
 
+# ===============================================
+#               SKU FORM TESTS
+# -----------------------------------------------
+#   test creation form - no readonly
+#   test update form - readonly cost and qty
+# -----------------------------------------------
 class SkuFormTests(TestCase):
 
     def setUp(self):
