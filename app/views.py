@@ -20,6 +20,38 @@ PAGE_SIZE = 20
 TZ = timezone('America/Chicago')
 
 
+##
+# search
+@login_required
+def search(request):
+    q = request.GET.get('q', None)
+
+    skus = Sku.objects.all()
+
+    if q:
+        attrs = [obj.sku.id for obj in SkuAttribute.objects.filter(value=q)]
+
+        skus = skus.filter(
+            Q(id__icontains=q) |
+            Q(name__icontains=q) |
+            Q(upc__icontains=q) |
+            Q(location__icontains=q) |
+            Q(brand__name__icontains=q) |
+            Q(owner__username__icontains=q) |
+            Q(supplier__name__icontains=q) |
+            Q(supplier_sku__icontains=q) |
+            Q(id__in=attrs)
+        )
+
+    return render_to_response(
+        'app/search.html',
+        {
+            'skus': skus,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
 ## adjustments
 # cost adjustments
 @login_required

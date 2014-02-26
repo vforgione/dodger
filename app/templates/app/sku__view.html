@@ -25,7 +25,7 @@
   <tr><th>In Live Deal</th><td>{{ sku.in_live_deal }}</td></tr>
   <tr><th>Date Created</th><td>{{ sku.created }}</td></tr>
   <tr><th>Date Last Modified</th><td>{{ sku.modified }}</td></tr>
-  {% if sku.skuattribute_set|length %}
+  {% if sku.skuattribute_set.all|length %}
   <tr>
     <td colspan="2">
       <h4>Attributes</h4>

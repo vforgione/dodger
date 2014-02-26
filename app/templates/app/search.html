@@ -1,0 +1,36 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+<h3>Search Results</h3>
+<hr />
+
+{% if not skus %}
+<p>No results.</p>
+{% endif %}
+
+{% if skus %}
+<h4>SKUs</h4>
+<div class="table-responsive">
+  <table class="table">
+  <thead>
+    <tr>
+      <th>&nbsp;</th><th>UPC</th><th>Qty on Hand</th><th>Location</th><th>Supplier SKU</th><th>In Live Deal</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for sku in skus %}
+    <tr>
+      <td><a href="{{ sku.get_absolute_url }}" target="_blank">{{ sku }}</a></td>
+      <td>{{ sku.upc }}</td>
+      <td>{{ sku.quantity_on_hand }}</td>
+      <td>{{ sku.location }}</td>
+      <td>{{ sku.supplier_sku }}</td>
+      <td>{{ sku.in_live_deal }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+</div>
+{% endif %}
+
+{% endblock %}

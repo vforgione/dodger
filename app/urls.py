@@ -4,6 +4,10 @@ from django.conf.urls import patterns, url
 urlpatterns = patterns(
     'app.views',
 
+    ##
+    # search
+    url(r'^search/$', 'search', name='search'),
+
     ## adjustments
     # cost adjustments
     url(r'^cost_adjustments(?:/(?P<pk>\d+))?/$', 'cost_adjustment__view', name='cost_adjustment__view'),

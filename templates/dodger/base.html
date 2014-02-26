@@ -87,6 +87,11 @@
         <div class="navbar-collapse collapse navbar-right">
           <ul class="nav navbar-nav">
             {% if user.is_active and user.is_authenticated %}
+            <li><a>
+              <form action="{% url 'app:search' %}" method="get" class="form-search form-inline">
+                <input type="text" name="q" class="search-query form-control" style="height:2em;width:250px" />
+              </form>
+            </a></li>
             <li><a href="/accounts/logout/">Logout</a></li>
             {% elif not user.is_authenticated %}
             <li><a href="{% url 'social:begin' 'google' %}">Login</a></li>
@@ -117,6 +122,29 @@
   {% block highlightjs %}{% endblock %}
   {% block contentjs %}{% endblock %}
   {% block extrajs %}{% endblock %}
+<style type="text/css">
+input.search-query {
+    padding-left:26px;
+}
+
+form.form-search {
+    position: relative;
+}
+
+form.form-search:before {
+    content:'';
+    display: block;
+    width: 14px;
+    height: 14px;
+    background-image: url(http://getbootstrap.com/2.3.2/assets/img/glyphicons-halflings.png);
+    background-position: -48px 0;
+    position: absolute;
+    top:8px;
+    left:8px;
+    opacity: .5;
+    z-index: 1000;
+}
+</style>
 </div>
 </body>
 </html>
