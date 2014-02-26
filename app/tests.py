@@ -93,3 +93,15 @@ class SkuModelTests(TestCase):
         cost_adj.save()
         self.assertEqual(self.sku.cost, cost_adj.new)
         self.assertEqual(cost_adj.old, old)
+
+    def test_qty_adjustment(self):
+        qty_adj = QuantityAdjustment(
+            sku=self.sku,
+            reason=self.qty_reason,
+            who=self.user,
+            new=1000
+        )
+        old = self.sku.quantity_on_hand
+        qty_adj.save()
+        self.assertEqual(self.sku.quantity_on_hand, qty_adj.new)
+        self.assertEqual(qty_adj.old, old)
