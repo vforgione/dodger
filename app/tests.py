@@ -22,6 +22,11 @@ class SkuModelTests(TestCase):
         self.supplier = Supplier(name='test supplier')
         self.supplier.save()
 
+        self.attr1 = Attribute(name='test attr 1')
+        self.attr1.save()
+        self.attr2 = Attribute(name='test attr 2')
+        self.attr2.save()
+
         # hack to get skus in -- system assumes initial sku population from synced doc
         previous_sku = Sku(
             id=123,
@@ -55,3 +60,10 @@ class SkuModelTests(TestCase):
     def test_update_illegal_cost(self):
         self.cost = 12.98
         self.sku.save()
+
+    def test_attributes_property(self):
+        sa1 = SkuAttribute(sku=self.sku, attribute=self.attr1, value='hola')
+        sa1.save()
+        sa2 = SkuAttribute(sku=self.sku, attribute=self.attr2, value='howdy')
+        sa2.save()
+        self.assertEqual(len(self.sku.attributes), 2)
