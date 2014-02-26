@@ -105,6 +105,9 @@ class Sku(models.Model):
             elif 'cost_change' in kwargs:
                 del kwargs['cost_change']
                 super(Sku, self).save(*args, **kwargs)
+            elif 'gdocs' in kwargs:
+                del kwargs['gdocs']
+                super(Sku, self).save(*args, **kwargs)
             else:
                 old = Sku.objects.get(pk=self.pk)
                 assert old.quantity_on_hand == self.quantity_on_hand
