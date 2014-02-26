@@ -20,7 +20,8 @@ urlpatterns = patterns(
     url(r'^$', TemplateView.as_view(template_name='dodger/home.html')),
 
     # login/out
-    url(r'^accounts/login/', 'django.contrib.auth.views.login'),
+    # url(r'^accounts/login/', 'django.contrib.auth.views.login'),
+    url(r'^accounts/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^accounts/logout/$', logout_page),
 
     # admin

@@ -1,6 +1,7 @@
 Django==Django==1.6.1
 South==0.8.4
 django-admin-bootstrapped==1.6.4
+django-social-auth==0.7.28
 django-tastypie==0.11.0
 gspread==0.1.0
 psycopg2==2.5.2

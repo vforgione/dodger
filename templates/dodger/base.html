@@ -85,7 +85,7 @@
             {% if user.is_active and user.is_authenticated %}
             <li><a href="/accounts/logout/">Logout</a></li>
             {% elif not user.is_authenticated %}
-            <li><a href="/accounts/login/">Login</a></li>
+            <li><a href="{% url 'social:begin' 'google' %}">Login</a></li>
             {% endif %}
           </ul>
         </div>
