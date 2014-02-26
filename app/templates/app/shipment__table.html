@@ -1,0 +1,136 @@
+{% extends 'dodger/base.html' %}
+
+{% block extrahead %}
+<style>table.data-table{font-size:0.8em;}</style>
+{% endblock %}
+
+{% block content %}
+<h3>View Shipment Data</h3>
+
+<div class="table-responsive">
+<form action="." method="get">
+  {% csrf_token %}
+  <table class="table">
+    <tr><td colspan="2"><h5>Filter Shipments</h5></td></tr>
+    <tr>
+      <td class="col-lg-6">
+        <div class="form-group">
+          <label for="creator">Received By</label>
+          <select name="creator" class="form-control">
+            <option></option>
+            {% for creator in creators %}
+            <option value="{{ creator.id }}">{{ creator.username }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </td>
+      <td class="col-lg-6">
+        <div class="form-group">
+          <label for="pos">PO IDs</label>
+          <input name="pos" class="form-control" type="text" placeholder="comma separated" />
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-lg-6">
+        <div class="form-group">
+          <label for="start">Date Created (Start)</label>
+          <input type="date" name="start" class="form-control" id="start" />
+        </div>
+      </td>
+      <td class="col-lg-6">
+        <div class="form-group">
+          <label for="end">Date Created (End)</label>
+          <input type="date" name="end" class="form-control" id="end" />
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-lg-6" colspan="2">
+        <div class="form-group">
+          <input type="submit" class="btn btn-primary" value="Filter POs" />
+        </div>
+      </td>
+    </tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+  </table>
+</form>
+</div>
+
+{% if warnings|length %}
+{% for message in warnings %}
+<div class="alert alert-warning alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <p>{{ message }}</p>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if params|length %}
+{% for key, value in params.iteritems %}
+<div class="alert alert-info alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <p><b>Search Key:</b> {{ key }}</p>
+  <p><b>Value:</b> {{ value }}</p>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if ships %}
+<div class="table-responsive">
+<table class="table table-striped table-condensed data-table">
+<thead>
+  <tr>
+    <th>ID</th><th>Date Created</th><th>Received By</th><th>PO Reference</th><th>Note</th>
+  </tr>
+</thead>
+<tbody>
+  {% for ship in ships %}
+  <tr>
+    <td>{{ ship.id }}</td>
+    <td>{{ ship.created }}</td>
+    <td>{{ ship.creator.username }}</td>
+    <td>{{ ship.purchase_order }}</td>
+    <td>{{ ship.note }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+
+<div class="pull-left">
+  {% if ships.has_previous %}
+  <div class="button"><a href="?{{ request.GET.urlencode }}&page={{ ships.previous_page_number }}">Previous</a></div>
+  {% endif %}
+
+  <div>Page {{ ships.number }} of {{ ships.paginator.num_pages }}</div>
+
+  {% if ships.has_next %}
+  <div class="button"><a href="?{{ request.GET.urlencode }}&page={{ ships.next_page_number }}">Next</a></div>
+  {% endif %}
+</div>
+
+<div class="pull-right"><a href="/shipments/export/?{{ request.GET.urlencode }}" target="_blank" class="btn btn-primary default" >Export This Table</a></div>
+</div>
+
+{% else %}
+<div class="alert alert-warning alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <p>No matches found for you specifications.</p>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block contentjs %}
+<script>
+$(document).ready(function(){
+  $('#start').change(function(){
+    if ($(this).val()!= ''){
+      $('#end').prop('required', true);
+    } else {
+      $('#end').prop('required', false);
+    }
+  });
+});
+</script>
+{% endblock %}

@@ -34,12 +34,22 @@ urlpatterns = patterns(
     url(r'^purchase_orders/export/$', 'purchase_order__export', name='purchase_order__export'),
 
     ##
+    # purchase order line items
+    url(r'^purchase_order_line_items/table/$', 'purchase_order_line_item__table', name='purchase_order_line_item__table'),
+    url(r'^purchase_order_line_items/export/$', 'purchase_order_line_item__export', name='purchase_order_line_item__export'),
+
+    ##
     # shipments
     url(r'^shipments(?:/(?P<pk>\d+))?/$', 'shipment__view', name='shipment__view'),
     url(r'^shipments/create/$', 'shipment__create', name='shipment__create'),
     url(r'^shipments/update(?:/(?P<pk>\d+))?/$', 'shipment__update', name='shipment__update'),
     url(r'^shipments/table/$', 'shipment__table', name='shipment__table'),
     url(r'^shipments/export/$', 'shipment__export', name='shipment__export'),
+
+    ##
+    # shipment line items
+    url(r'^shipment_line_items/table/$', 'shipment_line_item__table', name='shipment_line_item__table'),
+    url(r'^shipment_line_items/export/$', 'shipment_line_item__export', name='shipment_line_item__export'),
 
     ## controls
     # attributes

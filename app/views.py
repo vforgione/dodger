@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
@@ -7,12 +8,16 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
+from django.template.defaultfilters import slugify
+from pytz import timezone
 
 from forms import *
 from models import *
 
 
 PAGE_SIZE = 20
+
+TZ = timezone('America/Chicago')
 
 
 ## adjustments
@@ -68,13 +73,81 @@ def cost_adjustment__create(request):
 
 
 @login_required
+def filter_cost_adjs(request):
+    creator = request.GET.get('creator', None)
+    skus = request.GET.get('skus', None)
+    start = request.GET.get('start', None)
+    end = request.GET.get('end', None)
+
+    adjs = CostAdjustment.objects.order_by('-created')
+    warnings = []
+    params = {}
+
+    if creator:
+        adjs = adjs.filter(who__id=creator)
+        params['Creator'] = get_object_or_404(User, id=creator)
+
+    if skus:
+        adjs = adjs.filter(sku__id__in=[sku.rstrip() for sku in skus.split(',')])
+        params['SKUs'] = skus
+
+    if start and end:
+        s, e = start, end
+        start = datetime(*(int(x) for x in start.split('-')), hour=0, minute=0, second=0, tzinfo=TZ)
+        end = datetime(*(int(x) for x in end.split('-')), hour=23, minute=59, second=59, tzinfo=TZ)
+        adjs = adjs.filter(created__range=[start, end])
+        params['Date Created Range'] = '%s to %s' % (s, e)
+
+    return adjs, warnings, params
+
+
+@login_required
 def cost_adjustment__table(request):
-    pass
+    adjs, warnings, params = filter_cost_adjs(request)
+
+    paginator = Paginator(adjs, PAGE_SIZE)
+    page = request.GET.get('page', 1)
+    try:
+        adjs = paginator.page(page)
+    except PageNotAnInteger:
+        adjs = paginator.page(1)
+    except EmptyPage:
+        adjs = paginator.page(paginator.num_pages)
+
+    creators = User.objects.all()
+
+    return render_to_response(
+        'app/cost_adjustment__table.html',
+        {
+            'adjs': adjs,
+            'warnings': warnings,
+            'params': params,
+            'creators': creators,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 @login_required
 def cost_adjustment__export(request):
-    pass
+    adjs, _, params = filter_cost_adjs(request)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="cost_adjs__%s.csv"' % \
+          '_'.join([slugify(p) for p in params.values()])
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'id', 'creator', 'sku', 'old', 'new', 'reason', 'detail', 'date'
+    ])
+
+    for adj in adjs:
+        writer.writerow([
+            adj.id, adj.who.username, adj.sku.id, adj.old, adj.new, adj.reason.name, adj.detail,
+            adj.created.strftime('%m/%d/%Y')
+        ])
+
+    return response
 
 
 # qty adjustments
@@ -130,13 +203,81 @@ def quantity_adjustment__create(request):
 
 
 @login_required
+def filter_qty_adjs(request):
+    creator = request.GET.get('creator', None)
+    skus = request.GET.get('skus', None)
+    start = request.GET.get('start', None)
+    end = request.GET.get('end', None)
+
+    adjs = QuantityAdjustment.objects.order_by('-created')
+    warnings = []
+    params = {}
+
+    if creator:
+        adjs = adjs.filter(who__id=creator)
+        params['Creator'] = get_object_or_404(User, id=creator)
+
+    if skus:
+        adjs = adjs.filter(sku__id__in=[sku.rstrip() for sku in skus.split(',')])
+        params['SKUs'] = skus
+
+    if start and end:
+        s, e = start, end
+        start = datetime(*(int(x) for x in start.split('-')), hour=0, minute=0, second=0, tzinfo=TZ)
+        end = datetime(*(int(x) for x in end.split('-')), hour=23, minute=59, second=59, tzinfo=TZ)
+        adjs = adjs.filter(created__range=[start, end])
+        params['Date Created Range'] = '%s to %s' % (s, e)
+
+    return adjs, warnings, params
+
+
+@login_required
 def quantity_adjustment__table(request):
-    pass
+    adjs, warnings, params = filter_qty_adjs(request)
+
+    paginator = Paginator(adjs, PAGE_SIZE)
+    page = request.GET.get('page', 1)
+    try:
+        adjs = paginator.page(page)
+    except PageNotAnInteger:
+        adjs = paginator.page(1)
+    except EmptyPage:
+        adjs = paginator.page(paginator.num_pages)
+
+    creators = User.objects.all()
+
+    return render_to_response(
+        'app/quantity_adjustment__table.html',
+        {
+            'adjs': adjs,
+            'warnings': warnings,
+            'params': params,
+            'creators': creators,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 @login_required
 def quantity_adjustment__export(request):
-    pass
+    adjs, _, params = filter_qty_adjs(request)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="qty_adjs__%s.csv"' % \
+          '_'.join([slugify(p) for p in params.values()])
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'id', 'creator', 'sku', 'old', 'new', 'reason', 'detail', 'date'
+    ])
+
+    for adj in adjs:
+        writer.writerow([
+            adj.id, adj.who.username, adj.sku.id, adj.old, adj.new, adj.reason.name, adj.detail,
+            adj.created.strftime('%m/%d/%Y')
+        ])
+
+    return response
 
 
 ##
@@ -254,6 +395,7 @@ def sku__update(request, pk=None):
     )
 
 
+@login_required
 def filter_skus(request):
     brand = request.GET.get('brand', None)
     category = request.GET.get('category', None)
@@ -264,29 +406,36 @@ def filter_skus(request):
     quantity_on_hand = request.GET.get('quantity_on_hand', None)  # parse and apply filter
 
     skus = Sku.objects.order_by('id')
-
     warnings = []
+    params = {}
 
     if brand:
         skus = skus.filter(brand__id=brand)
+        params['Brand'] = get_object_or_404(Brand, id=brand)
 
     if category:
         skus = skus.filter(categories__id=category)
+        params['Category'] = get_object_or_404(Category, id=category)
 
     if owner:
         skus = skus.filter(owner__id=owner)
+        params['Owner'] = get_object_or_404(User, id=owner)
 
     if supplier:
         skus = skus.filter(supplier__id=supplier)
+        params['Supplier'] = get_object_or_404(Supplier, id=supplier)
 
     if in_live_deal in (0, 1):
         skus = skus.filter(in_live_deal=in_live_deal)
+        params['In Live Deal'] = in_live_deal
 
     if name:
         skus = skus.filter(name__icontains=name)
+        params['Name'] = name
 
     if quantity_on_hand:
         keywords = quantity_on_hand.split()
+        params['Qty on Hand'] = quantity_on_hand
 
         if len(keywords) == 1:
             skus = skus.filter(quantity_on_hand=quantity_on_hand)
@@ -340,13 +489,12 @@ def filter_skus(request):
             else:
                 warnings.append('Could not parse quantity_on_hand = `%s`' % quantity_on_hand)
 
-    return skus, warnings
+    return skus, warnings, params
 
 
 @login_required
 def sku__table(request):
-
-    skus, warnings = filter_skus(request)
+    skus, warnings, params = filter_skus(request)
 
     paginator = Paginator(skus, PAGE_SIZE)
     page = request.GET.get('page', 1)
@@ -367,6 +515,7 @@ def sku__table(request):
         {
             'skus': skus,
             'warnings': warnings,
+            'params': params,
             'brands': brands,
             'categories': categories,
             'owners': owners,
@@ -377,11 +526,11 @@ def sku__table(request):
 
 @login_required
 def sku__export(request):
-
-    skus, _ = filter_skus(request)
+    skus, _, params = filter_skus(request)
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="skus.csv"'
+    response['Content-Disposition'] = 'attachment; filename="skus__%s.csv"' % \
+          '_'.join([slugify(p) for p in params.values()])
 
     writer = csv.writer(response)
     writer.writerow([
@@ -527,13 +676,176 @@ def purchase_order__update(request, pk=None):
 
 
 @login_required
+def filter_pos(request):
+    creator = request.GET.get('creator', None)
+    supplier = request.GET.get('supplier', None)
+    contact = request.GET.get('contact', None)
+    notes = request.GET.get('notes', None)
+    start = request.GET.get('start', None)
+    end = request.GET.get('end', None)
+
+    pos = PurchaseOrder.objects.order_by('-created')
+    warnings = []
+    params = {}
+
+    if creator:
+        pos = pos.filter(creator__id=creator)
+        params['DAT Member'] = get_object_or_404(User, id=creator)
+
+    if supplier:
+        pos = pos.filter(supplier__id=supplier)
+        params['Supplier'] = get_object_or_404(Supplier, id=supplier)
+
+    if contact:
+        pos = pos.filter(contact__id=contact)
+        params['Contact'] = get_object_or_404(Contact, id=contact)
+
+    if notes:
+        orig = len(pos)
+        pos = pos.filter(notes__icontains=notes)
+        params['Notes (contains)'] = notes
+        if len(pos) == orig:
+            warnings.append('No POs contained "%s" in their notes.' % notes)
+
+    if start and end:
+        s, e = start, end
+        start = datetime(*(int(x) for x in start.split('-')), hour=0, minute=0, second=0, tzinfo=TZ)
+        end = datetime(*(int(x) for x in end.split('-')), hour=23, minute=59, second=59, tzinfo=TZ)
+        pos = pos.filter(created__range=[start, end])
+        params['Date Created Range'] = '%s to %s' % (s, e)
+
+    return pos, warnings, params
+
+
+@login_required
 def purchase_order__table(request):
-    pass
+    pos, warnings, params = filter_pos(request)
+
+    paginator = Paginator(pos, PAGE_SIZE)
+    page = request.GET.get('page', 1)
+    try:
+        pos = paginator.page(page)
+    except PageNotAnInteger:
+        pos = paginator.page(1)
+    except EmptyPage:
+        pos = paginator.page(paginator.num_pages)
+
+    creators = User.objects.all()
+    suppliers = Supplier.objects.all()
+    contacts = Contact.objects.all()
+
+    return render_to_response(
+        'app/purchase_order__table.html',
+        {
+            'pos': pos,
+            'warnings': warnings,
+            'params': params,
+            'creators': creators,
+            'suppliers': suppliers,
+            'contacts': contacts,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 @login_required
 def purchase_order__export(request):
-    pass
+    pos, _, params = filter_pos(request)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="pos__%s.csv"' % \
+          '_'.join([slugify(p) for p in params.values()])
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'id', 'date created', 'dat member', 'supplier', 'contact', 'receiver', 'terms', 'expected arrival', 'note',
+        'shipment ids'
+    ])
+
+    for po in pos:
+        writer.writerow([
+            po.id, po.created.strftime('%m/%d/%Y'), po.creator.username, po.supplier.name, po.contact.name,
+            po.receiver.name, po.terms, po.expected_arrival, po.note,
+            ', '.join([str(s.id) for s in po.shipment_set.all()])
+        ])
+
+    return response
+
+
+##
+# purchase order line items
+@login_required
+def filter_po_lis(request):
+    pos = request.GET.get('pos', None)
+    skus = request.GET.get('skus', None)
+    start = request.GET.get('start', None)
+    end = request.GET.get('end', None)
+
+    lis = PurchaseOrderLineItem.objects.order_by('-purchase_order__id')
+    warnings = []
+    params = {}
+
+    if pos:
+        lis = lis.filter(purchase_order__id__in=[po.rstrip() for po in pos.split(',')])
+        params['POs'] = pos
+
+    if skus:
+        lis = lis.filter(sku__id__in=[sku.rstrip() for sku in skus.split(',')])
+        params['SKUs'] = skus
+
+    if start and end:
+        s, e = start, end
+        start = datetime(*(int(x) for x in start.split('-')), hour=0, minute=0, second=0, tzinfo=TZ)
+        end = datetime(*(int(x) for x in end.split('-')), hour=23, minute=59, second=59, tzinfo=TZ)
+        lis = lis.filter(purchase_order__created__range=[start, end])
+        params['Date Created Range'] = '%s to %s' % (s, e)
+
+    return lis, warnings, params
+
+
+@login_required
+def purchase_order_line_item__table(request):
+    lis, warnings, params = filter_po_lis(request)
+
+    paginator = Paginator(lis, PAGE_SIZE)
+    page = request.GET.get('page', 1)
+    try:
+        lis = paginator.page(page)
+    except PageNotAnInteger:
+        lis = paginator.page(1)
+    except EmptyPage:
+        lis = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'app/purchase_order_line_item__table.html',
+        {
+            'lis': lis,
+            'warnings': warnings,
+            'params': params,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+@login_required
+def purchase_order_line_item__export(request):
+    lis, _, params = filter_po_lis(request)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="po_line_items__%s.csv"' % \
+          '_'.join([slugify(p) for p in params.values()])
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'po id', 'sku id', 'qty ordered', 'disc percent', 'disc dollar'
+    ])
+
+    for li in lis:
+        writer.writerow([
+            li.purchase_order.id, li.sku.id, li.quantity_ordered, li.discount_percent, li.discount_dollar
+        ])
+
+    return response
 
 
 ##
@@ -668,11 +980,153 @@ def shipment__update(request, pk=None):
     )
 
 
+def filter_shipments(request):
+    creator = request.GET.get('creator', None)
+    pos = request.GET.get('pos', None)
+    start = request.GET.get('start', None)
+    end = request.GET.get('end', None)
+
+    ships = Shipment.objects.order_by('-created')
+    warnings = []
+    params = {}
+
+    if creator:
+        ships = ships.filter(creator__id=creator)
+        params['Received By'] = get_object_or_404(User, id=creator)
+
+    if pos:
+        ships = ships.filter(purchase_order__id__in=[po.rstrip() for po in pos.split(',')])
+        params['POs'] = pos
+
+    if start and end:
+        s, e = start, end
+        start = datetime(*(int(x) for x in start.split('-')), hour=0, minute=0, second=0, tzinfo=TZ)
+        end = datetime(*(int(x) for x in end.split('-')), hour=23, minute=59, second=59, tzinfo=TZ)
+        ships = ships.filter(created__range=[start, end])
+        params['Date Created Range'] = '%s to %s' % (s, e)
+
+    return ships, warnings, params
+
+
 @login_required
 def shipment__table(request):
-    pass
+    ships, warnings, params = filter_shipments(request)
+
+    paginator = Paginator(ships, PAGE_SIZE)
+    page = request.GET.get('page', 1)
+    try:
+        ships = paginator.page(page)
+    except PageNotAnInteger:
+        ships = paginator.page(1)
+    except EmptyPage:
+        ships = paginator.page(paginator.num_pages)
+
+    creators = User.objects.all()
+
+    return render_to_response(
+        'app/shipment__table.html',
+        {
+            'ships': ships,
+            'warnings': warnings,
+            'params': params,
+            'creators': creators,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 @login_required
 def shipment__export(request):
-    pass
+    ships, _, params = filter_shipments(request)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="pos__%s.csv"' % \
+          '_'.join([slugify(p) for p in params.values()])
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'id', 'date received', 'received by', 'po id', 'note'
+    ])
+
+    for ship in ships:
+        writer.writerow([
+            ship.id, ship.created.strftime('%m/%d/%Y'), ship.creator.username, ship.purchase_order.id, ship.note
+        ])
+
+    return response
+
+
+##
+# shipment line items
+@login_required
+def filter_sh_lis(request):
+    pos = request.GET.get('pos', None)
+    skus = request.GET.get('skus', None)
+    start = request.GET.get('start', None)
+    end = request.GET.get('end', None)
+
+    lis = ShipmentLineItem.objects.order_by('-shipment__purchase_order__id')
+    warnings = []
+    params = {}
+
+    if pos:
+        lis = lis.filter(shipment__purchase_order__id__in=[po.rstrip() for po in pos.split(',')])
+        params['POs'] = pos
+
+    if skus:
+        lis = lis.filter(sku__id__in=[sku.rstrip() for sku in skus.split(',')])
+        params['SKUs'] = skus
+
+    if start and end:
+        s, e = start, end
+        start = datetime(*(int(x) for x in start.split('-')), hour=0, minute=0, second=0, tzinfo=TZ)
+        end = datetime(*(int(x) for x in end.split('-')), hour=23, minute=59, second=59, tzinfo=TZ)
+        lis = lis.filter(shipment__created__range=[start, end])
+        params['Date Created Range'] = '%s to %s' % (s, e)
+
+    return lis, warnings, params
+
+
+@login_required
+def shipment_line_item__table(request):
+    lis, warnings, params = filter_sh_lis(request)
+
+    paginator = Paginator(lis, PAGE_SIZE)
+    page = request.GET.get('page', 1)
+    try:
+        lis = paginator.page(page)
+    except PageNotAnInteger:
+        lis = paginator.page(1)
+    except EmptyPage:
+        lis = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'app/shipment_line_item__table.html',
+        {
+            'lis': lis,
+            'warnings': warnings,
+            'params': params,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+@login_required
+def shipment_line_item__export(request):
+    lis, _, params = filter_sh_lis(request)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="sh_line_items__%s.csv"' % \
+          '_'.join([slugify(p) for p in params.values()])
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'po id', 'sku id', 'qty received'
+    ])
+
+    for li in lis:
+        writer.writerow([
+            li.shipment.purchase_order.id, li.sku.id, li.quantity_received
+        ])
+
+    return response
