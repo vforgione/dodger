@@ -67,3 +67,10 @@ class SkuModelTests(TestCase):
         sa2 = SkuAttribute(sku=self.sku, attribute=self.attr2, value='howdy')
         sa2.save()
         self.assertEqual(len(self.sku.attributes), 2)
+
+    def test_description_property(self):
+        sa1 = SkuAttribute(sku=self.sku, attribute=self.attr1, value='hola')
+        sa1.save()
+        sa2 = SkuAttribute(sku=self.sku, attribute=self.attr2, value='howdy')
+        sa2.save()
+        self.assertEqual(self.sku.description, '[124] test brand test sku : hola, howdy')
