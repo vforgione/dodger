@@ -1,0 +1,144 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+<h3>Check In a Shipment</h3>
+{% if no_pos %}
+<p>No outstanding POs - nothing to do here.</p>
+
+{% else %}
+<form action="." method="post">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field.errors }}{{ field }}
+  </div>
+  {% endfor %}
+  <input type="hidden" id="supplier" />
+  {{ formset.management_form }}
+  <div id="po-info" class="table-responsive"></div>
+  <div class="table-responsive">
+    <table class="table table-condensed">
+    <thead>
+        <tr><th>SKU</th><th>Qty Received</th></tr>
+      </thead>
+      <tbody>
+        {% for form in formset %}
+        <tr>
+          {% for field in form %}
+          {% if forloop.counter < 3 %}
+          <td class="col-lg-6">{{ field }}</td>
+          {% else %}
+          <td style="display:none">{{ field }}</td>
+          {% endif %}
+          {% endfor %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <input type="submit" name="submit" value="Create Shipment" class="btn btn-primary" />
+  <a href="{% url 'app:shipment__view' %}" class="btn btn-danger pull-right">Cancel</a>
+</form>
+{% endif %}
+{% endblock %}
+
+{% block contentjs %}
+<script>
+$(document).ready(function(){
+  // global scope options
+  var options = '<option></option>';
+
+  // listen for change in po selection
+  $('#id_purchase_order').change(function(){
+
+      // get details on po
+      $.ajax({
+        url: '/api/sku_service/purchase_orders/' + $(this).val() + '/',
+        type: 'GET',
+        dataType: 'json',
+        async: false,  // make blocking call
+        success: function(xhr, status){
+          // set supplier to retrieve products
+          var supplier_uri = xhr.supplier;
+          $.ajax({
+            url: supplier_uri,
+            type: 'GET',
+            dataType: 'json',
+            async: false,  // make blocking call
+            success: function(xhr, status){ $('#supplier').val(xhr.id); },
+            error: function(xhr, status){ alert(status + ' ' + xhr.responseText); },
+            beforeSend: function(xhr){ xhr.setRequestHeader('Authorization', 'ApiKey api-readonly:697ccf3beb1cc60c1eddaa8bc6ef9fc968661034'); }
+          });
+        },
+        error: function(xhr, status){ alert(status + ' ' + xhr.responseText); },
+        beforeSend: function(xhr){ xhr.setRequestHeader('Authorization', 'ApiKey api-readonly:697ccf3beb1cc60c1eddaa8bc6ef9fc968661034'); }
+      });
+
+      // load up sku from supplier - the rationale is that the supplier could screw up and switch skus
+      $.ajax({
+        url: '/api/sku_service/skus/?supplier__id=' + $('#supplier').val(),
+        type: 'GET',
+        dataType: 'json',
+        success: function(xhr, status){
+          $(xhr.objects).each(function(i){
+            options += '<option value="' + xhr.objects[i].id + '">' + xhr.objects[i].description  + '</option>';
+          });
+        },
+        error: function(xhr, status){ alert(status + ' ' + xhr.responseText); },
+        beforeSend: function(xhr){ xhr.setRequestHeader('Authorization', 'ApiKey api-readonly:697ccf3beb1cc60c1eddaa8bc6ef9fc968661034'); },
+        complete: function(){ $('.sku').html(options); }
+      });
+
+
+      // load up info pane
+      $.ajax({
+        url: "/api/sku_service/purchase_order_line_items/?purchase_order__id=" + $(this).val(),
+        type: "GET",
+        dataType: "json",
+        success: function(xhr){
+          var info = '<h4>PO Detail</h4><table class="table table-condensed"><thead><tr><th>SKU</th><th>Qty Ordered</th></tr></thead><tbody>';
+          $(xhr.objects).each(function(i){
+            $.ajax({
+              url: xhr.objects[i].sku,
+              type: "GET",
+              dataType: "json",
+              async: false,
+              success: function(xhr){ info += "<tr><td class='col-lg-6'>" + xhr.description + "</td>"; },
+              error: function(xhr){ alert(xhr.responseText); },
+              beforeSend: function(xhr){ xhr.setRequestHeader("Authorization", "ApiKey api-readonly:697ccf3beb1cc60c1eddaa8bc6ef9fc968661034"); }
+            });
+            info += "<td class='col-lg-6'>" + xhr.objects[i].quantity_ordered + "</td></tr>";
+          });
+          info += '</tbody></table>';
+          $("#po-info").html(info);
+        },
+        error: function(xhr){ alert(xhr.responseText); },
+        beforeSend: function(xhr){ xhr.setRequestHeader("Authorization", "ApiKey api-readonly:697ccf3beb1cc60c1eddaa8bc6ef9fc968661034"); }
+      });
+
+  });
+
+  // listen for sku selection
+  $(".sku").change(function(){
+    var input = $(this);
+    $.ajax({
+      url: "/api/sku_service/skus/" + $(this).val() + "/",
+      type: "GET",
+      dataType: "json",
+      success: function(xhr){
+        var info = '<tr><td colspan=2><table class="table table-condensed"><tbody><tr>' +
+          '<td class="col-xs-4"><b>Qty on Hand:</b> ' + xhr.quantity_on_hand + '</td>' +
+          '<td class="col-xs-4"><b>Location:</b> ' + xhr.location + '</td>' +
+          '<td class="col-xs-4"><a target="_blank" href="/skus/' + xhr.id + '/">Detailed Info</a></td>' +
+        '</tr></tbody></table></td></tr>';
+        input.parent().parent().after(info);
+      },
+      error: function(xhr){ alert(xhr.responseText); },
+      beforeSend: function(xhr){ xhr.setRequestHeader("Authorization", "ApiKey api-readonly:697ccf3beb1cc60c1eddaa8bc6ef9fc968661034"); }
+    });
+  });
+
+});
+
+</script>
+{% endblock %}

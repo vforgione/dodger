@@ -1,0 +1,184 @@
+{% extends 'dodger/base.html' %}
+
+{% block extrahead %}
+<style>table.data-table{font-size:0.8em;}</style>
+{% endblock %}
+
+{% block content %}
+<h3>View SKU Data</h3>
+<div class="table-responsive">
+<form action="." method="get">
+  {% csrf_token %}
+  <table class="table">
+    <tr><td colspan="2"><h5>Filter SKUs</h5></td></tr>
+    <tr>
+      <td class="col-lg-6">
+        <div class="form-group">
+          <label for="brand">Brand</label>
+          <select name="brand" class="form-control">
+            <option></option>
+            {% for brand in brands %}
+            <option value="{{ brand.id }}">{{ brand }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </td>
+      <td class="col-lg-6">
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select name="category" class="form-control">
+            <option></option>
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-lg-6">
+        <div class="form-group">
+          <label for="owner">Owner</label>
+          <select name="owner" class="form-control">
+            <option></option>
+            {% for owner in owners %}
+            <option value="{{ owner.id }}">{{ owner }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </td>
+      <td class="col-lg-6">
+        <div class="form-group">
+          <label for="supplier">Supplier</label>
+          <select name="supplier" class="form-control">
+            <option></option>
+            {% for supplier in suppliers %}
+            <option value="{{ supplier.id }}">{{ supplier }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-lg-6">
+        <div class="form-group">
+          <label for="in_live_deal">In Live Deal</label>
+          <select name="in_live_deal" class="form-control">
+            <option></option><option value="0">No</option><option value="1">Yes</option>
+          </select>
+        </div>
+      </td>
+      <td class="col-lg-6">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" name="name" class="form-control" />
+          </select>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-lg-6">
+        <div class="form-group">
+          <label for="quantity_on_hand">Qty on Hand</label>
+          <input name="quantity_on_hand" type="text" class="form-control" />
+        </div>
+      </td>
+      <td class="col-lg-6">
+        <div class="form-group">
+          &nbsp;
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-lg-6">
+        <div class="form-group">
+          <input type="submit" class="btn btn-primary" value="Filter SKUs" />
+        </div>
+      </td>
+      <td class="col-lg-6">
+        <div class="form-group">
+          &nbsp;
+        </div>
+      </td>
+    </tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+  </table>
+</form>
+</div>
+
+{% if warnings|length %}
+{% for message in warnings %}
+<div class="alert alert-warning alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <p>{{ message }}</p>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if params|length %}
+{% for key, value in params.iteritems %}
+<div class="alert alert-info alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <p><b>Search Key:</b> {{ key }}</p>
+  <p><b>Value:</b> {{ value }}</p>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if skus %}
+<div class="table-responsive">
+<table class="table table-striped table-condensed data-table">
+<thead>
+  <tr>
+    <th>ID</th><th>Name</th><th>Categories</th><th>Brand</th><th>Supplier</th>
+    <th>Owner</th><th>Min Qty</th><th>Notify</th><th>Cost</th>
+    <th>Supp SKU</th><th>Case Qty</th><th>Location</th><th>Qty on Hand</th>
+    <th>In Live Deal</th><th>Attributes</th>
+  </tr>
+</thead>
+<tbody>
+  {% for sku in skus %}
+  <tr>
+    <td>{{ sku.id }}</td>
+    <td>{{ sku.name }}</td>
+    <td>{{ sku.categories.all|join:", " }}</td>
+    <td>{{ sku.brand }}</td>
+    <td>{{ sku.supplier }}</td>
+    <td>{{ sku.owner }}</td>
+    <td>{{ sku.minimum_quantity }}</td>
+    <td>{{ sku.notify_at_threshold }}</td>
+    <td>{{ sku.cost }}</td>
+    <td>{{ sku.supplier_sku }}</td>
+    <td>{{ sku.case_quantity }}</td>
+    <td>{{ sku.location }}</td>
+    <td>{{ sku.quantity_on_hand }}</td>
+    <td>{{ sku.in_live_deal }}</td>
+    <td>{{ sku.attributes|join:", " }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+
+<div class="pull-left">
+  {% if skus.has_previous %}
+  <div class="button"><a href="?{{ request.GET.urlencode }}&page={{ skus.previous_page_number }}">Previous</a></div>
+  {% endif %}
+
+  <div>Page {{ skus.number }} of {{ skus.paginator.num_pages }}</div>
+
+  {% if skus.has_next %}
+  <div class="button"><a href="?{{ request.GET.urlencode }}&page={{ skus.next_page_number }}">Next</a></div>
+  {% endif %}
+</div>
+
+<div class="pull-right"><a href="/skus/export/?{{ request.GET.urlencode }}" target="_blank" class="btn btn-primary default" >Export This Table</a></div>
+</div>
+
+{% else %}
+<div class="alert alert-warning alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <p>No matches found for you specifications.</p>
+</div>
+{% endif %}
+
+{% endblock %}

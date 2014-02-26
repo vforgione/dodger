@@ -1,0 +1,36 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+<h3>Make a Cost Adjustment</h3>
+
+<form action="." method="post">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field.errors }}{{ field }}
+  </div>
+  {% endfor %}
+  <input type="submit" name="submit" value="Make Adjustment" class="btn btn-primary" />
+  <a href="{% url 'app:cost_adjustment__view' %}" class="btn btn-danger pull-right">Cancel</a>
+</form>
+{% endblock %}
+
+{% block contentjs %}
+<script>
+$(document).ready(function(){
+
+  // listen for change to sku selection - add placeholder with current qty to 'new' field
+  $('#id_sku').change(function(){
+    $.ajax({
+      url: '/api/sku_service/skus/' + $(this).val() + '/',
+      type: 'GET',
+      dataType: 'json',
+      success: function(xhr){ $('#id_new').attr('placeholder', 'Current Cost: ' + xhr.cost); },
+      error: function(xhr){ alert(xhr.responseText); },
+      beforeSend: function(xhr){ xhr.setRequestHeader('Authorization', 'ApiKey api-readonly:697ccf3beb1cc60c1eddaa8bc6ef9fc968661034'); }
+    });
+  });
+
+});
+</script>
+{% endblock %}

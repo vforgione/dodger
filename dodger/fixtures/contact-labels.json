@@ -1,0 +1,37 @@
+[
+{
+  "pk": 1, 
+  "model": "app.contactlabel", 
+  "fields": {
+    "name": "Sales Staff"
+  }
+},
+{
+  "pk": 2, 
+  "model": "app.contactlabel", 
+  "fields": {
+    "name": "Account Manager"
+  }
+},
+{
+  "pk": 3, 
+  "model": "app.contactlabel", 
+  "fields": {
+    "name": "Warehouse Staff"
+  }
+},
+{
+  "pk": 4, 
+  "model": "app.contactlabel", 
+  "fields": {
+    "name": "Warehouse Manager"
+  }
+},
+{
+  "pk": 5, 
+  "model": "app.contactlabel", 
+  "fields": {
+    "name": "Owner"
+  }
+}
+]

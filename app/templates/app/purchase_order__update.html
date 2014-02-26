@@ -1,0 +1,73 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+{% if po %}
+<h3>Update Purchase Order {{ po }}</h3>
+<form action="." method="post">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field.errors }}{{ field }}
+  </div>
+  {% endfor %}
+  {{ formset.management_form }}
+  <div class="table-responsive">
+    <table class="table table-condensed">
+    <thead>
+        <tr><th>SKU</th><th>Qty Ordered</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th></tr>
+      </thead>
+      <tbody>
+      {% for form in formset %}
+        <tr>
+        {% for field in form %}
+          {% if forloop.counter == 1 %}
+          <td class="col-lg-4">{{ field }}</td>
+          {% elif forloop.counter < 6 %}
+          <td class="col-lg-2">{{ field }}</td>
+          {% else %}
+          <td style="display:none">{{ field }}</td>
+          {% endif %}
+        {% endfor %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <input type="submit" name="submit" value="Create PO" class="btn btn-primary" />
+  <a href="{% url 'app:purchase_order__view' %}" class="btn btn-danger pull-right">Cancel</a>
+</form>
+
+{% else %}
+<div class="table-responsive">
+<h3>Select a Purchase Order to Update</h3>
+<table class="table table-striped">
+<thead>
+  <tr><th>&nbsp;</th><th>Date Created</th><th>Creator</th></tr>
+</thead>
+<tbody>
+  {% for po in pos %}
+  <tr><td><a href="{% url 'app:purchase_order__update' po.pk %}">{{ po }}</a></td><td>{{ po.created }}</td><td>{{ po.owner.username }}</td></tr>
+  {% endfor %}
+</tbody>
+</table>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      {% if pos.has_previous %}
+      <a href="?page={{ pos.previous_page_number }}" class="btn btn-primary">&laquo; Previous</a>
+      {% endif %}
+    </div>
+    <div class="col-lg-4">
+      Page {{ pos.number }} of {{ pos.paginator.num_pages }}
+    </div>
+    <div class="col-lg-4">
+      {% if pos.has_next %}
+      <a href="?page={{ pos.next_page_number }}" class="btn btn-primary">&raquo; Previous</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+</div>
+
+{% endif %}
+{% endblock %}

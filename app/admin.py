@@ -1,62 +1,52 @@
 from django.contrib import admin
 
-from .models import *
+from models import *
+
+
+# generic admins
+class ControlModelAdmin(admin.ModelAdmin):
+
+    search_fields = ('name', )
+
+
+class AdjustmentAdmin(admin.ModelAdmin):
+
+    search_fields = ('when', 'who__username', 'sku__id', 'sku__name', 'sku__upc')
+
+
+class PurchaseOrderEndpointAdmin(admin.ModelAdmin):
+
+    search_fields = ('name', 'city', 'state', 'zipcode')
+
+
+# complex admins
+class SkuAttributeInline(admin.TabularInline):
+
+    model = SkuAttribute
+    extra = 8
+
+
+class SkuAdmin(admin.ModelAdmin):
+
+    search_fields = (
+        'id', 'name', 'upc', 'brand__name', 'categories__name', 'location', 'owner__username', 'supplier__name'
+    )
+    inlines = (SkuAttributeInline, )
 
 
 class PurchaseOrderLineItemInline(admin.TabularInline):
-    """inline for adding line items directly to PO"""
 
     model = PurchaseOrderLineItem
     extra = 5
 
 
 class PurchaseOrderAdmin(admin.ModelAdmin):
-    """admin for creating POs"""
 
+    search_fields = ('creator__username', 'supplier__name', 'created')
     inlines = (PurchaseOrderLineItemInline, )
 
 
-class SkuAttributeInline(admin.TabularInline):
-    """inline for adding attributes to skus"""
-
-    model = SkuAttribute
-    extra = 5
-
-
-class SkuAdmin(admin.ModelAdmin):
-    """admin for creating new skus"""
-
-    inlines = (SkuAttributeInline, )
-    exclude = ('created', 'modified')
-    search_fields = ('id', )
-
-
-def undo_quantity_change(modeladmin, request, queryset):
-    """custom admin action to undo qty change"""
-    for obj in queryset:
-        rollback = SkuQuantityAdjustment()
-        rollback.sku = obj.sku
-        rollback.new = obj.old
-        rollback.reason = QuantityAdjustmentReason.objects.get(name='Admin Rollback')
-        rollback.who = request.user
-        rollback.save()
-undo_quantity_change.short_description = 'Undo Quantity Change'
-
-
-class QuantityAdjustmentReasonAdmin(admin.ModelAdmin):
-    """admin for creating a quantity change reasons"""
-
-    exclude = ('old', 'when')
-
-
-class SkuQuantityAdjustmentAdmin(admin.ModelAdmin):
-    """admin for quantity changes"""
-
-    actions = [undo_quantity_change, ]
-
-
 class ShipmentLineItemInline(admin.TabularInline):
-    """inline form adding line items to shipments"""
 
     model = ShipmentLineItem
     extra = 5
@@ -64,35 +54,24 @@ class ShipmentLineItemInline(admin.TabularInline):
 
 class ShipmentAdmin(admin.ModelAdmin):
 
+    search_fields = ('creator__username', 'purchase_order__id')
     inlines = (ShipmentLineItemInline, )
 
 
-admin.site.register(Supplier)
-
-admin.site.register(Category)
-
-admin.site.register(Brand)
-
-admin.site.register(Attribute)
-
+admin.site.register(Attribute, ControlModelAdmin)
+admin.site.register(Brand, ControlModelAdmin)
+admin.site.register(Category, ControlModelAdmin)
+admin.site.register(ContactLabel, ControlModelAdmin)
+admin.site.register(CostAdjustmentReason, ControlModelAdmin)
+admin.site.register(QuantityAdjustmentReason, ControlModelAdmin)
+admin.site.register(Supplier, ControlModelAdmin)
 admin.site.register(Sku, SkuAdmin)
-
 admin.site.register(SkuAttribute)
-
-admin.site.register(QuantityAdjustmentReason, QuantityAdjustmentReasonAdmin)
-
-admin.site.register(SkuQuantityAdjustment, SkuQuantityAdjustmentAdmin)
-
-admin.site.register(ContactLabel)
-
-admin.site.register(Contact)
-
-admin.site.register(Receiver)
-
+admin.site.register(CostAdjustment, AdjustmentAdmin)
+admin.site.register(QuantityAdjustment, AdjustmentAdmin)
+admin.site.register(Contact, PurchaseOrderEndpointAdmin)
+admin.site.register(Receiver, PurchaseOrderEndpointAdmin)
 admin.site.register(PurchaseOrder, PurchaseOrderAdmin)
-
 admin.site.register(PurchaseOrderLineItem)
-
 admin.site.register(Shipment, ShipmentAdmin)
-
 admin.site.register(ShipmentLineItem)

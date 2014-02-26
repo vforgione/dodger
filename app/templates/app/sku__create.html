@@ -1,0 +1,50 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+<h3>Create a New SKU</h3>
+<form action="." method="post">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field.errors }}{{ field }}
+  </div>
+  {% endfor %}
+  {{ formset.management_form }}
+  <div class="table-responsive">
+    <table class="table table-condensed">
+    <thead>
+      <tr><th>Attribute</th><th>Value</th></tr>
+    </thead>
+    <tbody>
+      {% for form in formset %}
+      <tr>
+        {% for field in form %}
+        {% if forloop.counter < 4 and forloop.counter != 1 %}
+        <td class="col-lg-6">{{ field }}{{ field.errors }}</td>
+        {% else %}
+        <td style="display:none">{{ field }}{{ field.errors }}</td>
+        {% endif %}
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+  <input type="submit" name="submit" value="Create SKU" class="btn btn-primary" />
+  <a href="{% url 'app:sku__view' %}" class="btn btn-danger pull-right">Cancel</a>
+</form>
+{% endblock %}
+
+{% block contentjs %}
+<script>
+$(document).ready(function(){
+
+  // add classes to check boxes
+  $('#id_notify_at_threshold').addClass('form-control');
+  $('#id_in_live_deal').addClass('form-control');
+
+  // TODO: optimize brands based on supplier
+
+});
+</script>
+{% endblock %}

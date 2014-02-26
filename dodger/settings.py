@@ -47,6 +47,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 )
 
 TEMPLATE_LOADERS = (
@@ -98,6 +100,9 @@ INSTALLED_APPS = (
     # api
     'tastypie',
 
+    # sso
+    'social.apps.django_app.default',
+
     # project apps
     'app',
 )
@@ -110,6 +115,20 @@ DATABASES = {
         'NAME': os.path.join(PROJ_DIR, 'db.sqlite3'),
     }
 }
+
+
+# sso config
+AUTHENTICATION_BACKENDS = (
+    'social.backends.open_id.OpenIdAuth',
+    'social.backends.google.GoogleOpenId',
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.google.GoogleOAuth',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+LOGIN_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_GOOGLE_WHITELISTED_DOMAINS = ['doggyloot.com', ]
 
 
 try:

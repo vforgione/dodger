@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dodger.settings')
-
 # normally i hate shit like this, but the path hack is necessary
 import sys
-sys.path.insert(0, '/home/deploy/dodger-env/dodger')
+sys.path.insert(0, '/Users/vince/Development/dodger-env/dodger')
+
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dodger.settings')
 
 from datetime import datetime, timedelta
 import re
@@ -15,7 +15,7 @@ from django.db.utils import IntegrityError
 from django.contrib.auth.models import User
 import gspread
 
-from app.models import Sku, QuantityAdjustmentReason, SkuQuantityAdjustment, \
+from app.models import Sku, QuantityAdjustmentReason, QuantityAdjustment, \
     Supplier, Brand, Category, Attribute, SkuAttribute
 
 
@@ -115,7 +115,7 @@ def rip_doc(doc):
             except:
                 qty = sku.qty_on_hand
             if sku.qty_on_hand != qty:
-                adj = SkuQuantityAdjustment()
+                adj = QuantityAdjustment()
                 adj.sku = sku
                 adj.who = User.objects.get(username='vince@doggyloot.com')
                 adj.reason = QuantityAdjustmentReason.objects.get(name='Tracker Sync')

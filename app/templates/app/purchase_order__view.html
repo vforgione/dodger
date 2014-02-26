@@ -1,0 +1,93 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+<div class="table-responsive">
+
+{% if po %}
+<h3>Detail View of Purchase Order #{{ po.id }}</h3>
+<table class="table">
+<tbody>
+  <tr><th>Creator</th><td>{{ po.creator.username }}</td></tr>
+  <tr><th>Supplier</th><td>{{ po.supplier }}</td></tr>
+  <tr><th>Terms</th><td>{{ po.terms }}</td></tr>
+  <tr><th>Contact</th><td>{{ po.contact.name }}</td></tr>
+  <tr><th>Receiver</th><td>{{ po.receiver }}</td></tr>
+  <tr><th>Note</th><td>{{ po.note|safe }}</td></tr>
+  <tr><th>Date Created</th><td>{{ po.created }}</td></tr>
+  <tr><th>Expected Arrival</th><td>{{ po.expected_arrival }}</td></tr>
+  <tr><th>Shipments</th><td>
+    {% if po.shipment_set.all|length %}
+    {% for ship in po.shipment_set.all %}
+    <a href="{{ ship.get_absolute_url }}" target="_blank">{{ ship }}</a><br />
+    {% endfor %}
+    {% else %}
+    Nothing received yet.
+    {% endif %}
+  </td></tr>
+  {% if po.purchaseorderlineitem_set.all|length %}
+  <tr>
+    <td colspan="2">
+      <h4>Line Items</h4>
+      <div class="table-responsive">
+        <table class="table table-condensed">
+        <thead>
+          <tr><th>SKU</th><th>Qty Ordered</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th></tr>
+        </thead>
+        <tbody>
+          {% for li in po.purchaseorderlineitem_set.all %}
+          <tr>
+            <td class="col-lg-4"><a href="{{ li.sku.get_absolute_url }}" target="_blank">{{ li.sku }}</a></td>
+            <td class="col-lg-2">{{ li.quantity_ordered }}</td>
+            <td class="col-lg-2">{{ li.unit_cost }}</td>
+            <td class="col-lg-2">{{ li.discount_percent }}</td>
+            <td class="col-lg-2">{{ li.discount_dollar }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+      </div>
+    </td>
+  </tr>
+  {% endif %}
+</tbody>
+</table>
+<a class="btn btn-primary default" href="{% url 'app:purchase_order__view' %}">Back To List</a>
+<a class="btn btn-danger pull-right" href="{% url 'app:purchase_order__update' po.pk %}">Modify This PO</a>
+
+{% elif pos %}
+<h3>View Purchase Orders</h3>
+<table class="table table-striped">
+<thead>
+  <tr><th>&nbsp;</th><th>Date Created</th><th>SKUs</th></tr>
+</thead>
+<tbody>
+  {% for po in pos %}
+  <tr><td><a href="{{ po.get_absolute_url }}">{{ po }}</a></td><td>{{ po.created }}</td><td>{{ po.purchaseorderlineitem_set.all|join:", " }}</td></tr>
+  {% endfor %}
+</tbody>
+</table>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      {% if pos.has_previous %}
+      <a href="?page={{ pos.previous_page_number }}" class="btn btn-primary">&laquo; Previous</a>
+      {% endif %}
+    </div>
+    <div class="col-lg-4">
+      Page {{ pos.number }} of {{ pos.paginator.num_pages }}
+    </div>
+    <div class="col-lg-4">
+      {% if pos.has_next %}
+      <a href="?page={{ pos.next_page_number }}" class="btn btn-primary">Next &raquo;</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% else %}
+<h3>View Purchase Orders</h3>
+<p>No data received.</p>
+
+{% endif %}
+</div>
+{% endblock %}

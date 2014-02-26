@@ -51,10 +51,3 @@ US_STATES = (
     ('WI', 'Wisconsin'),
     ('WY', 'Wyoming'),
 )
-
-
-SHIPMENT_STATUS = (
-    ('partial', 'Partial'),
-    ('closed', 'Partial (Closes PO)'),
-    ('full', 'Full Delivery'),
-)
