@@ -27,6 +27,12 @@ class SkuModelTests(TestCase):
         self.attr2 = Attribute(name='test attr 2')
         self.attr2.save()
 
+        self.cost_reason = CostAdjustmentReason(name='test cost adjustment')
+        self.cost_reason.save()
+
+        self.qty_reason = QuantityAdjustmentReason(name='test qty adjustment')
+        self.qty_reason.save()
+
         # hack to get skus in -- system assumes initial sku population from synced doc
         previous_sku = Sku(
             id=123,
@@ -44,6 +50,7 @@ class SkuModelTests(TestCase):
         self.sku.quantity_on_hand = 0
         self.sku.owner = self.user
         self.sku.supplier = self.supplier
+        self.sku.cost = 8.32
 
         self.sku.save()
 
@@ -74,3 +81,15 @@ class SkuModelTests(TestCase):
         sa2 = SkuAttribute(sku=self.sku, attribute=self.attr2, value='howdy')
         sa2.save()
         self.assertEqual(self.sku.description, '[124] test brand test sku : hola, howdy')
+
+    def test_cost_adjustment(self):
+        cost_adj = CostAdjustment(
+            sku=self.sku,
+            reason=self.cost_reason,
+            who=self.user,
+            new=12.98
+        )
+        old = self.sku.cost
+        cost_adj.save()
+        self.assertEqual(self.sku.cost, cost_adj.new)
+        self.assertEqual(cost_adj.old, old)
