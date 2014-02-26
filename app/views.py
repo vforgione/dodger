@@ -1,7 +1,10 @@
+import csv
+
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 
@@ -251,14 +254,155 @@ def sku__update(request, pk=None):
     )
 
 
+def filter_skus(request):
+    brand = request.GET.get('brand', None)
+    category = request.GET.get('category', None)
+    owner = request.GET.get('owner', None)
+    supplier = request.GET.get('supplier', None)
+    in_live_deal = request.GET.get('in_live_deal', None)
+    name = request.GET.get('name', None)  # icontains
+    quantity_on_hand = request.GET.get('quantity_on_hand', None)  # parse and apply filter
+
+    skus = Sku.objects.order_by('id')
+
+    warnings = []
+
+    if brand:
+        skus = skus.filter(brand__id=brand)
+
+    if category:
+        skus = skus.filter(categories__id=category)
+
+    if owner:
+        skus = skus.filter(owner__id=owner)
+
+    if supplier:
+        skus = skus.filter(supplier__id=supplier)
+
+    if in_live_deal in (0, 1):
+        skus = skus.filter(in_live_deal=in_live_deal)
+
+    if name:
+        skus = skus.filter(name__icontains=name)
+
+    if quantity_on_hand:
+        keywords = quantity_on_hand.split()
+
+        if len(keywords) == 1:
+            skus = skus.filter(quantity_on_hand=quantity_on_hand)
+
+        else:
+            if len(keywords) == 2:
+                if keywords[0] == '>':
+                    skus = skus.filter(quantity_on_hand__gt=keywords[1])
+                elif keywords[0] == '>=':
+                    skus = skus.filter(quantity_on_hand__gte=keywords[1])
+                elif keywords[0] == '<':
+                    skus = skus.filter(quantity_on_hand__lt=keywords[1])
+                elif keywords[0] == '>=':
+                    skus = skus.filter(quantity_on_hand__lte=keywords[1])
+                else:
+                    warnings.append('Could not parse quantity_on_hand = `%s`' % quantity_on_hand)
+
+            elif len(keywords) == 5:
+                try:
+                    assert keywords[1] in ('>', '>=', '<', '<=')
+                    assert keywords[3] in ('>', '>=', '<', '<=')
+                except AssertionError:
+                    warnings.append('Could not parse quantity_on_hand = `%s`' % quantity_on_hand)
+
+                min_val = int(keywords[0])
+                max_val = int(keywords[4])
+                min_op = keywords[1]
+                max_op = keywords[3]
+
+                kwargs = {}
+                if min_op == '>':
+                    kwargs['quantity_on_hand__lt'] = min_val
+                elif min_op == '>=':
+                    kwargs['quantity_on_hand__lte'] = min_val
+                elif min_op == '<':
+                    kwargs['quantity_on_hand__gt'] = min_val
+                else:
+                    kwargs['quantity_on_hand__gte'] = min_val
+
+                if max_op == '>':
+                    kwargs['quantity_on_hand__gt'] = max_val
+                elif max_op == '>=':
+                    kwargs['quantity_on_hand__gte'] = max_val
+                elif max_op == '<':
+                    kwargs['quantity_on_hand__lt'] = max_val
+                else:
+                    kwargs['quantity_on_hand__lte'] = max_val
+
+                skus = skus.filter(**kwargs)
+
+            else:
+                warnings.append('Could not parse quantity_on_hand = `%s`' % quantity_on_hand)
+
+    return skus, warnings
+
+
 @login_required
 def sku__table(request):
-    pass
 
+    skus, warnings = filter_skus(request)
+
+    paginator = Paginator(skus, PAGE_SIZE)
+    page = request.GET.get('page', 1)
+    try:
+        skus = paginator.page(page)
+    except PageNotAnInteger:
+        skus = paginator.page(1)
+    except EmptyPage:
+        skus = paginator.page(paginator.num_pages)
+
+    brands = Brand.objects.all()
+    categories = Category.objects.all()
+    owners = User.objects.all()
+    suppliers = Supplier.objects.all()
+
+    return render_to_response(
+        'app/sku__table.html',
+        {
+            'skus': skus,
+            'warnings': warnings,
+            'brands': brands,
+            'categories': categories,
+            'owners': owners,
+            'suppliers': suppliers,
+        },
+        context_instance=RequestContext(request)
+    )
 
 @login_required
 def sku__export(request):
-    pass
+
+    skus, _ = filter_skus(request)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="skus.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'id', 'name', 'upc', 'brand', 'categories', 'qty on hand', 'location', 'owner', 'supplier', 'lead time',
+        'min qty', 'notify', 'cost', 'supplier sku', 'case qty', 'in live deal', 'color', 'size',
+        'style', 'flavor', 'weight', 'is bulk', 'expiration date', 'country of origin', 'created', 'modified'
+    ])
+
+    for sku in skus:
+        attrs = SkuAttribute.objects.filter(sku__id=sku.id)
+        attrs = dict((attr.attribute.name, attr.value) for attr in attrs)
+        writer.writerow([
+            sku.id, sku.name, sku.upc, sku.brand.name, ', '.join([cat.name for cat in sku.categories.all()]),
+            sku.quantity_on_hand, sku.location, sku.owner.username, sku.supplier.name, sku.lead_time,
+            sku.minimum_quantity, sku.notify_at_threshold, sku.cost, sku.supplier_sku, sku.case_quantity,
+            sku.in_live_deal, attrs.get('Color', ''), attrs.get('Size', ''), attrs.get('Style', ''),
+            attrs.get('Flavor', ''), attrs.get('Weight', ''), attrs.get('Is Bulk', ''), attrs.get('Expiration Date', ''),
+            attrs.get('Country of Origin', ''), sku.created.strftime('%m/%d/%Y'), sku.modified.strftime('%m/%d/%Y')
+        ])
+
+    return response
 
 
 ##
