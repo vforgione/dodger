@@ -62,7 +62,7 @@ class CostAdjustmentForm(forms.ModelForm):
         model = CostAdjustment
         fields = ('who', 'sku', 'new', 'reason', 'detail')
         widgets = {
-            'sku': forms.Select(attrs={'class': 'form-control sku'}),
+            'sku': forms.TextInput(attrs={'class': 'form-control sku'}),
             'old': forms.TextInput(attrs={'class': 'form-control old'}),
             'new': forms.TextInput(attrs={'class': 'form-control new'}),
             'who': forms.Select(attrs={'class': 'form-control who'}),
@@ -77,7 +77,7 @@ class QuantityAdjustmentForm(forms.ModelForm):
         model = QuantityAdjustment
         fields = ('who', 'sku', 'new', 'reason', 'detail')
         widgets = {
-            'sku': forms.Select(attrs={'class': 'form-control sku'}),
+            'sku': forms.TextInput(attrs={'class': 'form-control sku'}),
             'old': forms.TextInput(attrs={'class': 'form-control old'}),
             'new': forms.TextInput(attrs={'class': 'form-control new'}),
             'who': forms.Select(attrs={'class': 'form-control who'}),

@@ -22,12 +22,12 @@
 <h3>View Quantity Adjustments</h3>
 <table class="table table-striped">
   <thead>
-  <tr><th>&nbsp;</th><th>When</th><th>Who</th></tr>
+  <tr><th>&nbsp;</th><th>When</th><th>Who</th><th>Reason</th></tr>
   </thead>
   <tbody>
   {% for adj in adjs %}
   <tr>
-    <td><a href="{{ adj.get_absolute_url }}">{{ adj }}</a></td><td>{{ adj.when }}</td><td>{{ adj.who.username }}</td>
+    <td><a href="{{ adj.get_absolute_url }}">{{ adj }}</a></td><td>{{ adj.created }}</td><td>{{ adj.who.username }}</td><td>{{ adj.reason }}</td>
   </tr>
   {% endfor %}
   </tbody>

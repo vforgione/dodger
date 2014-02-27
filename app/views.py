@@ -87,7 +87,6 @@ def cost_adjustment__create(request):
     if request.method == 'GET':
         form = CostAdjustmentForm()
         form.fields['who'].initial = request.user
-        form.fields['sku'].queryset = Sku.objects.filter(~Q(name='')).order_by('brand__name')
 
     else:
         form = CostAdjustmentForm(request.POST)
@@ -217,7 +216,6 @@ def quantity_adjustment__create(request):
     if request.method == 'GET':
         form = QuantityAdjustmentForm()
         form.fields['who'].initial = request.user
-        form.fields['sku'].queryset = Sku.objects.filter(~Q(name='')).order_by('brand__name')
 
     else:
         form = QuantityAdjustmentForm(request.POST)

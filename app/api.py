@@ -8,17 +8,7 @@ from tastypie.resources import ModelResource
 from models import *
 
 
-class SecureResource(ModelResource):
-
-    class Meta:
-        authentication = ApiKeyAuthentication()
-        authorization = DjangoAuthorization()
-        allowed_methods = ['get', ]
-        always_return_data = True
-
-
-# user model resource
-class UserResource(SecureResource):
+class UserResource(ModelResource):
 
     class Meta:
         resource_name = 'users'
@@ -27,19 +17,13 @@ class UserResource(SecureResource):
             'id': ALL,
             'username': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-# control model resources
-class ControlModelResource(SecureResource):
-
-    class Meta:
-        filtering = {
-            'id': ALL,
-            'name': ALL,
-        }
-
-
-class AttributeResource(ControlModelResource):
+class AttributeResource(ModelResource):
 
     class Meta:
         resource_name = 'attributes'
@@ -48,9 +32,13 @@ class AttributeResource(ControlModelResource):
             'id': ALL,
             'name': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-class BrandResource(ControlModelResource):
+class BrandResource(ModelResource):
 
     class Meta:
         resource_name = 'brands'
@@ -59,9 +47,13 @@ class BrandResource(ControlModelResource):
             'id': ALL,
             'name': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-class CategoryResource(ControlModelResource):
+class CategoryResource(ModelResource):
 
     class Meta:
         resource_name = 'categories'
@@ -70,9 +62,13 @@ class CategoryResource(ControlModelResource):
             'id': ALL,
             'name': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-class ContactLabelResource(ControlModelResource):
+class ContactLabelResource(ModelResource):
 
     class Meta:
         resource_name = 'contact_labels'
@@ -81,9 +77,13 @@ class ContactLabelResource(ControlModelResource):
             'id': ALL,
             'name': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-class CostAdjustmentReasonResource(ControlModelResource):
+class CostAdjustmentReasonResource(ModelResource):
 
     class Meta:
         resource_name = 'cost_adjustment_reasons'
@@ -92,9 +92,13 @@ class CostAdjustmentReasonResource(ControlModelResource):
             'id': ALL,
             'name': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-class QuantityAdjustmentReasonResource(ControlModelResource):
+class QuantityAdjustmentReasonResource(ModelResource):
 
     class Meta:
         resource_name = 'quantity_adjustment_reasons'
@@ -103,9 +107,13 @@ class QuantityAdjustmentReasonResource(ControlModelResource):
             'id': ALL,
             'name': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-class SupplierResource(ControlModelResource):
+class SupplierResource(ModelResource):
 
     class Meta:
         resource_name = 'suppliers'
@@ -114,26 +122,13 @@ class SupplierResource(ControlModelResource):
             'id': ALL,
             'name': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-# po endpoint model resources
-class PurchaseOrderEndpointModelResource(SecureResource):
-
-    class Meta:
-        filtering = {
-            'id': ALL,
-            'name': ALL,
-            'address1': ALL,
-            'address2': ALL,
-            'address3': ALL,
-            'city': ALL,
-            'state': ALL,
-            'zipcode': ALL,
-            'country': ALL,
-        }
-
-
-class ContactResource(PurchaseOrderEndpointModelResource):
+class ContactResource(ModelResource):
 
     represents = fields.ForeignKey(SupplierResource, 'represents')
     label = fields.ForeignKey(ContactLabelResource, 'label')
@@ -157,17 +152,35 @@ class ContactResource(PurchaseOrderEndpointModelResource):
             'represents': ALL_WITH_RELATIONS,
             'label': ALL_WITH_RELATIONS,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-class ReceiverResource(PurchaseOrderEndpointModelResource):
+class ReceiverResource(ModelResource):
 
     class Meta:
         resource_name = 'receivers'
         queryset = Receiver.objects.all()
+        filtering = {
+            'id': ALL,
+            'name': ALL,
+            'address1': ALL,
+            'address2': ALL,
+            'address3': ALL,
+            'city': ALL,
+            'state': ALL,
+            'zipcode': ALL,
+            'country': ALL,
+        }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-# complex model resources
-class SkuResource(SecureResource):
+class SkuResource(ModelResource):
 
     brand = fields.ForeignKey(BrandResource, 'brand')
     categories = fields.ManyToManyField(CategoryResource, 'categories')
@@ -197,9 +210,13 @@ class SkuResource(SecureResource):
             'created': ALL,
             'modified': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-class SkuAttributeResource(SecureResource):
+class SkuAttributeResource(ModelResource):
 
     sku = fields.ForeignKey(SkuResource, 'sku')
     attribute = fields.ForeignKey(AttributeResource, 'attribute')
@@ -213,9 +230,13 @@ class SkuAttributeResource(SecureResource):
             'attribute': ALL_WITH_RELATIONS,
             'value': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-class PurchaseOrderResource(SecureResource):
+class PurchaseOrderResource(ModelResource):
 
     creator = fields.ForeignKey(UserResource, 'creator')
     supplier = fields.ForeignKey(SupplierResource, 'supplier')
@@ -236,9 +257,13 @@ class PurchaseOrderResource(SecureResource):
             'expected_arrival': ALL,
             'terms': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-class PurchaseOrderLineItemResource(SecureResource):
+class PurchaseOrderLineItemResource(ModelResource):
 
     purchase_order = fields.ForeignKey(PurchaseOrderResource, 'purchase_order')
     sku = fields.ForeignKey(SkuResource, 'sku')
@@ -255,9 +280,13 @@ class PurchaseOrderLineItemResource(SecureResource):
             'discount_percent': ALL,
             'discount_dollar': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-class ShipmentResource(SecureResource):
+class ShipmentResource(ModelResource):
 
     creator = fields.ForeignKey(UserResource, 'creator')
     purchase_order = fields.ForeignKey(PurchaseOrderResource, 'purchase_order')
@@ -272,9 +301,13 @@ class ShipmentResource(SecureResource):
             'note': ALL,
             'created': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-class ShipmentLineItemResource(SecureResource):
+class ShipmentLineItemResource(ModelResource):
 
     shipment = fields.ForeignKey(ShipmentResource, 'shipment')
     sku = fields.ForeignKey(SkuResource, 'sku')
@@ -288,15 +321,21 @@ class ShipmentLineItemResource(SecureResource):
             'sku': ALL_WITH_RELATIONS,
             'quantity_received': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-# adjustment model resources
-class AdjustmentModelResource(SecureResource):
+class CostAdjustmentResource(ModelResource):
 
     sku = fields.ForeignKey(SkuResource, 'sku')
     who = fields.ForeignKey(UserResource, 'who')
+    reason = fields.ForeignKey(CostAdjustmentReasonResource, 'reason')
 
     class Meta:
+        resource_name = 'cost_adjustments'
+        queryset = CostAdjustment.objects.all()
         filtering = {
             'id': ALL,
             'sku': ALL_WITH_RELATIONS,
@@ -307,24 +346,35 @@ class AdjustmentModelResource(SecureResource):
             'detail': ALL,
             'created': ALL,
         }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
-class CostAdjustmentResource(AdjustmentModelResource):
+class QuantityAdjustmentResource(ModelResource):
 
-    reason = fields.ForeignKey(CostAdjustmentReasonResource, 'reason')
-
-    class Meta:
-        resource_name = 'cost_adjustments'
-        queryset = CostAdjustment.objects.all()
-
-
-class QuantityAdjustmentResource(AdjustmentModelResource):
-
+    sku = fields.ForeignKey(SkuResource, 'sku')
+    who = fields.ForeignKey(UserResource, 'who')
     reason = fields.ForeignKey(QuantityAdjustmentReasonResource, 'reason')
 
     class Meta:
         resource_name = 'quantity_adjustments'
         queryset = QuantityAdjustment.objects.all()
+        filtering = {
+            'id': ALL,
+            'sku': ALL_WITH_RELATIONS,
+            'old': ALL,
+            'new': ALL,
+            'who': ALL_WITH_RELATIONS,
+            'reason': ALL_WITH_RELATIONS,
+            'detail': ALL,
+            'created': ALL,
+        }
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+        allowed_methods = ['get', ]
+        always_return_data = True
 
 
 # url conf
