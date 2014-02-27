@@ -458,7 +458,7 @@ def filter_skus(request):
         skus = skus.filter(supplier__id=supplier)
         params['Supplier'] = get_object_or_404(Supplier, id=supplier)
 
-    if in_live_deal in (0, 1):
+    if in_live_deal in ('0', '1', 0, 1):
         skus = skus.filter(in_live_deal=in_live_deal)
         params['In Live Deal'] = in_live_deal
 
