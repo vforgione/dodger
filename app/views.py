@@ -481,7 +481,7 @@ def filter_skus(request):
                     skus = skus.filter(quantity_on_hand__gte=keywords[1])
                 elif keywords[0] == '<':
                     skus = skus.filter(quantity_on_hand__lt=keywords[1])
-                elif keywords[0] == '>=':
+                elif keywords[0] == '<=':
                     skus = skus.filter(quantity_on_hand__lte=keywords[1])
                 else:
                     warnings.append('Could not parse quantity_on_hand = `%s`' % quantity_on_hand)
