@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Done Deals SKUs</title>
+</head>
+<body>
+  <div>
+    <h3>Live SKUs with 0 Qty</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>SKU</th><th>Deal ID</th><th>Location</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for sku in skus %}
+      <tr>
+        <td><a href="https://dodger.doggyloot.com{{ sku.get_absolute_url }}" target="_blank">{{ sku.description }}</a></td>
+        <td>{{ sku.deal }}</td><td>{{ sku.location|default_if_none:"unknown" }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>Live SKUs with 0 Qty NOT Found in System</h3>
+    {{ unknown|join:", " }}
+  </div>
+</body>
+</html>

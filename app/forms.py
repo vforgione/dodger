@@ -94,7 +94,7 @@ class SkuForm(forms.ModelForm):
         fields = (
             'name', 'upc', 'brand', 'categories', 'quantity_on_hand', 'location', 'owner', 'supplier',
             'lead_time', 'minimum_quantity', 'notify_at_threshold', 'cost', 'supplier_sku', 'case_quantity',
-            'in_live_deal'
+            'in_live_deal', 'is_subscription'
         )
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control name'}),

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Done Deals SKUs</title>
+</head>
+<body>
+  <div>
+    <h3>Subscription SKUs</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>SKU</th><th>Qty on Hand</th><th>Location</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for sku in skus %}
+      <tr>
+        <td><a href="https://dodger.doggyloot.com{{ sku.get_absolute_url }}" target="_blank">{{ sku.description }}</a></td>
+        <td>{{ sku.quantity_on_hand }}</td><td>{{ sku.location|default_if_none:"unknown" }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

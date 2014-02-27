@@ -207,6 +207,7 @@ class SkuResource(ModelResource):
             'cost': ALL,
             'supplier_sku': ALL,
             'in_live_deal': ALL,
+            'is_subscription': ALL,
             'created': ALL,
             'modified': ALL,
         }

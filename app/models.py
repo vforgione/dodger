@@ -90,6 +90,7 @@ class Sku(models.Model):
     supplier_sku = models.CharField(max_length=255, blank=True, null=True)
     case_quantity = models.IntegerField(blank=True, null=True)
     in_live_deal = models.BooleanField(default=False)
+    is_subscription = models.BooleanField(default=False)
     # stamp
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
