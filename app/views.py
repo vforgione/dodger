@@ -29,19 +29,22 @@ def search(request):
     skus = Sku.objects.all()
 
     if q:
-        attrs = [obj.sku.id for obj in SkuAttribute.objects.filter(value=q)]
+        if q == 'live':
+            skus = skus.filter(in_live_deal=True)
+        else:
+            attrs = [obj.sku.id for obj in SkuAttribute.objects.filter(value=q)]
 
-        skus = skus.filter(
-            Q(id__icontains=q) |
-            Q(name__icontains=q) |
-            Q(upc__icontains=q) |
-            Q(location__icontains=q) |
-            Q(brand__name__icontains=q) |
-            Q(owner__username__icontains=q) |
-            Q(supplier__name__icontains=q) |
-            Q(supplier_sku__icontains=q) |
-            Q(id__in=attrs)
-        )
+            skus = skus.filter(
+                Q(id__icontains=q) |
+                Q(name__icontains=q) |
+                Q(upc__icontains=q) |
+                Q(location__icontains=q) |
+                Q(brand__name__icontains=q) |
+                Q(owner__username__icontains=q) |
+                Q(supplier__name__icontains=q) |
+                Q(supplier_sku__icontains=q) |
+                Q(id__in=attrs)
+            )
 
     return render_to_response(
         'app/search.html',
