@@ -36,6 +36,7 @@ urlpatterns = patterns(
     url(r'^purchase_orders/update(?:/(?P<pk>\d+))?/$', 'purchase_order__update', name='purchase_order__update'),
     url(r'^purchase_orders/table/$', 'purchase_order__table', name='purchase_order__table'),
     url(r'^purchase_orders/export/$', 'purchase_order__export', name='purchase_order__export'),
+    url(r'^purchase_orders/print/(?P<pk>\d+)/$', 'purchase_order__print', name='purchase_order__print'),
 
     ##
     # purchase order line items

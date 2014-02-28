@@ -51,8 +51,19 @@
   {% endif %}
 </tbody>
 </table>
-<a class="btn btn-primary default" href="{% url 'app:purchase_order__view' %}">Back To List</a>
-<a class="btn btn-danger pull-right" href="{% url 'app:purchase_order__update' po.pk %}">Modify This PO</a>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      <a class="btn btn-primary default" href="{% url 'app:purchase_order__view' %}">Back To List</a>
+    </div>
+    <div class="col-lg-4" style="text-align: center">
+      <a class="btn btn-primary" href="{% url 'app:purchase_order__print' po.pk %}">Save as PDF</a>
+    </div>
+    <div class="col-lg-4">
+      <a class="btn btn-danger pull-right" href="{% url 'app:purchase_order__update' po.pk %}">Modify This PO</a>
+    </div>
+  </div>
+</div>
 
 {% elif pos %}
 <h3>View Purchase Orders</h3>

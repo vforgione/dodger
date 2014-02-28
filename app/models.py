@@ -280,6 +280,10 @@ class PurchaseOrder(models.Model):
                 return False
         return True
 
+    def _total_cost(self):
+        return sum([li.total_cost for li in self.purchaseorderlineitem_set.all()])
+    total_cost = property(_total_cost)
+
     def __str__(self):
         return '%d-%s' % (self.id, self.creator.username)
 
@@ -295,6 +299,16 @@ class PurchaseOrderLineItem(models.Model):
 
     def get_absolute_url(self):
         return reverse('app:purchase_order_line_item__view', args=[str(self.pk)])
+
+    def _adjusted_unit_cost(self):
+        dp = self.discount_percent or 0
+        dd = self.discount_dollar or 0
+        return (self.unit_cost - (self.unit_cost * dp)) - dd
+    adjusted_unit_cost = property(_adjusted_unit_cost)
+
+    def _total_cost(self):
+        return self.adjusted_unit_cost * self.quantity_ordered
+    total_cost = property(_total_cost)
 
     def __str__(self):
         return '[%d] %d' % (self.sku.id, self.quantity_ordered)

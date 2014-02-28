@@ -809,6 +809,18 @@ def purchase_order__export(request):
     return response
 
 
+@login_required
+def purchase_order__print(request, pk):
+    po = get_object_or_404(PurchaseOrder, pk=pk)
+    return render_to_response(
+        'app/purchase_order__print.html',
+        {
+            'po': po,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
 ##
 # purchase order line items
 @login_required

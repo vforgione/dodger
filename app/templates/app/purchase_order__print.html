@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/bootstrap-theme.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/base.css' %}" />
+  <link rel="stylesheet" type="text/css" media="print" href="{% static 'dodger/css/print.css' %}" />
+</head>
+<body>
+<div class="container">
+  <div id="content">
+
+    <div class="row">
+      <div class="col-lg-8">
+        <img src="{% static 'dodger/img/logo-black.png' %}" width="300px" />
+      </div>
+      <div class="col-lg-4">
+        <h4>Purchase Order: {{ po }}</h4>
+        <h5>{{ po.created }}</h5>
+      </div>
+    </div>
+    <hr />
+
+    <div class="row">
+      <div class="col-lg-8">
+        <h4>Vendor</h4>
+        {{ po.contact.name }}
+        {{ po.supplier }}<br />
+        {{ po.contact.address1 }}<br />
+        {% if po.contact.address2 %}{{ po.contact.address2 }}<br />{% endif %}
+        {% if po.contact.address3 %}{{ po.contact.address3 }}<br />{% endif %}
+        {{ po.contact.city }}, {{ po.contact.state }} {{ po.contact.zipcode }}<br />
+        {{ po.contact.email }}<br />
+        {{ po.contact.phone }}
+        {% if po.contact.fax %}<br />{{ po.contact.fax }}{% endif %}
+      </div>
+      <div class="col-lg-4">
+        <h4>Ship To</h4>
+        doggyloot, inc.<br />
+        {{ po.receiver.name }}<br />
+        {{ po.receiver.address1 }}<br />
+        {% if po.receiver.address2 %}{{ po.receiver.address2 }}<br />{% endif %}
+        {% if po.receiver.address3 %}{{ po.receiver.address3 }}<br />{% endif %}
+        {{ po.receiver.city }}, {{ po.receiver.state }} {{ po.receiver.zipcode }}<br />
+      </div>
+    </div>
+    <hr />
+
+    <div class="row">
+      <div class="col-lg-8">
+        <h4>Terms</h4>
+        {{ po.terms }}
+      </div>
+      <div class="col-lg-4">
+        <h4>Anticipated Arrival</h4>
+        {{ po.expected_arrival|default_if_none:"ASAP" }}
+      </div>
+    </div>
+    <hr />
+
+    <div class="table-responsive">
+      <h4>Line Items</h4>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Qty Ordered</th><th>Supp SKU</th><th>dl SKU</th><th>Unit Cost</th><th>Disc Percent</th><th>Disc Dollar</th><th>Adj Unit Cost</th><th>Line Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for li in po.purchaseorderlineitem_set.all %}
+        <tr>
+          <td>{{ li.quantity_ordered }}</td>
+          <td>{{ li.sku.supplier_sku }}</td>
+          <td>{{ li.sku.id }}</td>
+          <td>${{ li.unit_cost|floatformat:2 }}</td>
+          <td>{{ li.discount_percent|default_if_none:0|floatformat:2 }}%</td>
+          <td>${{ li.discount_dollar|default_if_none:0|floatformat:2 }}</td>
+          <td>${{ li.adjusted_unit_cost|floatformat:2 }}</td>
+          <td>${{ li.total_cost|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <th colspan="7">Total Cost</th>
+          <th>${{ po.total_cost|floatformat:2 }}</th>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <hr />
+
+    <div class="row">
+      <div class="col-lg-6">
+        <h4>Notes &amp; Instructions</h4>
+        {% if po.notes %}<p>{{ po.notes|safe }}</p>{% endif %}
+        <ol>
+          <li>Please send a copy of the invoice to {{ po.creator.email }}</li>
+          <li>Enter this order in accordance to the price, terms, shipping method, and specifications listed above</li>
+          <li>If any product(s) are back-ordered, please notify {{ po.creator.first_name }} {{ po.creator.last_name }} at {{ po.creator.email }} as well as note on packing slip</li>
+          <li>Please ship using a straight truck and lift gate</li>
+          <li>If shipped in bulk, please write contents and quantities on box</li>
+          <li>Please include a physical packing slip with the shipment</li>
+        </ol>
+      </div>
+      <div class="col-lg-2">&nbsp;</div>
+      <div class="col-lg-4">
+        <h4>Authorization</h4>
+        <div class="row" style="border-bottom: solid 1px #ccc">
+          <div class="col-xs-6">{{ po.creator.first_name }} {{ po.creator.last_name }}</div>
+          <div class="col-xs-6">{{ po.created }}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6"><i>Authorized By</i></div>
+          <div class="col-xs-6"><i>Date</i></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
