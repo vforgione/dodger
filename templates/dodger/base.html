@@ -119,6 +119,20 @@
                 <li><a href="{% url 'app:supplier__update' %}">Update Suppliers</a></li>
               </ul>
             </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">PO Assets<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Contacts</li>
+                <li><a href="{% url 'app:contact__view' %}">View Contacts</a></li>
+                <li><a href="{% url 'app:contact__create' %}">Create a Contact</a></li>
+                <li><a href="{% url 'app:contact__update' %}">Update Contacts</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Receivers</li>
+                <li><a href="{% url 'app:receiver__view' %}">View Receivers</a></li>
+                <li><a href="{% url 'app:receiver__create' %}">Create a Receiver</a></li>
+                <li><a href="{% url 'app:receiver__update' %}">Update Receivers</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
         {% endif %}

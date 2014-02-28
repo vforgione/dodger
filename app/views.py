@@ -1899,3 +1899,213 @@ def supplier__update(request, pk=None):
         },
         context_instance=RequestContext(request)
     )
+
+
+##
+# contacts
+@login_required
+def contact__view(request, pk=None):
+    contact, contacts, update_url = None, None, None
+
+    if pk is not None:
+        contact = get_object_or_404(Contact, pk=pk)
+        update_url = reverse('app:contact__update', args=[str(contact.pk)])
+
+    else:
+        contacts = Contact.objects.order_by('name')
+        paginator = Paginator(contacts, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            contacts = paginator.page(page)
+        except PageNotAnInteger:
+            contacts = paginator.page(1)
+        except EmptyPage:
+            contacts = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'app/purchase_order_endpoint__view.html',
+        {
+            'obj': contact,
+            'objs': contacts,
+            'model': 'Contact',
+            'list_url': reverse('app:contact__view'),
+            'update_url': update_url
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def contact__create(request):
+    form = ContactForm()
+
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('app:contact__view'))
+
+    return render_to_response(
+        'app/purchase_order_endpoint__create.html',
+        {
+            'form': form,
+            'model': 'Contact',
+            'cancel': reverse('app:contact__view'),
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def contact__update(request, pk=None):
+    if pk is None:
+        contacts = Contact.objects.order_by('name')
+        paginator = Paginator(contacts, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            contacts = paginator.page(page)
+        except PageNotAnInteger:
+            contacts = paginator.page(1)
+        except EmptyPage:
+            contacts = paginator.page(paginator.num_pages)
+
+        return render_to_response(
+            'app/purchase_order_endpoint__update.html',
+            {
+                'obj': None,
+                'objs': contacts,
+                'form': None,
+                'model': 'contact',
+                'cancel': reverse('app:contact__view'),
+                'update_url': None,
+            },
+            context_instance=RequestContext(request)
+        )
+
+    else:
+        contact = get_object_or_404(Contact, pk=pk)
+
+    if request.method == 'GET':
+        form = ContactForm(instance=contact)
+
+    else:
+        form = ContactForm(request.POST, instance=contact)
+        if form.is_valid():
+            form.save()
+            return redirect(contact.get_absolute_url())
+
+    return render_to_response(
+        'app/purchase_order_endpoint__update.html',
+        {
+            'obj': contact,
+            'objs': None,
+            'form': form,
+            'model': 'contact',
+            'cancel': reverse('app:contact__view'),
+            'update_url': reverse('app:contact__update', args=[str(contact.pk)]),
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+##
+# receivers
+@login_required
+def receiver__view(request, pk=None):
+    receiver, receivers, update_url = None, None, None
+
+    if pk is not None:
+        receiver = get_object_or_404(Receiver, pk=pk)
+        update_url = reverse('app:receiver__update', args=[str(receiver.pk)])
+
+    else:
+        receivers = Receiver.objects.order_by('name')
+        paginator = Paginator(receivers, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            receivers = paginator.page(page)
+        except PageNotAnInteger:
+            receivers = paginator.page(1)
+        except EmptyPage:
+            receivers = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'app/purchase_order_endpoint__view.html',
+        {
+            'obj': receiver,
+            'objs': receivers,
+            'model': 'Receiver',
+            'list_url': reverse('app:receiver__view'),
+            'update_url': update_url
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def receiver__create(request):
+    form = ReceiverForm()
+
+    if request.method == 'POST':
+        form = ReceiverForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('app:receiver__view'))
+
+    return render_to_response(
+        'app/purchase_order_endpoint__create.html',
+        {
+            'form': form,
+            'model': 'Receiver',
+            'cancel': reverse('app:receiver__view'),
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def receiver__update(request, pk=None):
+    if pk is None:
+        receivers = Receiver.objects.order_by('name')
+        paginator = Paginator(receivers, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            receivers = paginator.page(page)
+        except PageNotAnInteger:
+            receivers = paginator.page(1)
+        except EmptyPage:
+            receivers = paginator.page(paginator.num_pages)
+
+        return render_to_response(
+            'app/purchase_order_endpoint__update.html',
+            {
+                'obj': None,
+                'objs': receivers,
+                'form': None,
+                'model': 'Receiver',
+                'cancel': reverse('app:receiver__view'),
+                'update_url': None,
+            },
+            context_instance=RequestContext(request)
+        )
+
+    else:
+        receiver = get_object_or_404(Receiver, pk=pk)
+
+    if request.method == 'GET':
+        form = ReceiverForm(instance=receiver)
+
+    else:
+        form = ReceiverForm(request.POST, instance=receiver)
+        if form.is_valid():
+            form.save()
+            return redirect(Receiver.get_absolute_url())
+
+    return render_to_response(
+        'app/purchase_order_endpoint__update.html',
+        {
+            'obj': receiver,
+            'objs': None,
+            'form': form,
+            'model': 'Receiver',
+            'cancel': reverse('app:receiver__view'),
+            'update_url': reverse('app:receiver__update', args=[str(receiver.pk)]),
+        },
+        context_instance=RequestContext(request)
+    )

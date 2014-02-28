@@ -1,0 +1,69 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+<div class="table-responsive">
+
+{% if obj %}
+<h3>Detail View of {{ model }} {{ obj.name }}</h3>
+<table class="table">
+<tbody>
+<tr><th>Name</th><td>{{ obj.name }}</td></tr>
+{% if model == 'Contact' %}
+<tr><th>Email</th><td>{{ obj.email }}</td></tr>
+<tr><th>Phone</th><td>{{ obj.phone }}</td></tr>
+<tr><th>Fax</th><td>{{ obj.fax }}</td></tr>
+<tr><th>Represents</th><td>{{ obj.represents }}</td></tr>
+<tr><th>Label</th><td>{{ obj.label }}</td></tr>
+{% endif %}
+<tr><th>Address</th><td>
+  {{ obj.address1 }}<br />
+  {% if obj.address2 %}{{ obj.address2 }}<br />{% endif %}
+  {% if obj.address3 %}{{ obj.address3 }}<br />{% endif %}
+  {{ obj.city }}, {{ obj.state }} {{ obj.zipcode }}
+</td></tr>
+</tbody>
+</table>
+<a class="btn btn-primary default" href="{{ list_url }}">Back To List</a>
+<a class="btn btn-danger pull-right" href="{{ update_url }}">Modify This {{ model }}</a>
+
+{% elif objs %}
+<h3>View {{ model }}</h3>
+<table class="table table-striped">
+<thead>
+  <tr><th>Name</th>{% if model == 'Contact' %}<th>Email</th><th>Phone</th>{% endif %}</tr>
+</thead>
+<tbody>
+  {% for obj in objs %}
+  <tr>
+    <td><a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a></td>
+    {% if model == 'Contact' %}<td>{{ obj.email }}</td><td>{{ obj.phone }}</td>{% endif %}
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      {% if objs.has_previous %}
+      <a href="?page={{ objs.previous_page_number }}" class="btn btn-primary">&laquo; Previous</a>
+      {% endif %}
+    </div>
+    <div class="col-lg-4">
+      Page {{ objs.number }} of {{ objs.paginator.num_pages }}
+    </div>
+    <div class="col-lg-4">
+      {% if objs.has_next %}
+      <a href="?page={{ objs.next_page_number }}" class="btn btn-primary">Next &raquo;</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% else %}
+<h3>View {{ model }}</h3>
+<p>No data received.</p>
+
+{% endif %}
+</div>
+{% endblock %}

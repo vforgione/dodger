@@ -1,0 +1,53 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+{% if obj %}
+<h3>Update {{ model }} {{ obj }}</h3>
+<form action="." method="post">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field.errors }}{{ field }}
+  </div>
+  {% endfor %}
+  <input type="submit" name="submit" value="Update {{ model }}" class="btn btn-primary" />
+  <a href="{{ cancel }}" class="btn btn-danger pull-right">Cancel</a>
+</form>
+
+{% else %}
+<h3>Select a {{ model }} to Update</h3>
+<div class="table-responsive">
+  <table class="table table-striped">
+  <thead>
+    <tr><th>Name</th>{% if model == 'Contact' %}<th>Email</th><th>Phone</th>{% endif %}</tr>
+  </thead>
+  <tbody>
+    {% for obj in objs %}
+    <tr>
+      <td><a href="{{ update_url }}{{ obj.pk }}/">{{ obj.name }}</a></td>
+      {% if model == 'Contact' %}<td>{{ obj.email }}</td><td>{{ obj.phone }}</td>{% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      {% if objs.has_previous %}
+      <a href="?page={{ objs.previous_page_number }}" class="btn btn-primary">&laquo; Previous</a>
+      {% endif %}
+    </div>
+    <div class="col-lg-4">
+      Page {{ objs.number }} of {{ objs.paginator.num_pages }}
+    </div>
+    <div class="col-lg-4">
+      {% if objs.has_next %}
+      <a href="?page={{ objs.next_page_number }}" class="btn btn-primary">&raquo; Previous</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endif %}
+{% endblock %}

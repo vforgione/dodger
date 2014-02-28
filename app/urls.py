@@ -90,4 +90,15 @@ urlpatterns = patterns(
     url(r'^suppliers(?:/(?P<pk>\d+))?/$', 'supplier__view', name='supplier__view'),
     url(r'^suppliers/create/$', 'supplier__create', name='supplier__create'),
     url(r'^suppliers/update(?:/(?P<pk>\d+))?/$', 'supplier__update', name='supplier__update'),
+
+    ## po endpoints
+    # contacts
+    url(r'^contacts(?:/(?P<pk>\d+))?/$', 'contact__view', name='contact__view'),
+    url(r'^contacts/create/$', 'contact__create', name='contact__create'),
+    url(r'^contacts/update(?:/(?P<pk>\d+))?/$', 'contact__update', name='contact__update'),
+
+    # receivers
+    url(r'^receivers(?:/(?P<pk>\d+))?/$', 'receiver__view', name='receiver__view'),
+    url(r'^receivers/create/$', 'receiver__create', name='receiver__create'),
+    url(r'^receivers/update(?:/(?P<pk>\d+))?/$', 'receiver__update', name='receiver__update'),
 )

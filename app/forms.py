@@ -162,8 +162,8 @@ class ContactForm(forms.ModelForm):
         )
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control name'}),
-            'represents': forms.Select(attrs={'class': 'form-contro representsl'}),
-            'label': forms.Select(attrs={'class': 'form-control label'}),
+            'represents': forms.Select(attrs={'class': 'form-control represents'}),
+            'label': forms.Select(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control email'}),
             'phone': forms.TextInput(attrs={'class': 'form-control phone'}),
             'fax': forms.TextInput(attrs={'class': 'form-control fax'}),
