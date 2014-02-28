@@ -57,20 +57,37 @@ urlpatterns = patterns(
 
     ## controls
     # attributes
+    url(r'^attributes(?:/(?P<pk>\d+))?/$', 'attribute__view', name='attribute__view'),
+    url(r'^attributes/create/$', 'attribute__create', name='attribute__create'),
+    url(r'^attributes/update(?:/(?P<pk>\d+))?/$', 'attribute__update', name='attribute__update'),
 
     # brands
+    url(r'^brands(?:/(?P<pk>\d+))?/$', 'brand__view', name='brand__view'),
+    url(r'^brands/create/$', 'brand__create', name='brand__create'),
+    url(r'^brands/update(?:/(?P<pk>\d+))?/$', 'brand__update', name='brand__update'),
 
     # categories
-
-    # contacts
+    url(r'^categories(?:/(?P<pk>\d+))?/$', 'category__view', name='category__view'),
+    url(r'^categories/create/$', 'category__create', name='category__create'),
+    url(r'^categories/update(?:/(?P<pk>\d+))?/$', 'category__update', name='category__update'),
 
     # contact labels
+    url(r'^contact_labels(?:/(?P<pk>\d+))?/$', 'contact_label__view', name='contact_label__view'),
+    url(r'^contact_labels/create/$', 'contact_label__create', name='contact_label__create'),
+    url(r'^contact_labels/update(?:/(?P<pk>\d+))?/$', 'contact_label__update', name='contact_label__update'),
 
     # cost adj reasons
+    url(r'^cost_adjustment_reasons(?:/(?P<pk>\d+))?/$', 'cost_adjustment_reason__view', name='cost_adjustment_reason__view'),
+    url(r'^cost_adjustment_reasons/create/$', 'cost_adjustment_reason__create', name='cost_adjustment_reason__create'),
+    url(r'^cost_adjustment_reasons/update(?:/(?P<pk>\d+))?/$', 'cost_adjustment_reason__update', name='cost_adjustment_reason__update'),
 
     # quantity adj reasons
-
-    # receivers
+    url(r'^quantity_adjustment_reasons(?:/(?P<pk>\d+))?/$', 'quantity_adjustment_reason__view', name='quantity_adjustment_reason__view'),
+    url(r'^quantity_adjustment_reasons/create/$', 'quantity_adjustment_reason__create', name='quantity_adjustment_reason__create'),
+    url(r'^quantity_adjustment_reasons/update(?:/(?P<pk>\d+))?/$', 'quantity_adjustment_reason__update', name='quantity_adjustment_reason__update'),
 
     # suppliers
+    url(r'^suppliers(?:/(?P<pk>\d+))?/$', 'supplier__view', name='supplier__view'),
+    url(r'^suppliers/create/$', 'supplier__create', name='supplier__create'),
+    url(r'^suppliers/update(?:/(?P<pk>\d+))?/$', 'supplier__update', name='supplier__update'),
 )

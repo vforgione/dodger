@@ -4,55 +4,74 @@ from models import *
 
 
 # control models
-class ControlModelForm(forms.ModelForm):
+class AttributeForm(forms.ModelForm):
 
     class Meta:
+        model = Attribute
         fields = ('name', )
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control name'})
         }
 
 
-class AttributeForm(ControlModelForm):
-
-    class Meta:
-        model = Attribute
-
-
-class BrandForm(ControlModelForm):
+class BrandForm(forms.ModelForm):
 
     class Meta:
         model = Brand
+        fields = ('name', )
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control name'})
+        }
 
 
-class CategoryForm(ControlModelForm):
+class CategoryForm(forms.ModelForm):
 
     class Meta:
         model = Category
+        fields = ('name', )
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control name'})
+        }
 
 
-class ContactLabelForm(ControlModelForm):
+class ContactLabelForm(forms.ModelForm):
 
     class Meta:
         model = ContactLabel
+        fields = ('name', )
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control name'})
+        }
 
 
-class CostAdjustmentReasonForm(ControlModelForm):
+class CostAdjustmentReasonForm(forms.ModelForm):
 
     class Meta:
         model = CostAdjustmentReason
+        fields = ('name', )
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control name'})
+        }
 
 
-class QuantityAdjustmentReasonForm(ControlModelForm):
+class QuantityAdjustmentReasonForm(forms.ModelForm):
 
     class Meta:
         model = QuantityAdjustmentReason
+        fields = ('name', )
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control name'})
+        }
 
 
-class SupplierForm(ControlModelForm):
+class SupplierForm(forms.ModelForm):
 
     class Meta:
         model = Supplier
+        fields = ('name', )
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control name'})
+        }
 
 
 # adjustment models

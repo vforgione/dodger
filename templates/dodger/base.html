@@ -80,6 +80,45 @@
                 <li><a href="{% url 'app:cost_adjustment__table' %}">Export Cost Adjustment Data</a></li>
               </ul>
             </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">SKU Assets<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Attributes</li>
+                <li><a href="{% url 'app:attribute__view' %}">View Attributes</a></li>
+                <li><a href="{% url 'app:attribute__create' %}">Create an Attributes</a></li>
+                <li><a href="{% url 'app:attribute__update' %}">Update Attributes</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Brands</li>
+                <li><a href="{% url 'app:brand__view' %}">View Brands</a></li>
+                <li><a href="{% url 'app:brand__create' %}">Create a Brand</a></li>
+                <li><a href="{% url 'app:brand__update' %}">Update Brands</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Categories</li>
+                <li><a href="{% url 'app:category__view' %}">View Categories</a></li>
+                <li><a href="{% url 'app:category__create' %}">Create a Category</a></li>
+                <li><a href="{% url 'app:category__update' %}">Update Categories</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Contact Labels</li>
+                <li><a href="{% url 'app:contact_label__view' %}">View Contact Labels</a></li>
+                <li><a href="{% url 'app:contact_label__create' %}">Create a Contact Label</a></li>
+                <li><a href="{% url 'app:contact_label__update' %}">Update Contact Labels</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Cost Adjustment Reasons</li>
+                <li><a href="{% url 'app:cost_adjustment_reason__view' %}">View Cost Adjustment Reasons</a></li>
+                <li><a href="{% url 'app:cost_adjustment_reason__create' %}">Create a Cost Adjustment Reasons</a></li>
+                <li><a href="{% url 'app:cost_adjustment_reason__update' %}">Update Cost Adjustment Reasons</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Quantity Adjustment Reasons</li>
+                <li><a href="{% url 'app:quantity_adjustment_reason__view' %}">View Quantity Adjustment Reasons</a></li>
+                <li><a href="{% url 'app:quantity_adjustment_reason__create' %}">Create a Quantity Adjustment Reason</a></li>
+                <li><a href="{% url 'app:quantity_adjustment_reason__update' %}">Update Quantity Adjustment Reasons</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Suppliers</li>
+                <li><a href="{% url 'app:supplier__view' %}">View Suppliers</a></li>
+                <li><a href="{% url 'app:supplier__create' %}">Create a Supplier</a></li>
+                <li><a href="{% url 'app:supplier__update' %}">Update Suppliers</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
         {% endif %}

@@ -1,0 +1,54 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+<div class="table-responsive">
+
+{% if obj %}
+<h3>Detail View of {{ model }} "{{ obj }}"</h3>
+<table class="table">
+<tbody>
+<tr><th>Name</th><td>{{ obj.name }}</td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+</tbody>
+</table>
+<a class="btn btn-primary default" href="{{ list_url }}">Back To List</a>
+<a class="btn btn-danger pull-right" href="{{ update_url }}">Modify This {{ model }}</a>
+
+{% elif objs %}
+<h3>View {{ model }}</h3>
+<table class="table table-striped">
+<thead>
+  <tr><th>Name</th></tr>
+</thead>
+<tbody>
+  {% for obj in objs %}
+  <tr><td><a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a></td></tr>
+  {% endfor %}
+</tbody>
+</table>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      {% if objs.has_previous %}
+      <a href="?page={{ objs.previous_page_number }}" class="btn btn-primary">&laquo; Previous</a>
+      {% endif %}
+    </div>
+    <div class="col-lg-4">
+      Page {{ objs.number }} of {{ objs.paginator.num_pages }}
+    </div>
+    <div class="col-lg-4">
+      {% if objs.has_next %}
+      <a href="?page={{ objs.next_page_number }}" class="btn btn-primary">Next &raquo;</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% else %}
+<h3>View {{ model }}</h3>
+<p>No data received.</p>
+
+{% endif %}
+</div>
+{% endblock %}

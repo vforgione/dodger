@@ -1167,3 +1167,735 @@ def shipment_line_item__export(request):
         ])
 
     return response
+
+
+##
+# attributes
+@login_required
+def attribute__view(request, pk=None):
+    attr, attrs, update_url = None, None, None
+
+    if pk is not None:
+        attr = get_object_or_404(Attribute, pk=pk)
+        update_url = reverse('app:attribute__update', args=[str(attr.pk)])
+
+    else:
+        attrs = Attribute.objects.order_by('name')
+        paginator = Paginator(attrs, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            attrs = paginator.page(page)
+        except PageNotAnInteger:
+            attrs = paginator.page(1)
+        except EmptyPage:
+            attrs = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'app/control_model__view.html',
+        {
+            'obj': attr,
+            'objs': attrs,
+            'model': 'Attribute',
+            'list_url': reverse('app:attribute__view'),
+            'update_url': update_url,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def attribute__create(request):
+    form = AttributeForm()
+
+    if request.method == 'POST':
+        form = AttributeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('app:attribute__view'))
+
+    return render_to_response(
+        'app/control_model__create.html',
+        {
+            'form': form,
+            'model': 'Attribute',
+            'cancel': reverse('app:attribute__view'),
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def attribute__update(request, pk=None):
+    if pk is None:
+        attrs = Attribute.objects.order_by('name')
+        paginator = Paginator(attrs, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            attrs = paginator.page(page)
+        except PageNotAnInteger:
+            attrs = paginator.page(1)
+        except EmptyPage:
+            attrs = paginator.page(paginator.num_pages)
+
+        return render_to_response(
+            'app/control_model__update.html',
+            {
+                'obj': None,
+                'objs': attrs,
+                'form': None,
+                'model': 'Attribute',
+                'cancel': reverse('app:attribute__view'),
+                'update_url': None,
+            },
+            context_instance=RequestContext(request)
+        )
+
+    else:
+        attr = get_object_or_404(Attribute, pk=pk)
+
+    if request.method == 'GET':
+        form = AttributeForm(instance=attr)
+
+    else:
+        form = AttributeForm(request.POST, instance=attr)
+        if form.is_valid():
+            form.save()
+            return redirect(attr.get_absolute_url())
+
+    return render_to_response(
+        'app/control_model__update.html',
+        {
+            'obj': attr,
+            'objs': None,
+            'form': form,
+            'model': 'Attribute',
+            'cancel': reverse('app:attribute__view'),
+            'update_url': reverse('app:attribute__update', args=[str(attr.pk)]),
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+##
+# brands
+@login_required
+def brand__view(request, pk=None):
+    brand, brands, update_url = None, None, None
+
+    if pk is not None:
+        brand = get_object_or_404(Brand, pk=pk)
+        update_url = reverse('app:brand__update', args=[str(brand.pk)])
+
+    else:
+        brands = Brand.objects.order_by('name')
+        paginator = Paginator(brands, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            brands = paginator.page(page)
+        except PageNotAnInteger:
+            brands = paginator.page(1)
+        except EmptyPage:
+            brands = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'app/control_model__view.html',
+        {
+            'obj': brand,
+            'objs': brands,
+            'model': 'Brand',
+            'list_url': reverse('app:brand__view'),
+            'update_url': update_url,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def brand__create(request):
+    form = BrandForm()
+
+    if request.method == 'POST':
+        form = BrandForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('app:brand__view'))
+
+    return render_to_response(
+        'app/control_model__create.html',
+        {
+            'form': form,
+            'model': 'Brand',
+            'cancel': reverse('app:brand__view'),
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def brand__update(request, pk=None):
+    if pk is None:
+        brands = Brand.objects.order_by('name')
+        paginator = Paginator(brands, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            brands = paginator.page(page)
+        except PageNotAnInteger:
+            brands = paginator.page(1)
+        except EmptyPage:
+            brands = paginator.page(paginator.num_pages)
+
+        return render_to_response(
+            'app/control_model__update.html',
+            {
+                'obj': None,
+                'objs': brands,
+                'form': None,
+                'model': 'Brand',
+                'cancel': reverse('app:brand__view'),
+                'update_url': None,
+            },
+            context_instance=RequestContext(request)
+        )
+
+    else:
+        brand = get_object_or_404(Brand, pk=pk)
+
+    if request.method == 'GET':
+        form = BrandForm(instance=brand)
+
+    else:
+        form = BrandForm(request.POST, instance=brand)
+        if form.is_valid():
+            form.save()
+            return redirect(brand.get_absolute_url())
+
+    return render_to_response(
+        'app/control_model__update.html',
+        {
+            'obj': brand,
+            'objs': None,
+            'form': form,
+            'model': 'Brand',
+            'cancel': reverse('app:brand__view'),
+            'update_url': reverse('app:brand__update', args=[str(brand.pk)]),
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+##
+# categories
+@login_required
+def category__view(request, pk=None):
+    cat, cats, update_url = None, None, None
+
+    if pk is not None:
+        cat = get_object_or_404(Category, pk=pk)
+        update_url = reverse('app:category__view', args=[str(cat.pk)])
+
+    else:
+        cats = Category.objects.order_by('name')
+        paginator = Paginator(cats, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            cats = paginator.page(page)
+        except PageNotAnInteger:
+            cats = paginator.page(1)
+        except EmptyPage:
+            cats = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'app/control_model__view.html',
+        {
+            'obj': cat,
+            'objs': cats,
+            'model': 'Category',
+            'list_url': reverse('app:category__view'),
+            'update_url': update_url,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def category__create(request):
+    form = CategoryForm()
+
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('app:category__view'))
+
+    return render_to_response(
+        'app/control_model__create.html',
+        {
+            'form': form,
+            'model': 'Category',
+            'cancel': reverse('app:category__view'),
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def category__update(request, pk=None):
+    if pk is None:
+        cats = Category.objects.order_by('name')
+        paginator = Paginator(cats, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            cats = paginator.page(page)
+        except PageNotAnInteger:
+            cats = paginator.page(1)
+        except EmptyPage:
+            cats = paginator.page(paginator.num_pages)
+
+        return render_to_response(
+            'app/control_model__update.html',
+            {
+                'obj': None,
+                'objss': cats,
+                'form': None,
+                'model': 'Category',
+                'update_url': None,
+            },
+            context_instance=RequestContext(request)
+        )
+
+    else:
+        cat = get_object_or_404(Category, pk=pk)
+
+    if request.method == 'GET':
+        form = CategoryForm(instance=cat)
+
+    else:
+        form = CategoryForm(request.POST, instance=cat)
+        if form.is_valid():
+            form.save()
+            return redirect(cat.get_absolute_url())
+
+    return render_to_response(
+        'app/control_model__update.html',
+        {
+            'obj': cat,
+            'objs': None,
+            'form': form,
+            'model': 'Category',
+            'update_url': reverse('app:category__update', args=[str(cat.pk)]),
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+##
+# contact_labels
+@login_required
+def contact_label__view(request, pk=None):
+    label, labels, update_url = None, None, None
+
+    if pk is not None:
+        label = get_object_or_404(ContactLabel, pk=pk)
+        update_url = reverse('app:contact_label__update', args=[str(label.pk)])
+
+    else:
+        labels = ContactLabel.objects.order_by('name')
+        paginator = Paginator(labels, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            labels = paginator.page(page)
+        except PageNotAnInteger:
+            labels = paginator.page(1)
+        except EmptyPage:
+            labels = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'app/control_model__view.html',
+        {
+            'obj': label,
+            'objs': labels,
+            'model': 'Contact Label',
+            'list_url': reverse('app:contact_label__view'),
+            'update_url': update_url,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def contact_label__create(request):
+    form = ContactLabelForm()
+
+    if request.method == 'POST':
+        form = ContactLabelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('app:contact_label__view'))
+
+    return render_to_response(
+        'app/control_model__create.html',
+        {
+            'form': form,
+            'model': 'Contact Label',
+            'cancel': reverse('app:contact_label__view'),
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def contact_label__update(request, pk=None):
+    if pk is None:
+        labels = ContactLabel.objects.order_by('name')
+        paginator = Paginator(labels, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            labels = paginator.page(page)
+        except PageNotAnInteger:
+            labels = paginator.page(1)
+        except EmptyPage:
+            labels = paginator.page(paginator.num_pages)
+
+        return render_to_response(
+            'app/control_model__update.html',
+            {
+                'obj': None,
+                'objs': labels,
+                'form': None,
+                'model': 'Contact Label',
+                'cancel': reverse('app:contact_label__view'),
+                'update_url': None
+            },
+            context_instance=RequestContext(request)
+        )
+
+    else:
+        label = get_object_or_404(ContactLabel, pk=pk)
+
+    if request.method == 'GET':
+        form = ContactLabelForm(instance=label)
+
+    else:
+        form = ContactLabelForm(request.POST, instance=label)
+        if form.is_valid():
+            form.save()
+            return redirect(label.get_absolute_url())
+
+    return render_to_response(
+        'app/control_model__update.html',
+        {
+            'obj': label,
+            'objs': None,
+            'form': form,
+            'model': 'Contact Label',
+            'update_url': reverse('app:contact_label__update', args=[str(label.pk)])
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+##
+# cost_adjustment_reasons
+@login_required
+def cost_adjustment_reason__view(request, pk=None):
+    adj, adjs, update_url = None, None, None
+
+    if pk is not None:
+        adj = get_object_or_404(CostAdjustmentReason, pk=pk)
+        update_url = reverse('app:cost_adjustment_reason__update', args=[str(adj.pk)])
+
+    else:
+        adjs = CostAdjustmentReason.objects.order_by('name')
+        paginator = Paginator(adjs, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            adjs = paginator.page(page)
+        except PageNotAnInteger:
+            adjs = paginator.page(1)
+        except EmptyPage:
+            adjs = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'app/control_model__view.html',
+        {
+            'obj': adj,
+            'objs': adjs,
+            'model': 'Cost Adjustment Reason',
+            'list_url': reverse('app:cost_adjustment_reason__view'),
+            'update_url': update_url
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def cost_adjustment_reason__create(request):
+    form = CostAdjustmentReasonForm()
+
+    if request.method == 'POST':
+        form = CostAdjustmentReasonForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('app:cost_adjustment_reason__view'))
+
+    return render_to_response(
+        'app/control_model__create.html',
+        {
+            'form': form,
+            'model': 'Cost Adjustment Reason',
+            'cancel': reverse('app:cost_adjustment_reason__view'),
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def cost_adjustment_reason__update(request, pk=None):
+    if pk is None:
+        adjs = CostAdjustmentReason.objects.order_by('name')
+        paginator = Paginator(adjs, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            adjs = paginator.page(page)
+        except PageNotAnInteger:
+            adjs = paginator.page(1)
+        except EmptyPage:
+            adjs = paginator.page(paginator.num_pages)
+
+        return render_to_response(
+            'app/control_model__update.html',
+            {
+                'obj': None,
+                'objs': adjs,
+                'form': None,
+                'model': 'Cost Adjustment Reason',
+                'cancel': reverse('app:cost_adjustment_reason__view'),
+                'update_url': None
+            },
+            context_instance=RequestContext(request)
+        )
+
+    else:
+        adj = get_object_or_404(CostAdjustmentReason, pk=pk)
+
+    if request.method == 'GET':
+        form = CostAdjustmentReasonForm(instance=adj)
+
+    else:
+        form = CostAdjustmentReasonForm(request.POST, instance=adj)
+        if form.is_valid():
+            form.save()
+            return redirect(adj.get_absolute_url())
+
+    return render_to_response(
+        'app/control_model__update.html',
+        {
+            'obj': adj,
+            'objs': None,
+            'form': form,
+            'model': 'Cost Adjustment Reason',
+            'cancel': reverse('app:cost_adjustment_reason__view'),
+            'update_url': reverse('app:cost_adjustment_reason__update', args=[str(adj.pk)])
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+##
+# quantity_adjustment_reasons
+@login_required
+def quantity_adjustment_reason__view(request, pk=None):
+    adj, adjs, update_url = None, None, None
+
+    if pk is not None:
+        adj = get_object_or_404(QuantityAdjustmentReason, pk=pk)
+        update_url = reverse('app:quantity_adjustment_reason__update', args=[str(adj.pk)])
+
+    else:
+        adjs = QuantityAdjustmentReason.objects.order_by('name')
+        paginator = Paginator(adjs, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            adjs = paginator.page(page)
+        except PageNotAnInteger:
+            adjs = paginator.page(1)
+        except EmptyPage:
+            adjs = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'app/control_model__view.html',
+        {
+            'obj': adj,
+            'objs': adjs,
+            'model': 'Quantity Adjustment Reason',
+            'list_url': reverse('app:quantity_adjustment_reason__view'),
+            'update_url': update_url
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def quantity_adjustment_reason__create(request):
+    form = QuantityAdjustmentReasonForm()
+
+    if request.method == 'POST':
+        form = QuantityAdjustmentReasonForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('app:quantity_adjustment_reason__view'))
+
+    return render_to_response(
+        'app/control_model__create.html',
+        {
+            'form': form,
+            'model': 'Quantity Adjustment Reason',
+            'cancel': reverse('app:quantity_adjustment_reason__view'),
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def quantity_adjustment_reason__update(request, pk=None):
+    if pk is None:
+        adjs = QuantityAdjustmentReason.objects.order_by('name')
+        paginator = Paginator(adjs, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            adjs = paginator.page(page)
+        except PageNotAnInteger:
+            adjs = paginator.page(1)
+        except EmptyPage:
+            adjs = paginator.page(paginator.num_pages)
+
+        return render_to_response(
+            'app/control_model__update.html',
+            {
+                'obj': None,
+                'objs': adjs,
+                'form': None,
+                'model': 'Quantity Adjustment Reason',
+                'cancel': reverse('app:quantity_adjustment_reason__view'),
+                'update_url': None
+            },
+            context_instance=RequestContext(request)
+        )
+
+    else:
+        adj = get_object_or_404(QuantityAdjustmentReason, pk=pk)
+
+    if request.method == 'GET':
+        form = QuantityAdjustmentReasonForm(instance=adj)
+
+    else:
+        form = QuantityAdjustmentReasonForm(request.POST, instance=adj)
+        if form.is_valid():
+            form.save()
+            return redirect(adj.get_absolute_url())
+
+    return render_to_response(
+        'app/control_model__update.html',
+        {
+            'obj': adj,
+            'objs': None,
+            'form': form,
+            'model': 'Quantity Adjustment Reason',
+            'cancel': reverse('app:quantity_adjustment_reason__view'),
+            'update_url': reverse('app:quantity_adjustment_reason__update', args=[str(adj.pk)]),
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+##
+# suppliers
+@login_required
+def supplier__view(request, pk=None):
+    supplier, suppliers, update_url = None, None, None
+
+    if pk is not None:
+        supplier = get_object_or_404(Supplier, pk=pk)
+        update_url = reverse('app:supplier__update', args=[str(supplier.pk)])
+
+    else:
+        suppliers = Supplier.objects.order_by('name')
+        paginator = Paginator(suppliers, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            suppliers = paginator.page(page)
+        except PageNotAnInteger:
+            suppliers = paginator.page(1)
+        except EmptyPage:
+            suppliers = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        'app/control_model__view.html',
+        {
+            'obj': supplier,
+            'objs': suppliers,
+            'model': 'Supplier',
+            'list_url': reverse('app:supplier__view'),
+            'update_url': update_url,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def supplier__create(request):
+    form = SupplierForm()
+
+    if request.method == 'POST':
+        form = SupplierForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('app:supplier__view'))
+
+    return render_to_response(
+        'app/control_model__create.html',
+        {
+            'form': form,
+            'model': 'Supplier',
+            'cancel': reverse('app:supplier__view'),
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def supplier__update(request, pk=None):
+    if pk is None:
+        suppliers = Supplier.objects.order_by('name')
+        paginator = Paginator(suppliers, PAGE_SIZE)
+        page = request.GET.get('page', 1)
+        try:
+            suppliers = paginator.page(page)
+        except PageNotAnInteger:
+            suppliers = paginator.page(1)
+        except EmptyPage:
+            suppliers = paginator.page(paginator.num_pages)
+
+        return render_to_response(
+            'app/control_model__update.html',
+            {
+                'obj': None,
+                'objs': suppliers,
+                'form': None,
+                'model': 'Supplier',
+                'cancel': reverse('app:supplier__view'),
+                'update_url': None,
+            },
+            context_instance=RequestContext(request)
+        )
+
+    else:
+        supplier = get_object_or_404(Supplier, pk=pk)
+
+    if request.method == 'GET':
+        form = SupplierForm(instance=supplier)
+
+    else:
+        form = SupplierForm(request.POST, instance=supplier)
+        if form.is_valid():
+            form.save()
+            return redirect(supplier.get_absolute_url())
+
+    return render_to_response(
+        'app/control_model__update.html',
+        {
+            'obj': supplier,
+            'objs': None,
+            'form': form,
+            'model': 'Supplier',
+            'cancel': reverse('app:supplier__view'),
+            'update_url': reverse('app:supplier__update', args=[str(supplier.pk)]),
+        },
+        context_instance=RequestContext(request)
+    )
