@@ -65,11 +65,6 @@ class Supplier(ControlModel):
 # full models
 class Sku(models.Model):
 
-    class Meta:
-        unique_together = (
-            ('brand', 'supplier_sku')
-        )
-
     # id
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255)

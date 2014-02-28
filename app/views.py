@@ -360,6 +360,7 @@ def sku__create(request):
             formset = SkuAttributeFormset(request.POST, instance=sku)
             if formset.is_valid():
                 sku.save()
+                form.save_m2m()
                 formset.save()
                 return redirect(reverse('app:sku__view'))
         else:
@@ -413,6 +414,7 @@ def sku__update(request, pk=None):
             formset = SkuAttributeFormset(request.POST, instance=sku)
             if formset.is_valid():
                 updated.save()
+                form.save_m2m()
                 formset.save()
                 return redirect(sku.get_absolute_url())
         else:
