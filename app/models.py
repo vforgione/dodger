@@ -73,7 +73,7 @@ class Sku(models.Model):
     # id
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255)
-    upc = models.CharField(max_length=255, unique=True, blank=True, null=True)
+    upc = models.CharField(max_length=255, blank=True, null=True)
     # categorization
     brand = models.ForeignKey(Brand)
     categories = models.ManyToManyField(Category)
