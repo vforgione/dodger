@@ -20,7 +20,7 @@
   <tbody>
     {% for sku in skus %}
     <tr>
-      <td><a href="{{ sku.get_absolute_url }}" target="_blank">{{ sku }}</a></td>
+      <td><a href="{{ sku.get_absolute_url }}">{{ sku }}</a></td>
       <td>{{ sku.upc }}</td>
       <td>{{ sku.quantity_on_hand }}</td>
       <td>{{ sku.location }}</td>
