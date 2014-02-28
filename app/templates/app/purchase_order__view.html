@@ -10,11 +10,11 @@
   <tr><th>Creator</th><td>{{ po.creator.username }}</td></tr>
   <tr><th>Supplier</th><td>{{ po.supplier }}</td></tr>
   <tr><th>Terms</th><td>{{ po.terms }}</td></tr>
-  <tr><th>Contact</th><td>{{ po.contact.name }}</td></tr>
-  <tr><th>Receiver</th><td>{{ po.receiver }}</td></tr>
-  <tr><th>Note</th><td>{{ po.note|safe }}</td></tr>
+  <tr><th>Contact</th><td><a href="{{ po.contact.get_absolute_url }}" target="_blank">{{ po.contact.name }}</a></td></tr>
+  <tr><th>Receiver</th><td><a href="{{ po.receiver.get_absolute_url }}" target="_blank">{{ po.receiver }}</a></td></tr>
+  <tr><th>Note</th><td>{{ po.note|default:"-"|safe }}</td></tr>
   <tr><th>Date Created</th><td>{{ po.created }}</td></tr>
-  <tr><th>Expected Arrival</th><td>{{ po.expected_arrival }}</td></tr>
+  <tr><th>Expected Arrival</th><td>{{ po.expected_arrival|default:"-" }}</td></tr>
   <tr><th>Shipments</th><td>
     {% if po.shipment_set.all|length %}
     {% for ship in po.shipment_set.all %}
@@ -31,16 +31,18 @@
       <div class="table-responsive">
         <table class="table table-condensed">
         <thead>
-          <tr><th>SKU</th><th>Qty Ordered</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th></tr>
+          <tr>
+            <th>SKU</th><th>Qty Ordered</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th>
+          </tr>
         </thead>
         <tbody>
           {% for li in po.purchaseorderlineitem_set.all %}
           <tr>
             <td class="col-lg-4"><a href="{{ li.sku.get_absolute_url }}" target="_blank">{{ li.sku }}</a></td>
             <td class="col-lg-2">{{ li.quantity_ordered }}</td>
-            <td class="col-lg-2">{{ li.unit_cost }}</td>
-            <td class="col-lg-2">{{ li.discount_percent }}</td>
-            <td class="col-lg-2">{{ li.discount_dollar }}</td>
+            <td class="col-lg-2">${{ li.unit_cost|floatformat:2 }}</td>
+            <td class="col-lg-2">{{ li.discount_percent|default:"0.00" }}%</td>
+            <td class="col-lg-2">${{ li.discount_dollar|default:0|floatformat:2 }}</td>
           </tr>
           {% endfor %}
         </tbody>

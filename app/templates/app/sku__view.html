@@ -9,18 +9,18 @@
 <tbody>
   <tr><th>ID</th><td>{{ sku.id }}</td></tr>
   <tr><th>Name</th><td>{{ sku.name }}</td></tr>
-  <tr><th>UPC</th><td>{{ sku.upc }}</td></tr>
+  <tr><th>UPC</th><td>{{ sku.upc|default:"-" }}</td></tr>
   <tr><th>Brand</th><td>{{ sku.brand }}</td></tr>
-  <tr><th>Categories</th><td>{{ sku.categories.all|join:", " }}</td></tr>
+  <tr><th>Categories</th><td>{{ sku.categories.all|default:"-"|join:", " }}</td></tr>
   <tr><th>Qty on Hand</th><td>{{ sku.quantity_on_hand }}</td></tr>
-  <tr><th>Location</th><td>{{ sku.location }}</td></tr>
+  <tr><th>Location</th><td>{{ sku.location|default:"-" }}</td></tr>
   <tr><th>Owner</th><td>{{ sku.owner.username }}</td></tr>
   <tr><th>Supplier</th><td>{{ sku.supplier }}</td></tr>
-  <tr><th>Lead Time</th><td>{{ sku.lead_time }}</td></tr>
+  <tr><th>Lead Time</th><td>{{ sku.lead_time|default:"-" }}</td></tr>
   <tr><th>Min Qty</th><td>{{ sku.minimum_quantity }}</td></tr>
   <tr><th>Notify Owner</th><td>{{ sku.notify_at_threshold }}</td></tr>
   <tr><th>Cost</th><td>${{ sku.cost }}</td></tr>
-  <tr><th>Supplier SKU</th><td>{{ sku.supplier_sku }}</td></tr>
+  <tr><th>Supplier SKU</th><td>{{ sku.supplier_sku|default:"-" }}</td></tr>
   <tr><th>Case Qty</th><td>{{ sku.case_quantity }}</td></tr>
   <tr><th>In Live Deal</th><td>{{ sku.in_live_deal }}</td></tr>
   <tr><th>Is Subscription</th><td>{{ sku.is_subscription }}</td></tr>
@@ -58,7 +58,12 @@
 </thead>
 <tbody>
   {% for sku in skus %}
-  <tr><td><a href="{{ sku.get_absolute_url }}">{{ sku }}</a></td><td>{{ sku.quantity_on_hand }}</td><td>{{ sku.location }}</td><td>{{ sku.owner.username }}</td></tr>
+  <tr>
+    <td><a href="{{ sku.get_absolute_url }}">{{ sku }}</a></td>
+    <td>{{ sku.quantity_on_hand }}</td>
+    <td>{{ sku.location|default:"-" }}</td>
+    <td>{{ sku.owner.username }}</td>
+  </tr>
   {% endfor %}
 </tbody>
 </table>

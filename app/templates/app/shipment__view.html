@@ -9,7 +9,7 @@
 <tbody>
   <tr><th>Creator</th><td>{{ ship.creator.username }}</td></tr>
   <tr><th>Purchase Order</th><td><a href="{{ ship.purchase_order.get_absolute_url }}" target="_blank">{{ ship.purchase_order }}</a></td></tr>
-  <tr><th>Note</th><td>{{ ship.note|safe }}</td></tr>
+  <tr><th>Note</th><td>{{ ship.note|default:"-"|safe }}</td></tr>
   <tr><th>Date Created</th><td>{{ ship.created }}</td></tr>
   <tr>
     <td colspan="2">
