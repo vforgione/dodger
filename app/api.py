@@ -243,6 +243,7 @@ class PurchaseOrderResource(ModelResource):
     supplier = fields.ForeignKey(SupplierResource, 'supplier')
     contact = fields.ForeignKey(ContactResource, 'contact')
     receiver = fields.ForeignKey(ReceiverResource, 'receiver')
+    total_cost = fields.CharField(attribute=_total_cost, 'total_cost')
 
     class Meta:
         resource_name = 'purchase_orders'
@@ -257,6 +258,7 @@ class PurchaseOrderResource(ModelResource):
             'created': ALL,
             'expected_arrival': ALL,
             'terms': ALL,
+            'total_cost': ALL,
         }
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
@@ -268,6 +270,8 @@ class PurchaseOrderLineItemResource(ModelResource):
 
     purchase_order = fields.ForeignKey(PurchaseOrderResource, 'purchase_order')
     sku = fields.ForeignKey(SkuResource, 'sku')
+    adjustted_unit_cost = fields.CharField(attribute=_adjusted_unit_cost, 'adjusted_unit_cost')
+    total_cost = fields.CharField(attribute=_total_cost, 'total_cost')
 
     class Meta:
         resource_name = 'purchase_order_line_items'
@@ -280,6 +284,8 @@ class PurchaseOrderLineItemResource(ModelResource):
             'unit_cost': ALL,
             'discount_percent': ALL,
             'discount_dollar': ALL,
+            'adjusted_unit_cost': ALL,
+            'total_cost': ALL,
         }
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
