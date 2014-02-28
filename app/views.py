@@ -1243,7 +1243,7 @@ def attribute__update(request, pk=None):
                 'form': None,
                 'model': 'Attribute',
                 'cancel': reverse('app:attribute__view'),
-                'update_url': None,
+                'update_url': reverse('app:attribute__update'),
             },
             context_instance=RequestContext(request)
         )
@@ -1348,7 +1348,7 @@ def brand__update(request, pk=None):
                 'form': None,
                 'model': 'Brand',
                 'cancel': reverse('app:brand__view'),
-                'update_url': None,
+                'update_url': reverse('app:brand__update'),
             },
             context_instance=RequestContext(request)
         )
@@ -1452,7 +1452,7 @@ def category__update(request, pk=None):
                 'objss': cats,
                 'form': None,
                 'model': 'Category',
-                'update_url': None,
+                'update_url': reverse('app:category__update'),
             },
             context_instance=RequestContext(request)
         )
@@ -1556,7 +1556,7 @@ def contact_label__update(request, pk=None):
                 'form': None,
                 'model': 'Contact Label',
                 'cancel': reverse('app:contact_label__view'),
-                'update_url': None
+                'update_url': reverse('app:contact_label__update')
             },
             context_instance=RequestContext(request)
         )
@@ -1660,7 +1660,7 @@ def cost_adjustment_reason__update(request, pk=None):
                 'form': None,
                 'model': 'Cost Adjustment Reason',
                 'cancel': reverse('app:cost_adjustment_reason__view'),
-                'update_url': None
+                'update_url': reverse('app:cost_adjustment_reason__update')
             },
             context_instance=RequestContext(request)
         )
@@ -1765,7 +1765,7 @@ def quantity_adjustment_reason__update(request, pk=None):
                 'form': None,
                 'model': 'Quantity Adjustment Reason',
                 'cancel': reverse('app:quantity_adjustment_reason__view'),
-                'update_url': None
+                'update_url': reverse('app:quantity_adjustment_reason__update')
             },
             context_instance=RequestContext(request)
         )
@@ -1870,7 +1870,7 @@ def supplier__update(request, pk=None):
                 'form': None,
                 'model': 'Supplier',
                 'cancel': reverse('app:supplier__view'),
-                'update_url': None,
+                'update_url': reverse('app:supplier__update'),
             },
             context_instance=RequestContext(request)
         )
@@ -1973,9 +1973,9 @@ def contact__update(request, pk=None):
                 'obj': None,
                 'objs': contacts,
                 'form': None,
-                'model': 'contact',
+                'model': 'Contact',
                 'cancel': reverse('app:contact__view'),
-                'update_url': None,
+                'update_url': reverse('app:contact__update'),
             },
             context_instance=RequestContext(request)
         )
@@ -1998,7 +1998,7 @@ def contact__update(request, pk=None):
             'obj': contact,
             'objs': None,
             'form': form,
-            'model': 'contact',
+            'model': 'Contact',
             'cancel': reverse('app:contact__view'),
             'update_url': reverse('app:contact__update', args=[str(contact.pk)]),
         },
@@ -2080,7 +2080,7 @@ def receiver__update(request, pk=None):
                 'form': None,
                 'model': 'Receiver',
                 'cancel': reverse('app:receiver__view'),
-                'update_url': None,
+                'update_url': reverse('app:receiver__update'),
             },
             context_instance=RequestContext(request)
         )
