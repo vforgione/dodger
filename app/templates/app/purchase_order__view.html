@@ -14,7 +14,6 @@
   <tr><th>Receiver</th><td><a href="{{ po.receiver.get_absolute_url }}" target="_blank">{{ po.receiver }}</a></td></tr>
   <tr><th>Note</th><td>{{ po.note|default:"-"|safe }}</td></tr>
   <tr><th>Date Created</th><td>{{ po.created }}</td></tr>
-  <tr><th>Expected Arrival</th><td>{{ po.expected_arrival|default:"-" }}</td></tr>
   <tr><th>Shipments</th><td>
     {% if po.shipment_set.all|length %}
     {% for ship in po.shipment_set.all %}

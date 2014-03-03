@@ -256,7 +256,6 @@ class PurchaseOrder(models.Model):
     receiver = models.ForeignKey(Receiver)
     note = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
-    expected_arrival = models.DateField(blank=True, null=True)
     terms = models.CharField(max_length=255)
 
     def get_absolute_url(self):

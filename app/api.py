@@ -256,7 +256,6 @@ class PurchaseOrderResource(ModelResource):
             'receiver': ALL_WITH_RELATIONS,
             'note': ALL,
             'created': ALL,
-            'expected_arrival': ALL,
             'terms': ALL,
             'total_cost': ALL,
         }
