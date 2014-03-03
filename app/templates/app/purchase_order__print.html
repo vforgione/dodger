@@ -63,7 +63,7 @@
       <table class="table table-striped">
         <thead>
         <tr>
-          <th>Qty Ordered</th><th>Supp SKU</th><th>dl SKU</th><th>Unit Cost</th><th>Disc %</th><th>Disc $</th><th>Adj Unit Cost</th><th>Line Total</th>
+          <th>Qty Ordered</th><th>Supp SKU</th><th>dl SKU</th><th>Attributes</th><th>Unit Cost</th><th>Disc %</th><th>Disc $</th><th>Adj Unit Cost</th><th>Line Total</th>
         </tr>
         </thead>
         <tbody>
@@ -72,6 +72,17 @@
           <td>{{ li.quantity_ordered }}</td>
           <td>{{ li.sku.supplier_sku|default:"-" }}</td>
           <td>{{ li.sku.id }}</td>
+          <td>
+            {% if li.sku.skuattribute_set.all|length %}
+            <ul>
+              {% for sa in li.sku.skuattribute_set.all %}
+              <li>{{ sa.attribute.name }}: {{ sa.value }}</li>
+              {% endfor %}
+            </ul>
+            {% else %}
+            -
+            {% endif %}
+          </td>
           <td>${{ li.unit_cost|floatformat:2 }}</td>
           <td>{{ li.discount_percent|default_if_none:0|floatformat:2 }}%</td>
           <td>${{ li.discount_dollar|default_if_none:0|floatformat:2 }}</td>
@@ -80,7 +91,7 @@
         </tr>
         {% endfor %}
         <tr>
-          <th colspan="7">Total Cost</th>
+          <th colspan="8">Total Cost</th>
           <th>${{ po.total_cost|floatformat:2 }}</th>
         </tr>
         </tbody>
