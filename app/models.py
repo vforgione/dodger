@@ -257,6 +257,7 @@ class PurchaseOrder(models.Model):
     note = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     terms = models.CharField(max_length=255)
+    tracking_url = models.CharField(max_length=512, blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse('app:purchase_order__view', args=[str(self.pk)])

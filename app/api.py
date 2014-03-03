@@ -257,6 +257,7 @@ class PurchaseOrderResource(ModelResource):
             'note': ALL,
             'created': ALL,
             'terms': ALL,
+            'tracking_url': ALL,
             'total_cost': ALL,
         }
         authentication = ApiKeyAuthentication()

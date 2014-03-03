@@ -106,7 +106,7 @@
 <thead>
   <tr>
     <th>ID</th><th>Date Created</th><th>DAT Member</th><th>Supplier</th><th>Contact</th><th>Receiver</th>
-    <th>Terms</th><th>Note</th><th>Expected Arrival</th><th>Shipments</th>
+    <th>Terms</th><th>Note</th><th>Tracking URL</th><th>Shipments</th>
   </tr>
 </thead>
 <tbody>
@@ -120,6 +120,7 @@
     <td>{{ po.receiver.name }}</td>
     <td>{{ po.terms }}</td>
     <td>{{ po.note|default:"-"|safe }}</td>
+    <td>{{ po.tracking_url|default:"-"|safe }}</td>
     <td>{{ po.shipment_set.all|join:", " }}</td>
   </tr>
   {% endfor %}

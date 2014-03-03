@@ -198,7 +198,7 @@ class PurchaseOrderForm(forms.ModelForm):
 
     class Meta:
         model = PurchaseOrder
-        fields = ('creator', 'receiver', 'supplier', 'contact', 'terms', 'note')
+        fields = ('creator', 'receiver', 'supplier', 'contact', 'terms', 'note', 'tracking_url')
         widgets = {
             'creator': forms.Select(attrs={'class': 'form-control creator'}),
             'supplier': forms.Select(attrs={'class': 'form-control supplier'}),
@@ -206,6 +206,7 @@ class PurchaseOrderForm(forms.ModelForm):
             'receiver': forms.Select(attrs={'class': 'form-control receiver'}),
             'terms': forms.TextInput(attrs={'class': 'form-control terms'}),
             'note': forms.TextInput(attrs={'class': 'form-control note'}),
+            'tracking_url': forms.TextInput(attrs={'class': 'form-control note'}),
         }
 
 

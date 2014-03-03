@@ -796,14 +796,14 @@ def purchase_order__export(request):
     writer = csv.writer(response)
     writer.writerow([
         'id', 'date created', 'dat member', 'supplier', 'contact', 'receiver', 'terms', 'note',
-        'shipment ids'
+        'shipment ids', 'tracking url'
     ])
 
     for po in pos:
         writer.writerow([
             po.id, po.created.strftime('%m/%d/%Y'), po.creator.username, po.supplier.name, po.contact.name,
-            po.receiver.name, po.terms, po.note,
-            ', '.join([str(s.id) for s in po.shipment_set.all()])
+            po.receiver.name, po.terms, po.note, ', '.join([str(s.id) for s in po.shipment_set.all()]),
+            po.tracking_url
         ])
 
     return response
