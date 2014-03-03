@@ -243,7 +243,7 @@ class PurchaseOrderResource(ModelResource):
     supplier = fields.ForeignKey(SupplierResource, 'supplier')
     contact = fields.ForeignKey(ContactResource, 'contact')
     receiver = fields.ForeignKey(ReceiverResource, 'receiver')
-    total_cost = fields.CharField(attribute=_total_cost, 'total_cost')
+    total_cost = fields.CharField(attribute='_total_cost', readonly=True)
 
     class Meta:
         resource_name = 'purchase_orders'
@@ -270,8 +270,8 @@ class PurchaseOrderLineItemResource(ModelResource):
 
     purchase_order = fields.ForeignKey(PurchaseOrderResource, 'purchase_order')
     sku = fields.ForeignKey(SkuResource, 'sku')
-    adjustted_unit_cost = fields.CharField(attribute=_adjusted_unit_cost, 'adjusted_unit_cost')
-    total_cost = fields.CharField(attribute=_total_cost, 'total_cost')
+    adjustted_unit_cost = fields.CharField(attribute='_adjusted_unit_cost', readonly=True)
+    total_cost = fields.CharField(attribute='_total_cost', readonly=True)
 
     class Meta:
         resource_name = 'purchase_order_line_items'
