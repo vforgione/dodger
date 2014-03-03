@@ -21,10 +21,10 @@
     {% for sku in skus %}
     <tr>
       <td><a href="{{ sku.get_absolute_url }}">{{ sku }}</a></td>
-      <td>{{ sku.upc }}</td>
+      <td>{{ sku.upc|default:"-" }}</td>
       <td>{{ sku.quantity_on_hand }}</td>
-      <td>{{ sku.location }}</td>
-      <td>{{ sku.supplier_sku }}</td>
+      <td>{{ sku.location|default:"-" }}</td>
+      <td>{{ sku.supplier_sku|default:"-" }}</td>
       <td>{{ sku.in_live_deal }}</td>
     </tr>
     {% endfor %}

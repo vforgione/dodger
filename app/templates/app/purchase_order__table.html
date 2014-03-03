@@ -119,8 +119,8 @@
     <td>{{ po.contact.name }}</td>
     <td>{{ po.receiver.name }}</td>
     <td>{{ po.terms }}</td>
-    <td>{{ po.note }}</td>
-    <td>{{ po.expected_arrival }}</td>
+    <td>{{ po.note|default:"-"|safe }}</td>
+    <td>{{ po.expected_arrival|default:"-" }}</td>
     <td>{{ po.shipment_set.all|join:", " }}</td>
   </tr>
   {% endfor %}

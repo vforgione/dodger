@@ -44,7 +44,7 @@
   </thead>
   <tbody>
     {% for sku in skus %}
-    <tr><td><a href="{% url 'app:sku__update' sku.pk %}">{{ sku }}</a></td><td>{{ sku.quantity_on_hand }}</td><td>{{ sku.location }}</td><td>{{ sku.owner.username }}</td></tr>
+    <tr><td><a href="{% url 'app:sku__update' sku.pk %}">{{ sku }}</a></td><td>{{ sku.quantity_on_hand }}</td><td>{{ sku.location|default:"-" }}</td><td>{{ sku.owner.username }}</td></tr>
     {% endfor %}
   </tbody>
   </table>

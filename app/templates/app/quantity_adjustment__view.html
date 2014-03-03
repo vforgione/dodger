@@ -13,7 +13,7 @@
   <tr><th>Old Cost</th><td>{{ adj.old }}</td></tr>
   <tr><th>New Cost</th><td>{{ adj.new }}</td></tr>
   <tr><th>Reason</th><td>{{ adj.reason }}</td></tr>
-  <tr><th>Detail</th><td>{{ adj.detail|safe }}</td></tr>
+  <tr><th>Detail</th><td>{{ adj.detail|default:"-"|safe }}</td></tr>
   </tbody>
 </table>
 <a class="btn btn-primary default" href="{% url 'app:quantity_adjustment__view' %}">Back To List</a>

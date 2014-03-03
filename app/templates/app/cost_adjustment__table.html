@@ -92,7 +92,7 @@
     <td>{{ adj.new }}</td>
     <td>{{ adj.reason }}</td>
     <td>{{ adj.who.username }}</td>
-    <td>{{ adj.detail }}</td>
+    <td>{{ adj.detail|default:"-" }}</td>
   </tr>
   {% endfor %}
 </tbody>

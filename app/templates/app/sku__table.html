@@ -145,12 +145,12 @@
     <td>{{ sku.brand }}</td>
     <td>{{ sku.supplier }}</td>
     <td>{{ sku.owner }}</td>
-    <td>{{ sku.minimum_quantity }}</td>
+    <td>{{ sku.minimum_quantity|default:"-" }}</td>
     <td>{{ sku.notify_at_threshold }}</td>
     <td>{{ sku.cost }}</td>
-    <td>{{ sku.supplier_sku }}</td>
-    <td>{{ sku.case_quantity }}</td>
-    <td>{{ sku.location }}</td>
+    <td>{{ sku.supplier_sku|default:"-" }}</td>
+    <td>{{ sku.case_quantity|default:"-" }}</td>
+    <td>{{ sku.location|default:"-" }}</td>
     <td>{{ sku.quantity_on_hand }}</td>
     <td>{{ sku.in_live_deal }}</td>
     <td>{{ sku.is_subscription }}</td>
