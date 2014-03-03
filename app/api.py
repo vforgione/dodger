@@ -259,6 +259,7 @@ class PurchaseOrderResource(ModelResource):
             'terms': ALL,
             'tracking_url': ALL,
             'total_cost': ALL,
+            'shipping_cost': ALL,
         }
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()

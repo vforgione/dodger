@@ -15,6 +15,7 @@
   <tr><th>Note</th><td>{{ po.note|default:"-"|safe }}</td></tr>
   <tr><th>Date Created</th><td>{{ po.created }}</td></tr>
   <tr><th>Tracking URL</th><td>{{ po.tracking_url|default:"-"|safe }}</td></tr>
+  <tr><th>Shipping Cost</th><td>${{ po.shipping_cost|floatformat:2 }}</td></tr>
   <tr><th>Shipments</th><td>
     {% if po.shipment_set.all|length %}
     {% for ship in po.shipment_set.all %}
