@@ -17,13 +17,13 @@
       </div>
       <div class="col-lg-4">
         <h4>Purchase Order: {{ po }}</h4>
-        <h5>{{ po.created }}</h5>
+        <h5>{{ po.created|date:"M j, Y" }}</h5>
       </div>
     </div>
     <hr />
 
     <div class="row">
-      <div class="col-lg-8">
+      <div class="col-lg-3">
         <h4>Vendor</h4>
         {{ po.contact.name }}
         {{ po.supplier }}<br />
@@ -35,7 +35,7 @@
         {{ po.contact.phone }}
         {% if po.contact.fax %}<br />{{ po.contact.fax }}{% endif %}
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-3">
         <h4>Ship To</h4>
         doggyloot, inc.<br />
         {{ po.receiver.name }}<br />
@@ -44,17 +44,16 @@
         {% if po.receiver.address3 %}{{ po.receiver.address3 }}<br />{% endif %}
         {{ po.receiver.city }}, {{ po.receiver.state }} {{ po.receiver.zipcode }}<br />
       </div>
-    </div>
-    <hr />
-
-    <div class="row">
-      <div class="col-lg-8">
+      <div class="col-lg-3">
+        <h4>Bill To</h4>
+        doggyloot, inc.<br />
+        213 N Racine Ave<br />
+        Chicago, IL 60607<br />
+        accounting@doggyloot.com
+      </div>
+      <div class="col-lg-3">
         <h4>Terms</h4>
         {{ po.terms }}
-      </div>
-      <div class="col-lg-4">
-        <h4>Anticipated Arrival</h4>
-        {{ po.expected_arrival|default_if_none:"ASAP" }}
       </div>
     </div>
     <hr />
@@ -64,14 +63,14 @@
       <table class="table table-striped">
         <thead>
         <tr>
-          <th>Qty Ordered</th><th>Supp SKU</th><th>dl SKU</th><th>Unit Cost</th><th>Disc Percent</th><th>Disc Dollar</th><th>Adj Unit Cost</th><th>Line Total</th>
+          <th>Qty Ordered</th><th>Supp SKU</th><th>dl SKU</th><th>Unit Cost</th><th>Disc %</th><th>Disc $</th><th>Adj Unit Cost</th><th>Line Total</th>
         </tr>
         </thead>
         <tbody>
         {% for li in po.purchaseorderlineitem_set.all %}
         <tr>
           <td>{{ li.quantity_ordered }}</td>
-          <td>{{ li.sku.supplier_sku }}</td>
+          <td>{{ li.sku.supplier_sku|default:"-" }}</td>
           <td>{{ li.sku.id }}</td>
           <td>${{ li.unit_cost|floatformat:2 }}</td>
           <td>{{ li.discount_percent|default_if_none:0|floatformat:2 }}%</td>
@@ -107,7 +106,7 @@
         <h4>Authorization</h4>
         <div class="row" style="border-bottom: solid 1px #ccc">
           <div class="col-xs-6">{{ po.creator.first_name }} {{ po.creator.last_name }}</div>
-          <div class="col-xs-6">{{ po.created }}</div>
+          <div class="col-xs-6">{{ po.created|date:"M j, Y" }}</div>
         </div>
         <div class="row">
           <div class="col-xs-6"><i>Authorized By</i></div>
