@@ -106,7 +106,8 @@
 <thead>
   <tr>
     <th>ID</th><th>Date Created</th><th>DAT Member</th><th>Supplier</th><th>Contact</th><th>Receiver</th>
-    <th>Terms</th><th>Shipping Cost</th><th>Total Cost</th><th>Note</th><th>Tracking URL</th><th>Shipments</th>
+    <th>Terms</th><th>Shipping Cost</th><th>Sales Tax</th><th>Total Cost</th><th>Note</th><th>Tracking URL</th>
+    <th>Shipments</th>
   </tr>
 </thead>
 <tbody>
@@ -120,6 +121,7 @@
     <td>{{ po.receiver.name }}</td>
     <td>{{ po.terms }}</td>
     <td>${{ po.shipping_cost|floatformat:2 }}</td>
+    <td>${{ po.sales_tax|floatformat:2 }}</td>
     <td>${{ po.total_cost|floatformat:2 }}</td>
     <td>{{ po.note|default:"-"|safe }}</td>
     <td>{{ po.tracking_url|default:"-"|safe }}</td>

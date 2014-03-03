@@ -91,8 +91,12 @@
         </tr>
         {% endfor %}
         <tr>
-          <th colspan="8">Shipping</th>
-          <th>${{ po.shipping_cost|floatformat:2 }}</th>
+          <td colspan="8">Shipping</td>
+          <td>${{ po.shipping_cost|floatformat:2 }}</td>
+        </tr>
+        <tr>
+          <td colspan="8">Sales Tax</td>
+          <td>${{ po.sales_tax|floatformat:2 }}</td>
         </tr>
         <tr>
           <th colspan="8">Total Cost</th>

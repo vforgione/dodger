@@ -260,6 +260,7 @@ class PurchaseOrderResource(ModelResource):
             'tracking_url': ALL,
             'total_cost': ALL,
             'shipping_cost': ALL,
+            'sales_tax': ALL,
         }
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()

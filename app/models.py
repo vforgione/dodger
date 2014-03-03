@@ -258,7 +258,8 @@ class PurchaseOrder(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     terms = models.CharField(max_length=255)
     tracking_url = models.CharField(max_length=512, blank=True, null=True)
-    shipping_cost = models.FloatField(default=0.00)
+    shipping_cost = models.FloatField(default=0.0)
+    sales_tax = models.FloatField(default=0.0)
 
     def get_absolute_url(self):
         return reverse('app:purchase_order__view', args=[str(self.pk)])
@@ -282,7 +283,7 @@ class PurchaseOrder(models.Model):
         return True
 
     def _total_cost(self):
-        return sum([li.total_cost for li in self.purchaseorderlineitem_set.all()]) + self.shipping_cost
+        return sum([li.total_cost for li in self.purchaseorderlineitem_set.all()]) + self.shipping_cost + self.sales_tax
     total_cost = property(_total_cost)
 
     def __str__(self):
