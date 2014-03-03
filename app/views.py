@@ -821,7 +821,6 @@ def purchase_order__print(request, pk):
     )
 
 
-##
 # purchase order line items
 @login_required
 def filter_po_lis(request):
@@ -1029,6 +1028,7 @@ def shipment__update(request, pk=None):
     )
 
 
+@login_required
 def filter_shipments(request):
     creator = request.GET.get('creator', None)
     pos = request.GET.get('pos', None)
@@ -1105,7 +1105,6 @@ def shipment__export(request):
     return response
 
 
-##
 # shipment line items
 @login_required
 def filter_sh_lis(request):
@@ -1181,7 +1180,7 @@ def shipment_line_item__export(request):
     return response
 
 
-##
+## control models
 # attributes
 @login_required
 def attribute__view(request, pk=None):
@@ -1215,6 +1214,7 @@ def attribute__view(request, pk=None):
     )
 
 
+@login_required
 def attribute__create(request):
     form = AttributeForm()
 
@@ -1235,6 +1235,7 @@ def attribute__create(request):
     )
 
 
+@login_required
 def attribute__update(request, pk=None):
     if pk is None:
         attrs = Attribute.objects.order_by('name')
@@ -1286,7 +1287,6 @@ def attribute__update(request, pk=None):
     )
 
 
-##
 # brands
 @login_required
 def brand__view(request, pk=None):
@@ -1320,6 +1320,7 @@ def brand__view(request, pk=None):
     )
 
 
+@login_required
 def brand__create(request):
     form = BrandForm()
 
@@ -1340,6 +1341,7 @@ def brand__create(request):
     )
 
 
+@login_required
 def brand__update(request, pk=None):
     if pk is None:
         brands = Brand.objects.order_by('name')
@@ -1391,7 +1393,6 @@ def brand__update(request, pk=None):
     )
 
 
-##
 # categories
 @login_required
 def category__view(request, pk=None):
@@ -1425,6 +1426,7 @@ def category__view(request, pk=None):
     )
 
 
+@login_required
 def category__create(request):
     form = CategoryForm()
 
@@ -1445,6 +1447,7 @@ def category__create(request):
     )
 
 
+@login_required
 def category__update(request, pk=None):
     if pk is None:
         cats = Category.objects.order_by('name')
@@ -1494,7 +1497,6 @@ def category__update(request, pk=None):
     )
 
 
-##
 # contact_labels
 @login_required
 def contact_label__view(request, pk=None):
@@ -1528,6 +1530,7 @@ def contact_label__view(request, pk=None):
     )
 
 
+@login_required
 def contact_label__create(request):
     form = ContactLabelForm()
 
@@ -1548,6 +1551,7 @@ def contact_label__create(request):
     )
 
 
+@login_required
 def contact_label__update(request, pk=None):
     if pk is None:
         labels = ContactLabel.objects.order_by('name')
@@ -1598,7 +1602,6 @@ def contact_label__update(request, pk=None):
     )
 
 
-##
 # cost_adjustment_reasons
 @login_required
 def cost_adjustment_reason__view(request, pk=None):
@@ -1632,6 +1635,7 @@ def cost_adjustment_reason__view(request, pk=None):
     )
 
 
+@login_required
 def cost_adjustment_reason__create(request):
     form = CostAdjustmentReasonForm()
 
@@ -1652,6 +1656,7 @@ def cost_adjustment_reason__create(request):
     )
 
 
+@login_required
 def cost_adjustment_reason__update(request, pk=None):
     if pk is None:
         adjs = CostAdjustmentReason.objects.order_by('name')
@@ -1703,7 +1708,6 @@ def cost_adjustment_reason__update(request, pk=None):
     )
 
 
-##
 # quantity_adjustment_reasons
 @login_required
 def quantity_adjustment_reason__view(request, pk=None):
@@ -1737,6 +1741,7 @@ def quantity_adjustment_reason__view(request, pk=None):
     )
 
 
+@login_required
 def quantity_adjustment_reason__create(request):
     form = QuantityAdjustmentReasonForm()
 
@@ -1757,6 +1762,7 @@ def quantity_adjustment_reason__create(request):
     )
 
 
+@login_required
 def quantity_adjustment_reason__update(request, pk=None):
     if pk is None:
         adjs = QuantityAdjustmentReason.objects.order_by('name')
@@ -1808,7 +1814,6 @@ def quantity_adjustment_reason__update(request, pk=None):
     )
 
 
-##
 # suppliers
 @login_required
 def supplier__view(request, pk=None):
@@ -1842,6 +1847,7 @@ def supplier__view(request, pk=None):
     )
 
 
+@login_required
 def supplier__create(request):
     form = SupplierForm()
 
@@ -1862,6 +1868,7 @@ def supplier__create(request):
     )
 
 
+@login_required
 def supplier__update(request, pk=None):
     if pk is None:
         suppliers = Supplier.objects.order_by('name')
@@ -1913,7 +1920,7 @@ def supplier__update(request, pk=None):
     )
 
 
-##
+## po endpoints
 # contacts
 @login_required
 def contact__view(request, pk=None):
@@ -1947,6 +1954,7 @@ def contact__view(request, pk=None):
     )
 
 
+@login_required
 def contact__create(request):
     form = ContactForm()
 
@@ -1967,6 +1975,7 @@ def contact__create(request):
     )
 
 
+@login_required
 def contact__update(request, pk=None):
     if pk is None:
         contacts = Contact.objects.order_by('name')
@@ -2018,7 +2027,6 @@ def contact__update(request, pk=None):
     )
 
 
-##
 # receivers
 @login_required
 def receiver__view(request, pk=None):
@@ -2052,6 +2060,7 @@ def receiver__view(request, pk=None):
     )
 
 
+@login_required
 def receiver__create(request):
     form = ReceiverForm()
 
@@ -2072,6 +2081,7 @@ def receiver__create(request):
     )
 
 
+@login_required
 def receiver__update(request, pk=None):
     if pk is None:
         receivers = Receiver.objects.order_by('name')
