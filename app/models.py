@@ -297,6 +297,19 @@ class PurchaseOrderLineItem(models.Model):
     discount_percent = models.FloatField(blank=True, null=True)
     discount_dollar = models.FloatField(blank=True, null=True)
 
+    def save(self, *args, **kwargs):
+        super(PurchaseOrderLineItem, self).save(*args, **kwargs)
+        if self.unit_cost != self.sku.cost:
+            ca = CostAdjustment(
+                sku=self.sku,
+                new=self.unit_cost,
+                who=self.purchase_order.creator,
+                reason=CostAdjustmentReason.objects.get(name='Supplier Adjustment'),
+                detail='adjustment made during creation of <a href="%s">%s</a>' % (
+                    self.purchase_order.get_absolute_url(), str(self.purchase_order))
+            )
+            ca.save()
+
     def get_absolute_url(self):
         return reverse('app:purchase_order_line_item__view', args=[str(self.pk)])
 
