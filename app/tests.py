@@ -25,35 +25,35 @@ class SkuModelTests(TestCase):
 
     def setUp(self):
         """also satisfies creating a new sku"""
-        self.brand = Brand(name='test brand')
+        self.brand = Brand(name='Tyson')
         self.brand.save()
 
-        self.category = Category(name='test category')
+        self.category = Category(name='Chew')
         self.category.save()
 
-        self.user = User(username='test user', email='name@place.com', is_staff=True)
+        self.user = User(username='NickPhillips', email='nphillips@doggyloot.com', is_active=True)
         self.user.save()
 
-        self.supplier = Supplier(name='test supplier')
+        self.supplier = Supplier(name='Tyson Pet')
         self.supplier.save()
 
-        self.attr1 = Attribute(name='test attr 1')
+        self.attr1 = Attribute(name='Size')
         self.attr1.save()
-        self.attr2 = Attribute(name='test attr 2')
+        self.attr2 = Attribute(name='Expiration Date')
         self.attr2.save()
 
-        self.cost_reason = CostAdjustmentReason(name='test cost adjustment')
+        self.cost_reason = CostAdjustmentReason(name='Supplier Adjustment')
         self.cost_reason.save()
 
-        self.qty_reason = QuantityAdjustmentReason(name='test qty adjustment')
+        self.qty_reason = QuantityAdjustmentReason(name='Spot Count')
         self.qty_reason.save()
 
         # hack to get skus in -- system assumes initial sku population from synced doc
         previous_sku = Sku(
-            id=123,
-            name='previous sku',
+            id=10160,
+            name='True Chews Lil\'s Bully Sticks',
             brand=self.brand,
-            quantity_on_hand=174,
+            quantity_on_hand=23,
             owner=self.user,
             supplier=self.supplier
         )
@@ -72,6 +72,7 @@ class SkuModelTests(TestCase):
     def test_update_ok(self):
         self.sku.name = 'updated test name'
         self.sku.save()
+        self.assertEqual(self.sku.name, 'updated test name')
 
     @expectedFailure
     def test_update_illegal_qty(self):
@@ -84,18 +85,18 @@ class SkuModelTests(TestCase):
         self.sku.save()
 
     def test_attributes_property(self):
-        sa1 = SkuAttribute(sku=self.sku, attribute=self.attr1, value='hola')
+        sa1 = SkuAttribute(sku=self.sku, attribute=self.attr1, value='6"')
         sa1.save()
-        sa2 = SkuAttribute(sku=self.sku, attribute=self.attr2, value='howdy')
+        sa2 = SkuAttribute(sku=self.sku, attribute=self.attr2, value='07/2015')
         sa2.save()
         self.assertEqual(len(self.sku.attributes), 2)
 
     def test_description_property(self):
-        sa1 = SkuAttribute(sku=self.sku, attribute=self.attr1, value='hola')
+        sa1 = SkuAttribute(sku=self.sku, attribute=self.attr1, value='6"')
         sa1.save()
-        sa2 = SkuAttribute(sku=self.sku, attribute=self.attr2, value='howdy')
+        sa2 = SkuAttribute(sku=self.sku, attribute=self.attr2, value='07/2015')
         sa2.save()
-        self.assertEqual(self.sku.description, '[124] test brand test sku : hola, howdy')
+        self.assertEqual(self.sku.description, '[10161] Tyson test sku : 6", (Expiration) 07/2015')
 
     def test_cost_adjustment(self):
         cost_adj = CostAdjustment(
@@ -170,6 +171,9 @@ class PurchaseOrderModelTests(TestCase):
         self.qty_reason = QuantityAdjustmentReason(name='Received Shipment')
         self.qty_reason.save()
 
+        cost_reason = CostAdjustmentReason(name='Supplier Adjustment')
+        cost_reason.save()
+
         # hack to get skus in -- system assumes initial sku population from synced doc
         self.sku1 = Sku(
             id=123,
@@ -177,7 +181,8 @@ class PurchaseOrderModelTests(TestCase):
             brand=self.brand,
             quantity_on_hand=174,
             owner=self.user,
-            supplier=self.supplier
+            supplier=self.supplier,
+            cost=0
         )
         self.sku1.save(gdocs=True)
 
@@ -186,7 +191,8 @@ class PurchaseOrderModelTests(TestCase):
             brand=self.brand,
             quantity_on_hand=0,
             owner=self.user,
-            supplier=self.supplier
+            supplier=self.supplier,
+            cost=0
         )
         self.sku2.save()
 
@@ -282,7 +288,7 @@ class AbsoluteUrlTests(TestCase):
         self.label = ContactLabel(name='test')
         self.label.save()
 
-        self.cost_reason = CostAdjustmentReason(name='test')
+        self.cost_reason = CostAdjustmentReason(name='Supplier Adjustment')  # explicitly needed later
         self.cost_reason.save()
 
         self.qty_reason = QuantityAdjustmentReason(name='Received Shipment')  # explicitly needed later for shipment

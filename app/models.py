@@ -82,7 +82,7 @@ class Sku(models.Model):
     lead_time = models.IntegerField(blank=True, null=True)
     minimum_quantity = models.IntegerField(default=0)
     notify_at_threshold = models.BooleanField(default=False)
-    cost = models.FloatField(blank=True, null=True)
+    cost = models.FloatField(blank=True, null=True, default=0)
     supplier_sku = models.CharField(max_length=255, blank=True, null=True)
     case_quantity = models.IntegerField(blank=True, null=True)
     in_live_deal = models.BooleanField(default=False)
