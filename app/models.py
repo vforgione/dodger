@@ -212,7 +212,8 @@ class Contact(models.Model):
 
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
-    phone = models.CharField(max_length=255)
+    work_phone = models.CharField(max_length=255)
+    cell_phone = models.CharField(max_length=255, blank=True, null=True)
     fax = models.CharField(max_length=255, blank=True, null=True)
     address1 = models.CharField(max_length=255)
     address2 = models.CharField(max_length=255, blank=True, null=True)

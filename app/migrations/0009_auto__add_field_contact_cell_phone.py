@@ -8,15 +8,19 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'PurchaseOrder.sales_tax'
-        db.add_column(u'app_purchaseorder', 'sales_tax',
-                      self.gf('django.db.models.fields.FloatField')(default=0.0),
+        # rename field
+        db.rename_column(u'app_contact', 'phone', 'work_phone')
+        # Adding field 'Contact.cell_phone'
+        db.add_column(u'app_contact', 'cell_phone',
+                      self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting field 'PurchaseOrder.sales_tax'
-        db.delete_column(u'app_purchaseorder', 'sales_tax')
+        # rename field
+        db.rename_column(u'app_contact', 'work_phone', 'phone')
+        # Deleting field 'Contact.cell_phone'
+        db.delete_column(u'app_contact', 'cell_phone')
 
 
     models = {
@@ -40,6 +44,7 @@ class Migration(SchemaMigration):
             'address1': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'address2': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'address3': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'cell_phone': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'city': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'country': ('django.db.models.fields.CharField', [], {'default': "u'United States'", 'max_length': '255'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '255'}),
@@ -47,9 +52,9 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'label': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.ContactLabel']"}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'work_phone': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'represents': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Supplier']"}),
             'state': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'work_phone': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'zipcode': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
         u'app.contactlabel': {
@@ -145,7 +150,7 @@ class Migration(SchemaMigration):
             'brand': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Brand']"}),
             'case_quantity': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'categories': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['app.Category']", 'symmetrical': 'False'}),
-            'cost': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
+            'cost': ('django.db.models.fields.FloatField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'}),
             'in_live_deal': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),

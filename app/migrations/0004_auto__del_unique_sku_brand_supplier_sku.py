@@ -45,7 +45,7 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'label': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.ContactLabel']"}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'phone': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'work_phone': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'represents': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Supplier']"}),
             'state': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'zipcode': ('django.db.models.fields.CharField', [], {'max_length': '255'})

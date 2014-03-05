@@ -10,8 +10,11 @@
 <tr><th>Name</th><td>{{ obj.name }}</td></tr>
 {% if model == 'Contact' %}
 <tr><th>Email</th><td>{{ obj.email }}</td></tr>
-<tr><th>Phone</th><td>{{ obj.phone }}</td></tr>
-<tr><th>Fax</th><td>{{ obj.fax }}</td></tr>
+{% if model == 'Contact' %}
+<tr><th>Work Phone</th><td>{{ obj.work_phone }}</td></tr>
+<tr><th>Cell Phone</th><td>{{ obj.cell_phone|default:"-" }}</td></tr>
+{% endif %}
+<tr><th>Fax</th><td>{{ obj.fax|default:"-" }}</td></tr>
 <tr><th>Represents</th><td>{{ obj.represents }}</td></tr>
 <tr><th>Label</th><td>{{ obj.label }}</td></tr>
 {% endif %}
@@ -36,7 +39,7 @@
   {% for obj in objs %}
   <tr>
     <td><a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a></td>
-    {% if model == 'Contact' %}<td>{{ obj.email }}</td><td>{{ obj.phone }}</td>{% endif %}
+    {% if model == 'Contact' %}<td>{{ obj.email }}</td><td>{{ obj.work_phone }}</td>{% endif %}
   </tr>
   {% endfor %}
 </tbody>

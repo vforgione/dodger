@@ -157,15 +157,16 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
         fields = (
-            'name', 'represents', 'label', 'email', 'phone', 'fax', 'address1', 'address2', 'address3',
-            'city', 'state', 'zipcode', 'country'
+            'name', 'represents', 'label', 'email', 'work_phone', 'cell_phone', 'fax', 'address1', 'address2',
+            'address3', 'city', 'state', 'zipcode', 'country'
         )
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control name'}),
             'represents': forms.Select(attrs={'class': 'form-control represents'}),
             'label': forms.Select(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control email'}),
-            'phone': forms.TextInput(attrs={'class': 'form-control phone'}),
+            'work_phone': forms.TextInput(attrs={'class': 'form-control work_phone'}),
+            'cell_phone': forms.TextInput(attrs={'class': 'form-control cell_phone'}),
             'fax': forms.TextInput(attrs={'class': 'form-control fax'}),
             'address1': forms.TextInput(attrs={'class': 'form-control address1'}),
             'address2': forms.TextInput(attrs={'class': 'form-control address2'}),
