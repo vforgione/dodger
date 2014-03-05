@@ -1,70 +1,70 @@
 [
 {
-  "pk": 1, 
-  "model": "app.quantityadjustmentreason", 
+  "pk": 1,
+  "model": "app.quantityadjustmentreason",
   "fields": {
     "name": "Received Shipment"
   }
 },
 {
-  "pk": 2, 
-  "model": "app.quantityadjustmentreason", 
+  "pk": 2,
+  "model": "app.quantityadjustmentreason",
   "fields": {
     "name": "Return"
   }
 },
 {
-  "pk": 3, 
-  "model": "app.quantityadjustmentreason", 
+  "pk": 3,
+  "model": "app.quantityadjustmentreason",
   "fields": {
     "name": "Reship"
   }
 },
 {
-  "pk": 4, 
-  "model": "app.quantityadjustmentreason", 
+  "pk": 4,
+  "model": "app.quantityadjustmentreason",
   "fields": {
     "name": "Done Deal"
   }
 },
 {
-  "pk": 5, 
-  "model": "app.quantityadjustmentreason", 
+  "pk": 5,
+  "model": "app.quantityadjustmentreason",
   "fields": {
     "name": "Spot Count"
   }
 },
 {
-  "pk": 6, 
-  "model": "app.quantityadjustmentreason", 
+  "pk": 6,
+  "model": "app.quantityadjustmentreason",
   "fields": {
-    "name": "Image Production Checkout"
+    "name": "Image Production Check Out"
   }
 },
 {
-  "pk": 7, 
-  "model": "app.quantityadjustmentreason", 
+  "pk": 7,
+  "model": "app.quantityadjustmentreason",
   "fields": {
-    "name": "Image Production Checkin"
+    "name": "Image Production Check In"
   }
 },
 {
-  "pk": 8, 
-  "model": "app.quantityadjustmentreason", 
+  "pk": 8,
+  "model": "app.quantityadjustmentreason",
   "fields": {
     "name": "Tracker Sync"
   }
 },
 {
-  "pk": 9, 
-  "model": "app.quantityadjustmentreason", 
+  "pk": 9,
+  "model": "app.quantityadjustmentreason",
   "fields": {
     "name": "Admin Rollback"
   }
 },
 {
-  "pk": 10, 
-  "model": "app.quantityadjustmentreason", 
+  "pk": 10,
+  "model": "app.quantityadjustmentreason",
   "fields": {
     "name": "Damaged"
   }

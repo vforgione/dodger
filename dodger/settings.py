@@ -116,6 +116,10 @@ DATABASES = {
     }
 }
 
+FIXTURE_DIRS = [
+    os.path.join(PROJ_DIR, 'fixtures'),
+]
+
 
 # sso config
 AUTHENTICATION_BACKENDS = (

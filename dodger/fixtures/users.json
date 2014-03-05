@@ -1,5 +1,23 @@
 [
 {
+  "pk": 1,
+  "model": "auth.user",
+  "fields": {
+    "username": "VinceForgione",
+    "first_name": "Vince",
+    "last_name": "Forgione",
+    "is_active": true,
+    "is_superuser": true,
+    "is_staff": true,
+    "last_login": "2014-03-04T16:21:38.304Z",
+    "groups": [],
+    "user_permissions": [],
+    "password": "!JP8i6xQ4ZHx3Cke9RRjB7mpWMAIR5Uz49j3Aw5lZ",
+    "email": "vince@doggyloot.com",
+    "date_joined": "2014-02-26T01:01:57.865Z"
+  }
+},
+{
   "pk": 2,
   "model": "auth.user",
   "fields": {
@@ -13,7 +31,7 @@
     "groups": [],
     "user_permissions": [],
     "password": "pbkdf2_sha256$12000$FDg9PtxvtcTg$//l1XOp6e3mpfumTAjzOlj/sg4hK60bm1twWp+5gcP4=",
-    "email": "",
+    "email": "vince@doggyloot.com",
     "date_joined": "2014-02-11T17:52:12Z"
   }
 },
@@ -21,18 +39,18 @@
   "pk": 3,
   "model": "auth.user",
   "fields": {
-    "username": "dat@doggyloot.com",
+    "username": "DAT",
     "first_name": "",
     "last_name": "",
     "is_active": true,
     "is_superuser": false,
     "is_staff": false,
-    "last_login": "2014-02-13T16:31:38.334Z",
+    "last_login": "2014-02-13T16:31:38Z",
     "groups": [],
     "user_permissions": [],
     "password": "pbkdf2_sha256$12000$KnDjiIZcywQj$s8JUymqy6eT9PEzTeX2KbbCh1NXCH1NTbW27i6uMHH0=",
-    "email": "",
-    "date_joined": "2014-02-13T16:31:38.334Z"
+    "email": "dat@doggyloot.com",
+    "date_joined": "2014-02-13T16:31:38Z"
   }
 }
 ]

@@ -54,11 +54,19 @@
   "fields": {
     "name": "Country of Origin"
   }
-},{
+},
+{
   "pk": 9,
   "model": "app.attribute",
   "fields": {
     "name": "Is Merchant Shipped"
+  }
+},
+{
+  "pk": 10,
+  "model": "app.attribute",
+  "fields": {
+    "name": "Force Ground Shipment"
   }
 }
 ]
