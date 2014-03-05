@@ -163,7 +163,7 @@ class ContactForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control name'}),
             'represents': forms.Select(attrs={'class': 'form-control represents'}),
-            'label': forms.Select(attrs={'class': 'form-control'}),
+            'label': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control email'}),
             'work_phone': forms.TextInput(attrs={'class': 'form-control work_phone'}),
             'cell_phone': forms.TextInput(attrs={'class': 'form-control cell_phone'}),

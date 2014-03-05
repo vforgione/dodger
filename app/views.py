@@ -1962,6 +1962,7 @@ def contact__create(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
+            form.save_m2m()
             return redirect(reverse('app:contact__view'))
 
     return render_to_response(

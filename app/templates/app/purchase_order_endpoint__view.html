@@ -10,13 +10,11 @@
 <tr><th>Name</th><td>{{ obj.name }}</td></tr>
 {% if model == 'Contact' %}
 <tr><th>Email</th><td>{{ obj.email }}</td></tr>
-{% if model == 'Contact' %}
 <tr><th>Work Phone</th><td>{{ obj.work_phone }}</td></tr>
 <tr><th>Cell Phone</th><td>{{ obj.cell_phone|default:"-" }}</td></tr>
-{% endif %}
 <tr><th>Fax</th><td>{{ obj.fax|default:"-" }}</td></tr>
 <tr><th>Represents</th><td>{{ obj.represents }}</td></tr>
-<tr><th>Label</th><td>{{ obj.label }}</td></tr>
+<tr><th>Label</th><td>{{ obj.label.all|default:"-"|join:", " }}</td></tr>
 {% endif %}
 <tr><th>Address</th><td>
   {{ obj.address1 }}<br />

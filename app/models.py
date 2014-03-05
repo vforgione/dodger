@@ -223,7 +223,7 @@ class Contact(models.Model):
     zipcode = models.CharField(max_length=255)
     country = models.CharField(max_length=255, default='United States')
     represents = models.ForeignKey(Supplier)
-    label = models.ForeignKey(ContactLabel)
+    label = models.ManyToManyField(ContactLabel)
 
     def get_absolute_url(self):
         return reverse('app:contact__view', args=[str(self.pk)])
