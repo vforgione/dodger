@@ -124,7 +124,7 @@ class SkuForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'class': 'form-control location'}),
             'owner': forms.Select(attrs={'class': 'form-control owner'}),
             'supplier': forms.Select(attrs={'class': 'form-control supplier'}),
-            'lead_time': forms.TextInput(attrs={'class': 'form-control lead-time'}),
+            'lead_time': forms.TextInput(attrs={'class': 'form-control lead-time', 'placeholder': 'number of days'}),
             'minimum_quantity': forms.TextInput(attrs={'class': 'form-control minimum-quantity'}),
             'cost': forms.TextInput(attrs={'class': 'form-control cost'}),
             'supplier_sku': forms.TextInput(attrs={'class': 'form-control supplier-sku'}),
