@@ -20,9 +20,9 @@
         <tr>
         {% for field in form %}
           {% if forloop.counter == 1 %}
-          <td class="col-lg-4">{{ field }}</td>
+          <td class="col-lg-4">{{ field }}{% if field.errors %}<br />{{ field.errors }}{% endif %}</td>
           {% elif forloop.counter < 6 %}
-          <td class="col-lg-2">{{ field }}</td>
+          <td class="col-lg-2">{{ field }}{% if field.errors %}<br />{{ field.errors }}{% endif %}</td>
           {% else %}
           <td style="display:none">{{ field }}</td>
           {% endif %}
