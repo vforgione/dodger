@@ -78,7 +78,13 @@ $(document).ready(function(){
   // listen for sku selection
   $(".sku").change(function(){
     var input = $(this);
-    input.parent().parent().after('');
+    var next = input.parent().parent().next();
+
+    // wipe out any detail data if sku changes twice
+    if (next.html().substr(0, 6) == "<td><a") {
+      next.html("");
+    }
+
     $.ajax({
       url: "/api/sku_service/skus/" + $(this).val() + "/",
       type: "GET",
