@@ -3,13 +3,13 @@
 {% block content %}
   <h3>Search Results</h3>
 
-  <ul style="list-style:none;padding-left:0">
-    {% if brands|length %}<li style="display:inline-block;padding-right:30px"><a href="#brands">Brands: {{ brands|length }} results</a></li>{% endif %}
-    {% if contacts|length %}<li style="display:inline-block;padding-right:30px"><a href="#contacts">Contacts: {{ contacts|length }} results</a></li>{% endif %}
-    {% if suppliers|length %}<li style="display:inline-block;padding-right:30px"><a href="#suppliers">Suppliers: {{ suppliers|length }} results</a></li>{% endif %}
-    {% if pos|length %}<li style="display:inline-block;padding-right:30px"><a href="#pos">Purchase Orders: {{ pos|length }} results</a></li>{% endif %}
-    {% if ships|length %}<li style="display:inline-block;padding-right:30px"><a href="#ships">Shipments: {{ ships|length }} results</a></li>{% endif %}
-    {% if skus|length %}<li style="display:inline-block;padding-right:30px"><a href="#skus">SKUs: {{ skus|length }} results</a></li>{% endif %}
+  <ul class="toc">
+    {% if brands|length %}<li class="tocli"><a href="#brands">Brands: {{ brands|length }} results</a></li>{% endif %}
+    {% if contacts|length %}<li class="tocli"><a href="#contacts">Contacts: {{ contacts|length }} results</a></li>{% endif %}
+    {% if suppliers|length %}<li class="tocli"><a href="#suppliers">Suppliers: {{ suppliers|length }} results</a></li>{% endif %}
+    {% if pos|length %}<li class="tocli"><a href="#pos">Purchase Orders: {{ pos|length }} results</a></li>{% endif %}
+    {% if ships|length %}<li class="tocli"><a href="#ships">Shipments: {{ ships|length }} results</a></li>{% endif %}
+    {% if skus|length %}<li class="tocli"><a href="#skus">SKUs: {{ skus|length }} results</a></li>{% endif %}
   </ul>
 
   {% if brands|length %}

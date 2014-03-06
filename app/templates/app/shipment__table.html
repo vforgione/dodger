@@ -1,9 +1,5 @@
 {% extends 'dodger/base.html' %}
 
-{% block extrahead %}
-<style>table.data-table{font-size:0.8em;}</style>
-{% endblock %}
-
 {% block content %}
 <h3>View Shipment Data</h3>
 
@@ -122,15 +118,6 @@
 {% endblock %}
 
 {% block contentjs %}
-<script>
-$(document).ready(function(){
-  $('#start').change(function(){
-    if ($(this).val()!= ''){
-      $('#end').prop('required', true);
-    } else {
-      $('#end').prop('required', false);
-    }
-  });
-});
-</script>
+{% load static %}
+<script src="{% static 'app/js/date_range.js' %}"></script>
 {% endblock %}
