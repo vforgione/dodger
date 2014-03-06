@@ -11,7 +11,7 @@
   </div>
   {% endfor %}
   {{ formset.management_form }}
-  <div class="table-responsive">
+  <div class="table-responsive formset">
     <table class="table table-condensed">
     <thead>
         <tr><th>SKU</th><th>Qty Ordered</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th></tr>
@@ -21,9 +21,9 @@
         <tr>
         {% for field in form %}
           {% if forloop.counter == 1 %}
-          <td class="col-lg-4">{{ field }}</td>
+          <td class="col-lg-4">{{ field }}{% if field.errors %}<br />{{ field.errors }}{% endif %}</td>
           {% elif forloop.counter < 6 %}
-          <td class="col-lg-2">{{ field }}</td>
+          <td class="col-lg-2">{{ field }}{% if field.errors %}<br />{{ field.errors }}{% endif %}</td>
           {% else %}
           <td style="display:none">{{ field }}</td>
           {% endif %}
@@ -33,7 +33,10 @@
       </tbody>
     </table>
   </div>
-  <input type="submit" name="submit" value="Update PO" class="btn btn-primary" />
+
+  <div><p><input type="button" id="add-more" class="btn btn-info" value="Add Another SKU" /></p><p>&nbsp;</p></div>
+
+  <input type="submit" name="submit" value="Create PO" class="btn btn-primary" />
   <a href="{% url 'app:purchase_order__view' %}" class="btn btn-danger pull-right">Cancel</a>
 </form>
 
@@ -70,4 +73,9 @@
 </div>
 
 {% endif %}
+{% endblock %}
+
+{% block contentjs %}
+{% load static %}
+<script src="{% static 'app/js/purchase_order__update.js' %}"></script>
 {% endblock %}

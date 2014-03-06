@@ -11,14 +11,14 @@
   <link rel="shortcut icon" href="{% static 'dodger/img/favicon.ico' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/bootstrap.min.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/bootstrap-theme.min.css' %}" />
-  <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/base.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/base.min.css' %}" />
   {% block css %}{% endblock %}
 
   {% block extrahead %}{% endblock %}
 
   <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <script src="{% static 'dodger/js/html5shiv.min.js' %}"></script>
+  <script src="{% static 'dodger/js/respond.min.js' %}"></script>
   <![endif]-->
 
 </head>
@@ -63,6 +63,11 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">PO Assets<b class="caret"></b></a>
               <ul class="dropdown-menu">
+                <li class="dropdown-header">Suppliers</li>
+                <li><a href="{% url 'app:supplier__view' %}">View Suppliers</a></li>
+                <li><a href="{% url 'app:supplier__create' %}">Create a Supplier</a></li>
+                <li><a href="{% url 'app:supplier__update' %}">Update Suppliers</a></li>
+                <li class="divider"></li>
                 <li class="dropdown-header">Contacts</li>
                 <li><a href="{% url 'app:contact__view' %}">View Contacts</a></li>
                 <li><a href="{% url 'app:contact__create' %}">Create a Contact</a></li>
@@ -142,7 +147,7 @@
             {% if user.is_active and user.is_authenticated %}
             <li><a>
               <form action="{% url 'app:search' %}" method="get" class="form-search form-inline">
-                <input type="text" name="q" class="search-query form-control" style="height:1.7em;width:250px;margin-top:-5px" />
+                <input type="text" name="q" class="search-query form-control omnibar" />
               </form>
             </a></li>
             <li><a href="/accounts/logout/">Logout</a></li>
@@ -172,32 +177,10 @@
 
   <script src="{% static 'dodger/js/jquery-1.11.0.min.js' %}"></script>
   <script src="{% static 'dodger/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'app/js/popup.js' %}"></script>
   {% block highlightjs %}{% endblock %}
   {% block contentjs %}{% endblock %}
   {% block extrajs %}{% endblock %}
-<style type="text/css">
-input.search-query {
-    padding-left:26px;
-}
-
-form.form-search {
-    position: relative;
-}
-
-form.form-search:before {
-    content:'';
-    display: block;
-    width: 14px;
-    height: 14px;
-    background-image: url(http://getbootstrap.com/2.3.2/assets/img/glyphicons-halflings.png);
-    background-position: -48px 0;
-    position: absolute;
-    top:3px;
-    left:5px;
-    opacity: .5;
-    z-index: 1000;
-}
-</style>
 </div>
 </body>
 </html>

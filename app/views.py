@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.template.defaultfilters import slugify
+from django.utils.html import escape
 from pytz import timezone
 
 from forms import *
@@ -27,6 +28,11 @@ def search(request):
     q = request.GET.get('q', None)
 
     skus = Sku.objects.all()
+    brands = Brand.objects.all()
+    contacts = Contact.objects.all()
+    suppliers = Supplier.objects.all()
+    pos = PurchaseOrder.objects.all()
+    shipments = Shipment.objects.all()
 
     if q:
         if q == 'live':
@@ -48,10 +54,57 @@ def search(request):
                 Q(id__in=attrs)
             )
 
+            brands = brands.filter(name__icontains=q)
+
+            contacts = contacts.filter(
+                Q(name__icontains=q) |
+                Q(represents__name__icontains=q) |
+                Q(label__name__icontains=q) |
+                Q(city__icontains=q) |
+                Q(state__icontains=q) |
+                Q(zipcode__icontains=q)
+            )
+
+            suppliers = suppliers.filter(
+                Q(name__icontains=q) |
+                Q(id__in=[c.represents.id for c in contacts])
+            )
+
+            poids = []
+            for sku in skus:
+                lis = sku.purchaseorderlineitem_set.all()
+                for li in lis:
+                    poids.append(li.purchase_order.id)
+            pos = pos.filter(
+                Q(id__icontains=q) |
+                Q(supplier__name__icontains=q) |
+                Q(contact__name__icontains=q) |
+                Q(creator__username__icontains=q) |
+                Q(id__in=poids)
+            )
+
+            sids = []
+            for sku in skus:
+                lis = sku.shipmentlineitem_set.all()
+                for li in lis:
+                    sids.append(li.shipment.id)
+            shipments = shipments.filter(
+                Q(id__icontains=q) |
+                Q(creator__username__icontains=q) |
+                Q(id__in=sids) |
+                Q(purchase_order__id__in=poids)
+            )
+
     return render_to_response(
         'app/search.html',
         {
-            'skus': skus,
+            'skus': skus.distinct(),
+            'brands': brands.distinct(),
+            'contacts': contacts.distinct(),
+            'suppliers': suppliers.distinct(),
+            'pos': pos.distinct(),
+            'ships': shipments.distinct(),
+            'q': q,
         },
         context_instance=RequestContext(request)
     )
@@ -347,6 +400,8 @@ def sku__view(request, pk=None):
 
 @login_required
 def sku__create(request):
+    is_popup = bool(request.GET.get('popup', 0))
+
     if request.method == 'GET':
         form = SkuForm()
         form.fields['owner'].initial = request.user
@@ -362,6 +417,9 @@ def sku__create(request):
                 sku.save()
                 form.save_m2m()
                 formset.save()
+                if is_popup or 'popup' in request.REQUEST:
+                    return HttpResponse('<script>opener.closeAddPopup(window, "%s", "%s");</script>' %
+                                        (escape(sku.pk), escape(sku.description)))
                 return redirect(reverse('app:sku__view'))
         else:
             formset = SkuAttributeFormset(request.POST, instance=Sku())
@@ -371,6 +429,7 @@ def sku__create(request):
         {
             'form': form,
             'formset': formset,
+            'popup': is_popup,
         },
         context_instance=RequestContext(request)
     )
@@ -1324,10 +1383,15 @@ def brand__view(request, pk=None):
 def brand__create(request):
     form = BrandForm()
 
+    is_popup = bool(request.GET.get('popup', 0))
+
     if request.method == 'POST':
         form = BrandForm(request.POST)
         if form.is_valid():
-            form.save()
+            brand = form.save()
+            if 'popup' in request.REQUEST:
+                return HttpResponse('<script>opener.closeAddPopup(window, "%s", "%s");</script>' %
+                                    (escape(brand.pk), escape(brand.name)))
             return redirect(reverse('app:brand__view'))
 
     return render_to_response(
@@ -1336,6 +1400,7 @@ def brand__create(request):
             'form': form,
             'model': 'Brand',
             'cancel': reverse('app:brand__view'),
+            'popup': is_popup,
         },
         context_instance=RequestContext(request)
     )
@@ -1850,19 +1915,33 @@ def supplier__view(request, pk=None):
 @login_required
 def supplier__create(request):
     form = SupplierForm()
+    formset = SupplierContactFormset(instance=Supplier())
+
+    is_popup = bool(request.GET.get('popup', 0))
 
     if request.method == 'POST':
-        form = SupplierForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect(reverse('app:supplier__view'))
+        if is_popup or 'popup' in request.REQUEST:
+            form = SupplierForm(request.POST)
+            if form.is_valid():
+                supp = form.save()
+                return HttpResponse('<script>opener.closeAddPopup(window, "%s", "%s");</script>' %
+                                    (escape(supp.pk), escape(supp.name)))
+        else:
+            form = SupplierForm(request.POST)
+            if form.is_valid():
+                supplier = form.save(commit=False)
+                formset = SupplierContactFormset(request.POST, instance=supplier)
+                if formset.is_valid():
+                    supplier.save()
+                    formset.save()
+                    return redirect(reverse('app:supplier__view'))
 
     return render_to_response(
-        'app/control_model__create.html',
+        'app/supplier__create.html',
         {
             'form': form,
-            'model': 'Supplier',
-            'cancel': reverse('app:supplier__view'),
+            'formset': formset,
+            'is_popup': is_popup
         },
         context_instance=RequestContext(request)
     )
@@ -1958,10 +2037,15 @@ def contact__view(request, pk=None):
 def contact__create(request):
     form = ContactForm()
 
+    is_popup = bool(request.GET.get('popup', 0))
+
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            form.save()
+            cont = form.save()
+            if 'popup' in request.REQUEST:
+                return HttpResponse('<script>opener.closeAddPopup(window, "%s", "%s");</script>' %
+                                    (escape(cont.pk), escape(cont.name)))
             return redirect(reverse('app:contact__view'))
 
     return render_to_response(
@@ -1970,6 +2054,7 @@ def contact__create(request):
             'form': form,
             'model': 'Contact',
             'cancel': reverse('app:contact__view'),
+            'popup': is_popup,
         },
         context_instance=RequestContext(request)
     )
@@ -2064,10 +2149,15 @@ def receiver__view(request, pk=None):
 def receiver__create(request):
     form = ReceiverForm()
 
+    is_popup = bool(request.GET.get('popup', 0))
+
     if request.method == 'POST':
         form = ReceiverForm(request.POST)
         if form.is_valid():
-            form.save()
+            rcv = form.save()
+            if 'popup' in request.REQUEST:
+                return HttpResponse('<script>opener.closeAddPopup(window, "%s", "%s");</script>' %
+                                    (escape(rcv.pk), escape(rcv.name)))
             return redirect(reverse('app:receiver__view'))
 
     return render_to_response(
@@ -2076,6 +2166,7 @@ def receiver__create(request):
             'form': form,
             'model': 'Receiver',
             'cancel': reverse('app:receiver__view'),
+            'popup': is_popup,
         },
         context_instance=RequestContext(request)
     )

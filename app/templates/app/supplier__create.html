@@ -1,0 +1,35 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+<h3>Create a Supplier</h3>
+<form action="." method="post">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field.errors }}{{ field }}
+  </div>
+  {% endfor %}
+
+{% if is_popup %}
+  <input type="hidden" name="popup" value="popup" />
+{% else %}
+  <h4>Add a Contact to this Supplier</h4>
+  {{ formset.management_form }}
+  {% for form in formset %}
+  {% for field in form %}
+  {% if forloop.counter < 14 %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field.errors }}{{ field }}
+  </div>
+  {% if forloop.counter == 2 %}
+  <div><p class="multi-caption">Mac Users: hold Command Key to select more than one label<br />Windows Users: hold Control Key to select more than one label</p></div>
+  {% endif %}
+  {% endif %}
+  {% endfor %}
+  {% endfor %}
+{% endif %}
+
+  <input type="submit" name="submit" value="Create Supplier{% if not is_popup %}/Contact{% endif %}" class="btn btn-primary" />
+  <a href="{% url 'app:supplier__view' %}" class="btn btn-danger pull-right">Cancel</a>
+</form>
+{% endblock %}

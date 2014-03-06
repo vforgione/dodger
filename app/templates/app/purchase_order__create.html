@@ -6,23 +6,31 @@
   {% csrf_token %}
   {% for field in form %}
   <div class="form-group">
-    {{ field.label_tag }}{{ field.errors }}{{ field }}
+    {{ field.label_tag }}
+    {% if forloop.counter == 2 or forloop.counter == 3 or forloop.counter == 4 %}
+    <a id="add-id_{{ field.name }}" href="
+      {% if forloop.counter == 2 %}/receivers/create/?popup=1
+      {% elif forloop.counter == 3 %}/suppliers/create/?popup=1
+      {% elif forloop.counter == 4 %}/contacts/create/?popup=1{% endif %}
+    " onclick="return showAddPopup(this);">&nbsp;Create a New {{ field.name|capfirst }}</a>
+    {% endif %}
+    {{ field.errors }}{{ field }}
   </div>
   {% endfor %}
   {{ formset.management_form }}
-  <div class="table-responsive">
+  <div class="table-responsive formset">
     <table class="table table-condensed">
     <thead>
-        <tr><th>SKU</th><th>Qty Ordered</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th></tr>
+        <tr><th>SKU <a style="font-weight:normal" id="add-sku" onclick="return showAddPopup(this);" href="/skus/create/?popup=1">&nbsp;Create a New SKU</a></th><th>Qty Ordered</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th></tr>
       </thead>
       <tbody>
       {% for form in formset %}
         <tr>
         {% for field in form %}
           {% if forloop.counter == 1 %}
-          <td class="col-lg-4">{{ field }}</td>
+          <td class="col-lg-4">{{ field }}{% if field.errors %}<br />{{ field.errors }}{% endif %}</td>
           {% elif forloop.counter < 6 %}
-          <td class="col-lg-2">{{ field }}</td>
+          <td class="col-lg-2">{{ field }}{% if field.errors %}<br />{{ field.errors }}{% endif %}</td>
           {% else %}
           <td style="display:none">{{ field }}</td>
           {% endif %}
@@ -32,70 +40,15 @@
       </tbody>
     </table>
   </div>
+
+  <div><p><input type="button" id="add-more" class="btn btn-info" value="Add Another SKU" /></p><p>&nbsp;</p></div>
+
   <input type="submit" name="submit" value="Create PO" class="btn btn-primary" />
   <a href="{% url 'app:purchase_order__view' %}" class="btn btn-danger pull-right">Cancel</a>
 </form>
 {% endblock %}
 
 {% block contentjs %}
-<script>
-$(document).ready(function(){
-
-  // listen for supplier choice
-  $("#id_supplier").change(function(){
-    // load contacts
-    $.ajax({
-      url: "/api/sku_service/contacts/?represents__id=" + $(this).val(),
-      type: "GET",
-      dataType: "json",
-      success: function(xhr){
-        var options = "<option></option>";
-        $(xhr.objects).each(function(i){
-          options += "<option value=\"" + xhr.objects[i].id + "\">" + xhr.objects[i].name + "</option>";
-        });
-        $("#id_contact").html(options);
-      },
-      error: function(xhr){ alert(xhr.responseText); },
-      beforeSend: function(xhr){ xhr.setRequestHeader("Authorization", "ApiKey api-readonly:697ccf3beb1cc60c1eddaa8bc6ef9fc968661034"); }
-    });
-    // load up skus
-    $.ajax({
-      url: "/api/sku_service/skus/?supplier__id=" + $(this).val(),
-      type: "GET",
-      dataType: "json",
-      success: function(xhr){
-        var options = "<option></option>";
-        $(xhr.objects).each(function(i){
-          options += "<option value=\"" + xhr.objects[i].id + "\">" + xhr.objects[i].description + "</option>";
-        });
-        $(".sku").html(options);
-      },
-      error: function(xhr){ alert(xhr.responseText); },
-      beforeSend: function(xhr){ xhr.setRequestHeader("Authorization", "ApiKey api-readonly:697ccf3beb1cc60c1eddaa8bc6ef9fc968661034"); }
-    });
-  });
-
-  // listen for sku selection
-  $(".sku").change(function(){
-    var input = $(this);
-    input.parent().parent().after('');
-    $.ajax({
-      url: "/api/sku_service/skus/" + $(this).val() + "/",
-      type: "GET",
-      dataType: "json",
-      success: function(xhr){
-        var info = '<tr>' +
-          '<td><a target="_blank" href="/skus/' + xhr.id + '/">Detailed Info</a></td>' +
-          '<td><b>Qty on Hand:</b> ' + xhr.quantity_on_hand + '</td>' +
-          '<td colspan="3"><b>Cost:</b> $' + xhr.cost + '</td>' +
-        '</tr>';
-        input.parent().parent().after(info);
-      },
-      error: function(xhr){ alert(xhr.responseText); },
-      beforeSend: function(xhr){ xhr.setRequestHeader("Authorization", "ApiKey api-readonly:697ccf3beb1cc60c1eddaa8bc6ef9fc968661034"); }
-    });
-  });
-
-});
-</script>
+{% load static %}
+<script src="{% static 'app/js/purchase_order__create.js' %}"></script>
 {% endblock %}

@@ -6,7 +6,10 @@
   {% csrf_token %}
   {% for field in form %}
   <div class="form-group">
-    {{ field.label_tag }}{{ field.errors }}{{ field }}
+    {{ field.label_tag }}
+    {% if forloop.counter == 3 %}<a id="add-id_{{ field.name }}" href="/brands/create/?popup=1" onclick="return showAddPopup(this);">&nbsp;Create a New Brand</a>{% endif %}
+    {% if forloop.counter == 8 %}<a id="add-id_{{ field.name }}" href="/suppliers/create/?popup=1" onclick="return showAddPopup(this);">&nbsp;Create a New Supplier</a>{% endif %}
+    {{ field.errors }}{{ field }}
   </div>
   {% endfor %}
   {{ formset.management_form }}
@@ -30,20 +33,13 @@
     </tbody>
     </table>
   </div>
+  {% if popup %}<input type="hidden" name="popup" value="popup" />{% endif %}
   <input type="submit" name="submit" value="Create SKU" class="btn btn-primary" />
   <a href="{% url 'app:sku__view' %}" class="btn btn-danger pull-right">Cancel</a>
 </form>
 {% endblock %}
 
 {% block contentjs %}
-<script>
-$(document).ready(function(){
-
-  // add classes to check boxes
-  $('#id_notify_at_threshold').addClass('form-control');
-  $('#id_in_live_deal').addClass('form-control');
-  $('#id_is_subscription').addClass('form-control');
-
-});
-</script>
+{% load static %}
+<script src="{% static 'app/js/sku__create.js' %}"></script>
 {% endblock %}

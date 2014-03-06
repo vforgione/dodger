@@ -1,36 +1,161 @@
 {% extends 'dodger/base.html' %}
 
 {% block content %}
-<h3>Search Results</h3>
-<hr />
+  <h3>Search Results</h3>
 
-{% if not skus %}
-<p>No results.</p>
-{% endif %}
+  <ul class="toc">
+    {% if brands|length %}<li class="tocli"><a href="#brands">Brands: {{ brands|length }} results</a></li>{% endif %}
+    {% if contacts|length %}<li class="tocli"><a href="#contacts">Contacts: {{ contacts|length }} results</a></li>{% endif %}
+    {% if suppliers|length %}<li class="tocli"><a href="#suppliers">Suppliers: {{ suppliers|length }} results</a></li>{% endif %}
+    {% if pos|length %}<li class="tocli"><a href="#pos">Purchase Orders: {{ pos|length }} results</a></li>{% endif %}
+    {% if ships|length %}<li class="tocli"><a href="#ships">Shipments: {{ ships|length }} results</a></li>{% endif %}
+    {% if skus|length %}<li class="tocli"><a href="#skus">SKUs: {{ skus|length }} results</a></li>{% endif %}
+  </ul>
 
-{% if skus %}
-<h4>SKUs</h4>
-<div class="table-responsive">
+  {% if brands|length %}
+  <hr />
+  <h4 id="brands">Brands</h4>
+  <div class="table-responsive">
   <table class="table">
-  <thead>
+    <thead>
     <tr>
-      <th>&nbsp;</th><th>UPC</th><th>Qty on Hand</th><th>Location</th><th>Supplier SKU</th><th>In Live Deal</th>
+      <th>Name</th>
     </tr>
-  </thead>
-  <tbody>
-    {% for sku in skus %}
+    </thead>
+    <tbody>
+    {% for brand in brands %}
     <tr>
-      <td><a href="{{ sku.get_absolute_url }}">{{ sku }}</a></td>
-      <td>{{ sku.upc|default:"-" }}</td>
-      <td>{{ sku.quantity_on_hand }}</td>
-      <td>{{ sku.location|default:"-" }}</td>
-      <td>{{ sku.supplier_sku|default:"-" }}</td>
-      <td>{{ sku.in_live_deal }}</td>
+      <td><a href="{{ brand.get_absolute_url }}">{{ brand }}</a></td>
     </tr>
     {% endfor %}
-  </tbody>
+    </tbody>
   </table>
-</div>
+  </div>
+  {% endif %}
+
+  {% if contacts|length %}
+  <hr />
+  <h4 id="contacts">Contacts</h4>
+  <div class="table-responsive">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Name</th><th>Represents</th><th>Work Phone</th><th>Cell Phone</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for contact in contacts %}
+    <tr>
+      <td><a href="{{ contact.get_absolute_url }}">{{ contact.name }}</a></td><td>{{ contact.represents }}</td><td>{{ contact.work_phone }}</td><td>{{ contact.cell_phone|default:"-" }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% endif %}
+
+  {% if suppliers|length %}
+  <hr />
+  <h4 id="suppliers">Suppliers</h4>
+  <div class="table-responsive">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Name</th><th>Contacts</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for supp in suppliers %}
+    <tr>
+      <td><a href="{{ supp.get_absolute_url }}">{{ supp.name }}</a></td><td>{% for contact in supp.contact_set.all %}<a href="{{ contact.get_absolute_url }}">{{ contact.name }}</a><br />{% endfor %}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% endif %}
+
+  {% if pos|length %}
+  <hr />
+  <h4 id="pos">Purchase Orders</h4>
+  <div class="table-responsive">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Name</th><th>Supplier</th><th>Contact</th><th>Creator</th><th>SKUs</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for po in pos %}
+    <tr>
+      <td><a href="{{ po.get_absolute_url }}">{{ po }}</a></td>
+      <td><a href="{{ po.supplier.get_absolute_url }}">{{ po.supplier }}</a></td>
+      <td><a href="{{ po.contact.get_absolute_url }}">{{ po.contact }}</a></td>
+      <td>{{ po.creator.email }}</td>
+      <td>
+        {% for li in po.purchaseorderlineitem_set.all %}
+        <a href="{{ li.sku.get_absolute_url }}">{{ li.sku }}</a><br />
+        {% endfor %}
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% endif %}
+
+  {% if ships|length %}
+  <hr />
+  <h4 id="ships">Shipments</h4>
+  <div class="table-responsive">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Name</th><th>PO Ref</th><th>Creator</th><th>SKUs</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for ship in ships %}
+    <tr>
+      <td><a href="{{ ship.get_absolute_url }}">{{ ship }}</a></td>
+      <td><a href="{{ ship.purchase_order.get_absolute_url }}">{{ ship.purchase_order }}</a></td>
+      <td>{{ ship.creator.email }}</td>
+      <td>
+        {% for li in ship.shipmentlineitem_set.all %}
+        <a href="{{ li.sku.get_absolute_url }}">{{ li.sku }}</a><br />
+        {% endfor %}
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% endif %}
+
+  {% if skus|length %}
+  <hr />
+  <h4 id="skus">SKUs</h4>
+  <div class="table-responsive">
+    <table class="table">
+    <thead>
+      <tr>
+        <th>&nbsp;</th><th>UPC</th><th>Qty on Hand</th><th>Location</th><th>Supplier SKU</th><th>In Live Deal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sku in skus %}
+      <tr>
+        <td><a href="{{ sku.get_absolute_url }}">{{ sku }}</a></td>
+        <td>{{ sku.upc|default:"-" }}</td>
+        <td>{{ sku.quantity_on_hand }}</td>
+        <td>{{ sku.location|default:"-" }}</td>
+        <td>{{ sku.supplier_sku|default:"-" }}</td>
+        <td>{{ sku.in_live_deal }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
 {% endif %}
 
 {% endblock %}

@@ -131,7 +131,7 @@ class SupplierResource(ModelResource):
 class ContactResource(ModelResource):
 
     represents = fields.ForeignKey(SupplierResource, 'represents')
-    label = fields.ForeignKey(ContactLabelResource, 'label')
+    label = fields.ManyToManyField(ContactLabelResource, 'label')
 
     class Meta:
         resource_name = 'contacts'
@@ -147,7 +147,8 @@ class ContactResource(ModelResource):
             'zipcode': ALL,
             'country': ALL,
             'email': ALL,
-            'phone': ALL,
+            'work_phone': ALL,
+            'cell_phone': ALL,
             'fax': ALL,
             'represents': ALL_WITH_RELATIONS,
             'label': ALL_WITH_RELATIONS,

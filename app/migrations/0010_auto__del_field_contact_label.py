@@ -8,15 +8,27 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'PurchaseOrder.sales_tax'
-        db.add_column(u'app_purchaseorder', 'sales_tax',
-                      self.gf('django.db.models.fields.FloatField')(default=0.0),
-                      keep_default=False)
+        # Deleting field 'Contact.label'
+        db.delete_column(u'app_contact', 'label_id')
+
+        # Adding M2M table for field label on 'Contact'
+        m2m_table_name = db.shorten_name(u'app_contact_label')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('contact', models.ForeignKey(orm[u'app.contact'], null=False)),
+            ('contactlabel', models.ForeignKey(orm[u'app.contactlabel'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['contact_id', 'contactlabel_id'])
 
 
     def backwards(self, orm):
-        # Deleting field 'PurchaseOrder.sales_tax'
-        db.delete_column(u'app_purchaseorder', 'sales_tax')
+        # Adding field 'Contact.label'
+        db.add_column(u'app_contact', 'label',
+                      self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['app.ContactLabel']),
+                      keep_default=False)
+
+        # Removing M2M table for field label on 'Contact'
+        db.delete_table(db.shorten_name(u'app_contact_label'))
 
 
     models = {
@@ -40,16 +52,17 @@ class Migration(SchemaMigration):
             'address1': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'address2': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'address3': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'cell_phone': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'city': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'country': ('django.db.models.fields.CharField', [], {'default': "u'United States'", 'max_length': '255'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '255'}),
             'fax': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'label': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.ContactLabel']"}),
+            'label': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['app.ContactLabel']", 'symmetrical': 'False'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'work_phone': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'represents': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Supplier']"}),
             'state': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'work_phone': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'zipcode': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
         u'app.contactlabel': {
@@ -145,7 +158,7 @@ class Migration(SchemaMigration):
             'brand': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['app.Brand']"}),
             'case_quantity': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'categories': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['app.Category']", 'symmetrical': 'False'}),
-            'cost': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
+            'cost': ('django.db.models.fields.FloatField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'}),
             'in_live_deal': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),

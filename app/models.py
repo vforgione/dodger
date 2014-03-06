@@ -212,7 +212,8 @@ class Contact(models.Model):
 
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
-    phone = models.CharField(max_length=255)
+    work_phone = models.CharField(max_length=255)
+    cell_phone = models.CharField(max_length=255, blank=True, null=True)
     fax = models.CharField(max_length=255, blank=True, null=True)
     address1 = models.CharField(max_length=255)
     address2 = models.CharField(max_length=255, blank=True, null=True)
@@ -222,7 +223,7 @@ class Contact(models.Model):
     zipcode = models.CharField(max_length=255)
     country = models.CharField(max_length=255, default='United States')
     represents = models.ForeignKey(Supplier)
-    label = models.ForeignKey(ContactLabel)
+    label = models.ManyToManyField(ContactLabel)
 
     def get_absolute_url(self):
         return reverse('app:contact__view', args=[str(self.pk)])
