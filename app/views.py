@@ -27,6 +27,11 @@ def search(request):
     q = request.GET.get('q', None)
 
     skus = Sku.objects.all()
+    brands = Brand.objects.all()
+    contacts = Contact.objects.all()
+    suppliers = Supplier.objects.all()
+    pos = PurchaseOrder.objects.all()
+    shipments = Shipment.objects.all()
 
     if q:
         if q == 'live':
@@ -48,10 +53,57 @@ def search(request):
                 Q(id__in=attrs)
             )
 
+            brands = brands.filter(name__icontains=q)
+
+            contacts = contacts.filter(
+                Q(name__icontains=q) |
+                Q(represents__name__icontains=q) |
+                Q(label__name__icontains=q) |
+                Q(city__icontains=q) |
+                Q(state__icontains=q) |
+                Q(zipcode__icontains=q)
+            )
+
+            suppliers = suppliers.filter(
+                Q(name__icontains=q) |
+                Q(id__in=[c.represents.id for c in contacts])
+            )
+
+            poids = []
+            for sku in skus:
+                lis = sku.purchaseorderlineitem_set.all()
+                for li in lis:
+                    poids.append(li.purchase_order.id)
+            pos = pos.filter(
+                Q(id__icontains=q) |
+                Q(supplier__name__icontains=q) |
+                Q(contact__name__icontains=q) |
+                Q(creator__username__icontains=q) |
+                Q(id__in=poids)
+            )
+
+            sids = []
+            for sku in skus:
+                lis = sku.shipmentlineitem_set.all()
+                for li in lis:
+                    sids.append(li.shipment.id)
+            shipments = shipments.filter(
+                Q(id__icontains=q) |
+                Q(creator__username__icontains=q) |
+                Q(id__in=sids) |
+                Q(purchase_order__id__in=poids)
+            )
+
     return render_to_response(
         'app/search.html',
         {
-            'skus': skus,
+            'skus': skus.distinct(),
+            'brands': brands.distinct(),
+            'contacts': contacts.distinct(),
+            'suppliers': suppliers.distinct(),
+            'pos': pos.distinct(),
+            'ships': shipments.distinct(),
+            'q': q,
         },
         context_instance=RequestContext(request)
     )
