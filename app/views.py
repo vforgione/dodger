@@ -1902,19 +1902,23 @@ def supplier__view(request, pk=None):
 @login_required
 def supplier__create(request):
     form = SupplierForm()
+    formset = SupplierContactFormset(instance=Supplier())
 
     if request.method == 'POST':
         form = SupplierForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect(reverse('app:supplier__view'))
+            supplier = form.save(commit=False)
+            formset = SupplierContactFormset(request.POST, instance=supplier)
+            if formset.is_valid():
+                supplier.save()
+                formset.save()
+                return redirect(reverse('app:supplier__view'))
 
     return render_to_response(
-        'app/control_model__create.html',
+        'app/supplier__create.html',
         {
             'form': form,
-            'model': 'Supplier',
-            'cancel': reverse('app:supplier__view'),
+            'formset': formset,
         },
         context_instance=RequestContext(request)
     )

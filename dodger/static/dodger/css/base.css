@@ -66,3 +66,8 @@ li.tocli {
   display: inline-block;
   padding-right: 30px;
 }
+
+p.multi-caption {
+  font-size:0.75em;
+  color:#999;
+}

@@ -178,6 +178,32 @@ class ContactForm(forms.ModelForm):
         }
 
 
+class ContactInlineForm(forms.ModelForm):
+
+    class Meta:
+        model = Contact
+        fields = (
+            'name', 'label', 'email', 'work_phone', 'cell_phone', 'fax', 'address1', 'address2',
+            'address3', 'city', 'state', 'zipcode', 'country'
+        )
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control name'}),
+            'represents': forms.Select(attrs={'class': 'form-control represents'}),
+            'label': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'email': forms.TextInput(attrs={'class': 'form-control email'}),
+            'work_phone': forms.TextInput(attrs={'class': 'form-control work_phone'}),
+            'cell_phone': forms.TextInput(attrs={'class': 'form-control cell_phone'}),
+            'fax': forms.TextInput(attrs={'class': 'form-control fax'}),
+            'address1': forms.TextInput(attrs={'class': 'form-control address1'}),
+            'address2': forms.TextInput(attrs={'class': 'form-control address2'}),
+            'address3': forms.TextInput(attrs={'class': 'form-control address3'}),
+            'city': forms.TextInput(attrs={'class': 'form-control city'}),
+            'state': forms.Select(attrs={'class': 'form-control state'}),
+            'zipcode': forms.TextInput(attrs={'class': 'form-control zipcode'}),
+            'country': forms.TextInput(attrs={'class': 'form-control country'}),
+        }
+
+
 class ReceiverForm(forms.ModelForm):
 
     class Meta:
@@ -264,4 +290,8 @@ PurchaseOrderLineItemFormset = forms.models.inlineformset_factory(
 
 ShipmentLineItemFormset = forms.models.inlineformset_factory(
     Shipment, ShipmentLineItem, form=ShipmentLineItemForm, extra=5, can_delete=False
+)
+
+SupplierContactFormset = forms.models.inlineformset_factory(
+    Supplier, Contact, form=ContactInlineForm, extra=1, can_delete=False
 )
