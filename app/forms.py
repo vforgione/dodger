@@ -284,7 +284,7 @@ SkuAttributeFormset = forms.models.inlineformset_factory(
 
 
 PurchaseOrderLineItemFormset = forms.models.inlineformset_factory(
-    PurchaseOrder, PurchaseOrderLineItem, form=PurchaseOrderLineItemForm, extra=5, can_delete=False
+    PurchaseOrder, PurchaseOrderLineItem, form=PurchaseOrderLineItemForm, extra=1, can_delete=False
 )
 
 

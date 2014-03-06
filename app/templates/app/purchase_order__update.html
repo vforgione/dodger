@@ -11,7 +11,7 @@
   </div>
   {% endfor %}
   {{ formset.management_form }}
-  <div class="table-responsive">
+  <div class="table-responsive formset">
     <table class="table table-condensed">
     <thead>
         <tr><th>SKU</th><th>Qty Ordered</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th></tr>
@@ -33,7 +33,10 @@
       </tbody>
     </table>
   </div>
-  <input type="submit" name="submit" value="Update PO" class="btn btn-primary" />
+
+  <div><p><input type="button" id="add-more" class="btn btn-info" value="Add Another SKU" /></p><p>&nbsp;</p></div>
+
+  <input type="submit" name="submit" value="Create PO" class="btn btn-primary" />
   <a href="{% url 'app:purchase_order__view' %}" class="btn btn-danger pull-right">Cancel</a>
 </form>
 

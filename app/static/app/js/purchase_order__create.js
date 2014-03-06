@@ -1,4 +1,25 @@
+function cloneMore(selector, type) {
+  var newElement = $(selector).clone(true);
+  var total = $('#id_' + type + '-TOTAL_FORMS').val();
+  newElement.find(':input').each(function() {
+      var name = $(this).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
+      var id = 'id_' + name;
+      $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+  });
+  newElement.find('label').each(function() {
+      var newFor = $(this).attr('for').replace('-' + (total-1) + '-','-' + total + '-');
+      $(this).attr('for', newFor);
+  });
+  total++;
+  $('#id_' + type + '-TOTAL_FORMS').val(total);
+  $(selector).after(newElement);
+}
+
 $(document).ready(function () {
+
+  $("#add-more").click(function(){
+    cloneMore('div.formset:last', 'purchaseorderlineitem_set');
+  });
 
   // listen for supplier choice
   $("#id_supplier").change(function () {
@@ -48,16 +69,18 @@ $(document).ready(function () {
     var next = input.parent().parent().next();
 
     // wipe out any detail data if sku changes twice
-    if (next.html().substr(0, 6) == "<td><a") {
-      next.html("");
-    }
+    try {
+      if (next.html().substr(0, 6) == "<td><a") {
+        next.html("");
+      }
+    } catch (e) {}
 
     $.ajax({
       url: "/api/sku_service/skus/" + $(this).val() + "/",
       type: "GET",
       dataType: "json",
       success: function (xhr) {
-        var info = '<tr>' +
+        var info = '<tr class="detail-info">' +
           '<td><a target="_blank" href="/skus/' + xhr.id + '/">Detailed Info</a></td>' +
           '<td><b>Qty on Hand:</b> ' + xhr.quantity_on_hand + '</td>' +
           '<td colspan="3"><b>Cost:</b> $' + xhr.cost + '</td>' +
