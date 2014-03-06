@@ -86,7 +86,7 @@ class CostAdjustmentForm(forms.ModelForm):
             'new': forms.TextInput(attrs={'class': 'form-control new'}),
             'who': forms.Select(attrs={'class': 'form-control who'}),
             'reason': forms.Select(attrs={'class': 'form-control reason'}),
-            'detail': forms.TextInput(attrs={'class': 'form-control detail'}),
+            'detail': forms.TextInput(attrs={'class': 'form-control detail', 'placeholder': 'optional'}),
         }
 
 
@@ -101,7 +101,7 @@ class QuantityAdjustmentForm(forms.ModelForm):
             'new': forms.TextInput(attrs={'class': 'form-control new'}),
             'who': forms.Select(attrs={'class': 'form-control who'}),
             'reason': forms.Select(attrs={'class': 'form-control reason'}),
-            'detail': forms.TextInput(attrs={'class': 'form-control detail'}),
+            'detail': forms.TextInput(attrs={'class': 'form-control detail', 'placeholder': 'optional'}),
         }
 
 
@@ -117,18 +117,18 @@ class SkuForm(forms.ModelForm):
         )
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control name'}),
-            'upc': forms.TextInput(attrs={'class': 'form-control upc'}),
+            'upc': forms.TextInput(attrs={'class': 'form-control upc', 'placeholder': 'optional'}),
             'brand': forms.Select(attrs={'class': 'form-control brand'}),
             'categories': forms.SelectMultiple(attrs={'class': 'form-control categories'}),
             'quantity_on_hand': forms.TextInput(attrs={'class': 'form-control quantity-on-hand'}),
-            'location': forms.TextInput(attrs={'class': 'form-control location'}),
+            'location': forms.TextInput(attrs={'class': 'form-control location', 'placeholder': 'optional'}),
             'owner': forms.Select(attrs={'class': 'form-control owner'}),
             'supplier': forms.Select(attrs={'class': 'form-control supplier'}),
-            'lead_time': forms.TextInput(attrs={'class': 'form-control lead-time', 'placeholder': 'number of days'}),
-            'minimum_quantity': forms.TextInput(attrs={'class': 'form-control minimum-quantity'}),
-            'cost': forms.TextInput(attrs={'class': 'form-control cost'}),
-            'supplier_sku': forms.TextInput(attrs={'class': 'form-control supplier-sku'}),
-            'case_quantity': forms.TextInput(attrs={'class': 'form-control case-quantity'}),
+            'lead_time': forms.TextInput(attrs={'class': 'form-control lead-time', 'placeholder': 'number of days (optional)'}),
+            'minimum_quantity': forms.TextInput(attrs={'class': 'form-control minimum-quantity', 'placeholder': 'optional'}),
+            'cost': forms.TextInput(attrs={'class': 'form-control cost', 'placeholder': 'optional'}),
+            'supplier_sku': forms.TextInput(attrs={'class': 'form-control supplier-sku', 'placeholder': 'optional'}),
+            'case_quantity': forms.TextInput(attrs={'class': 'form-control case-quantity', 'placeholder': 'optional'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -166,11 +166,11 @@ class ContactForm(forms.ModelForm):
             'label': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control email'}),
             'work_phone': forms.TextInput(attrs={'class': 'form-control work_phone'}),
-            'cell_phone': forms.TextInput(attrs={'class': 'form-control cell_phone'}),
-            'fax': forms.TextInput(attrs={'class': 'form-control fax'}),
+            'cell_phone': forms.TextInput(attrs={'class': 'form-control cell_phone', 'placeholder': 'optional'}),
+            'fax': forms.TextInput(attrs={'class': 'form-control fax', 'placeholder': 'optional'}),
             'address1': forms.TextInput(attrs={'class': 'form-control address1'}),
-            'address2': forms.TextInput(attrs={'class': 'form-control address2'}),
-            'address3': forms.TextInput(attrs={'class': 'form-control address3'}),
+            'address2': forms.TextInput(attrs={'class': 'form-control address2', 'placeholder': 'optional'}),
+            'address3': forms.TextInput(attrs={'class': 'form-control address3', 'placeholder': 'optional'}),
             'city': forms.TextInput(attrs={'class': 'form-control city'}),
             'state': forms.Select(attrs={'class': 'form-control state'}),
             'zipcode': forms.TextInput(attrs={'class': 'form-control zipcode'}),
@@ -188,15 +188,14 @@ class ContactInlineForm(forms.ModelForm):
         )
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control name'}),
-            'represents': forms.Select(attrs={'class': 'form-control represents'}),
             'label': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control email'}),
             'work_phone': forms.TextInput(attrs={'class': 'form-control work_phone'}),
-            'cell_phone': forms.TextInput(attrs={'class': 'form-control cell_phone'}),
-            'fax': forms.TextInput(attrs={'class': 'form-control fax'}),
+            'cell_phone': forms.TextInput(attrs={'class': 'form-control cell_phone', 'placeholder': 'optional'}),
+            'fax': forms.TextInput(attrs={'class': 'form-control fax', 'placeholder': 'optional'}),
             'address1': forms.TextInput(attrs={'class': 'form-control address1'}),
-            'address2': forms.TextInput(attrs={'class': 'form-control address2'}),
-            'address3': forms.TextInput(attrs={'class': 'form-control address3'}),
+            'address2': forms.TextInput(attrs={'class': 'form-control address2', 'placeholder': 'optional'}),
+            'address3': forms.TextInput(attrs={'class': 'form-control address3', 'placeholder': 'optional'}),
             'city': forms.TextInput(attrs={'class': 'form-control city'}),
             'state': forms.Select(attrs={'class': 'form-control state'}),
             'zipcode': forms.TextInput(attrs={'class': 'form-control zipcode'}),
@@ -212,8 +211,8 @@ class ReceiverForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control name'}),
             'address1': forms.TextInput(attrs={'class': 'form-control address1'}),
-            'address2': forms.TextInput(attrs={'class': 'form-control address2'}),
-            'address3': forms.TextInput(attrs={'class': 'form-control address3'}),
+            'address2': forms.TextInput(attrs={'class': 'form-control address2', 'placeholder': 'optional'}),
+            'address3': forms.TextInput(attrs={'class': 'form-control address3', 'placeholder': 'optional'}),
             'city': forms.TextInput(attrs={'class': 'form-control city'}),
             'state': forms.Select(attrs={'class': 'form-control state'}),
             'zipcode': forms.TextInput(attrs={'class': 'form-control zipcode'}),
@@ -233,10 +232,10 @@ class PurchaseOrderForm(forms.ModelForm):
             'contact': forms.Select(attrs={'class': 'form-control contact'}),
             'receiver': forms.Select(attrs={'class': 'form-control receiver'}),
             'terms': forms.TextInput(attrs={'class': 'form-control terms'}),
-            'note': forms.TextInput(attrs={'class': 'form-control note'}),
-            'tracking_url': forms.TextInput(attrs={'class': 'form-control note'}),
-            'shipping_cost': forms.TextInput(attrs={'class': 'form-control shipping_cost'}),
-            'sales_tax': forms.TextInput(attrs={'class': 'form-control sales_tax'}),
+            'note': forms.TextInput(attrs={'class': 'form-control note', 'placeholder': 'optional'}),
+            'tracking_url': forms.TextInput(attrs={'class': 'form-control tracking_url', 'placeholder': 'optional'}),
+            'shipping_cost': forms.TextInput(attrs={'class': 'form-control shipping_cost', 'placeholder': 'optional'}),
+            'sales_tax': forms.TextInput(attrs={'class': 'form-control sales_tax', 'placeholder': 'optional'}),
         }
 
 
@@ -249,8 +248,8 @@ class PurchaseOrderLineItemForm(forms.ModelForm):
             'sku': forms.Select(attrs={'class': 'form-control sku'}),
             'quantity_ordered': forms.TextInput(attrs={'class': 'form-control quantity-ordered'}),
             'unit_cost': forms.TextInput(attrs={'class': 'form-control unit-cost'}),
-            'discount_percent': forms.TextInput(attrs={'class': 'form-control discount-percent'}),
-            'discount_dollar': forms.TextInput(attrs={'class': 'form-control discount-dollar'}),
+            'discount_percent': forms.TextInput(attrs={'class': 'form-control discount-percent', 'placeholder': 'optional'}),
+            'discount_dollar': forms.TextInput(attrs={'class': 'form-control discount-dollar', 'placeholder': 'optional'}),
         }
 
 
@@ -262,7 +261,7 @@ class ShipmentForm(forms.ModelForm):
         widgets = {
             'creator': forms.Select(attrs={'class': 'form-control creator'}),
             'purchase_order': forms.Select(attrs={'class': 'form-control purchase-order'}),
-            'note': forms.TextInput(attrs={'class': 'form-control note'}),
+            'note': forms.TextInput(attrs={'class': 'form-control note', 'placeholder': 'optional'}),
         }
 
 
