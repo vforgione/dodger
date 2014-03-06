@@ -6,14 +6,22 @@
   {% csrf_token %}
   {% for field in form %}
   <div class="form-group">
-    {{ field.label_tag }}{{ field.errors }}{{ field }}
+    {{ field.label_tag }}
+    {% if forloop.counter == 2 or forloop.counter == 3 or forloop.counter == 4 %}
+    <a id="add-id_{{ field.name }}" href="
+      {% if forloop.counter == 2 %}/receivers/create/?popup=1
+      {% elif forloop.counter == 3 %}/suppliers/create/?popup=1
+      {% elif forloop.counter == 4 %}/contacts/create/?popup=1{% endif %}
+    " onclick="return showAddPopup(this);">&nbsp;Create a New {{ field.name|capfirst }}</a>
+    {% endif %}
+    {{ field.errors }}{{ field }}
   </div>
   {% endfor %}
   {{ formset.management_form }}
   <div class="table-responsive formset">
     <table class="table table-condensed">
     <thead>
-        <tr><th>SKU</th><th>Qty Ordered</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th></tr>
+        <tr><th>SKU <a style="font-weight:normal" id="add-sku" onclick="return showAddPopup(this);" href="/skus/create/?popup=1">&nbsp;Create a New SKU</a></th><th>Qty Ordered</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th></tr>
       </thead>
       <tbody>
       {% for form in formset %}

@@ -9,6 +9,7 @@
     {{ field.label_tag }}{{ field.errors }}{{ field }}
   </div>
   {% endfor %}
+  {% if popup %}<input type="hidden" name="popup" value="popup" />{% endif %}
   <input type="submit" name="submit" value="Create {{ model }}" class="btn btn-primary" />
   <a href="{{ cancel }}" class="btn btn-danger pull-right">Cancel</a>
 </form>
