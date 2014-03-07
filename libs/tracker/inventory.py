@@ -93,7 +93,7 @@ def process_doc(doc):
         name = obj['Product']
         supplier = obj['Supplier']
         brand = obj['Manufacturer']
-        cats = obj['Type (Toy/ Treat/ Chew/  More)']
+        categories = obj['Type (Toy/ Treat/ Chew/  More)']
         qty = obj['Total SKU Quantity']
         location = obj['Location']
 
@@ -127,10 +127,7 @@ def process_doc(doc):
         # control models
         supplier = lookup_control_model(Supplier, supplier)
         brand = lookup_control_model(Brand, brand)
-        categories = []
-        for cat in cats:
-            cat = lookup_control_model(Category, cat)
-            categories.append(cat)
+        categories = lookup_control_model(Category, categories)
 
         # build sku
         sku = Sku()
@@ -162,8 +159,7 @@ def process_doc(doc):
             adj.save()
 
         # save categories m2m field
-        for cat in categories:
-            sku.categories.add(cat)
+        sku.categories.add(categories)
 
         # set attributes
         save_attribute('Size', size, sku)
