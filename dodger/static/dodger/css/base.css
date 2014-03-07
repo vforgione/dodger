@@ -38,7 +38,7 @@ form.form-search:before {
   display: block;
   width: 14px;
   height: 14px;
-  background-image: url(http://getbootstrap.com/2.3.2/assets/img/glyphicons-halflings.png);
+  background-image: url(/static/dodger/img/glyphicons-halflings.png);
   background-position: -48px 0;
   position: absolute;
   top: 3px;
@@ -75,4 +75,26 @@ p.multi-caption {
 tr.detail-info {
   font-size:0.75em;
   color:#999;
+}
+
+.sort-asc {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-image: url(/static/dodger/img/glyphicons-halflings.png);
+  background-position: -288px -118px;
+  z-index: 1000;
+  opacity:0.8;
+}
+
+.sort-desc {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-image: url(/static/dodger/img/glyphicons-halflings.png);
+  background-position: -312px -118px;
+  z-index: 1000;
+  opacity:0.8;
 }

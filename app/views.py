@@ -378,7 +378,15 @@ def sku__view(request, pk=None):
         sku = get_object_or_404(Sku, pk=pk)
 
     else:
-        skus = Sku.objects.order_by('-created')
+        order = request.GET.get('order-by', 'id')
+        direction = request.GET.get('direction', 'desc')
+        if direction == 'desc':
+            direction = '-'
+        else:
+            direction = ''
+        order_by = direction + order
+
+        skus = Sku.objects.order_by(order_by)
         paginator = Paginator(skus, PAGE_SIZE)
         page = request.GET.get('page', 1)
         try:
