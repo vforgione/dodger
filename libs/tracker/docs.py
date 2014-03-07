@@ -5,16 +5,12 @@
 from os import environ
 from os.path import abspath, dirname, join
 import sys
-
 PROJ_DIR = abspath(join(dirname(__file__), '..', '..'))
-
 sys.path.insert(0, PROJ_DIR)
-
 environ.setdefault('DJANGO_SETTINGS_MODULE', 'dodger.settings')
 
 
 # program imports
-from datetime import datetime, timedelta
 import re
 
 from django.db.utils import IntegrityError
@@ -39,6 +35,10 @@ OWNER.save()
 REASON = QuantityAdjustmentReason.objects.get(name='Tracker Sync')
 
 
+# TODO: remove after testing
+DEBUG = True
+
+
 def get_doc(username, password, doc_name, sheet_name):
     """pulls down the doc as a list of dicts - list is reversed (oldest first)"""
     client = gspread.login(username, password)
@@ -50,7 +50,6 @@ def get_doc(username, password, doc_name, sheet_name):
     header = rows[0]
     doc = [dict(zip(header, row)) for row in rows[1:]]
 
-    doc.reverse()
     return doc
 
 
@@ -58,7 +57,7 @@ def process_doc(doc):
     """processes the information"""
     def lookup_control_model(model, name):
         try:
-            model = model.objects.find(name=name)
+            model = model.objects.get(name=name)
         except model.DoesNotExist:
             model = model()
             model.name = name
@@ -66,7 +65,7 @@ def process_doc(doc):
         return model
 
     def save_attribute(name, value, sku):
-        if not len(value):
+        if not len(str(value)):
             return
         attr = Attribute.objects.get(name=name)
         sa = SkuAttribute()
@@ -80,6 +79,10 @@ def process_doc(doc):
 
     # iterate dicts in doc
     for obj in doc:
+
+        if DEBUG:
+            print '\n'
+            print 'working on obj %s ...' % str(obj)
 
         # remove n/a values
         for key, value in obj.iteritems():
@@ -104,11 +107,12 @@ def process_doc(doc):
         exp_date = obj['Expiration']
         bulk = obj['Bulk?']
         weight = obj['size (ounces for treats)']
-        real_weight = obj['']  # zack secret col
 
         # if not id, skip
         skuid = re.match(r'\d+', skuid)
         if skuid is None:
+            if DEBUG:
+                print 'no id found - skipping obj'
             continue
         else:
             skuid = skuid.group()
@@ -119,16 +123,6 @@ def process_doc(doc):
             qty = 0
         else:
             qty = qty.group()
-
-        # weights
-        weight = re.match(r'\d+?\.\d+', weight)
-        if weight is None:
-            weight = 0
-        else:
-            weight = weight.group()
-        real_weight = re.match(r'\d+?\.\d+', real_weight)
-        if real_weight is not None:
-            weight = real_weight.group()
 
         # control models
         supplier = lookup_control_model(Supplier, supplier)
@@ -149,16 +143,16 @@ def process_doc(doc):
 
         # check if sku exists
         try:
-            Sku.objects.find(id=skuid)
+            Sku.objects.get(id=skuid)
             requires_adjustment = True
         except Sku.DoesNotExist:
             requires_adjustment = False
 
         if not requires_adjustment:
             sku.quantity_on_hand = qty
-            sku.save()
+            sku.save(gdocs=True)
         else:
-            sku.save()
+            sku = Sku.objects.get(id=skuid)
             adj = QuantityAdjustment()
             adj.sku = sku
             adj.new = qty
@@ -169,8 +163,7 @@ def process_doc(doc):
 
         # save categories m2m field
         for cat in categories:
-            sku.add(cat)
-        sku.save()
+            sku.categories.add(cat)
 
         # set attributes
         save_attribute('Size', size, sku)
@@ -184,6 +177,10 @@ def process_doc(doc):
 
 
 if __name__ == '__main__':
-    from gdocs_config import *
-    doc = get_doc(USERNAME, PASSWORD, DOC_NAME, SHEET_NAME)
+    import json
+    # from gdocs_config import *
+    # doc = get_doc(USERNAME, PASSWORD, DOC_NAME, SHEET_NAME)
+    # with open('/tmp/tracker.json', 'w') as fh:
+    #     json.dump(doc, fh)
+    doc = json.load(open('/tmp/tracker.json', 'r'))
     process_doc(doc)

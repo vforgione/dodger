@@ -32,6 +32,23 @@
   {% endfor %}
   </tbody>
 </table>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      {% if adjs.has_previous %}
+      <a href="?page={{ adjs.previous_page_number }}" class="btn btn-primary">&laquo; Previous</a>
+      {% endif %}
+    </div>
+    <div class="col-lg-4">
+      Page {{ adjs.number }} of {{ adjs.paginator.num_pages }}
+    </div>
+    <div class="col-lg-4">
+      {% if adjs.has_next %}
+      <a href="?page={{ adjs.next_page_number }}" class="btn btn-primary">Next &raquo;</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
 
 {% else %}
 <h3>View Quantity Adjustments</h3>

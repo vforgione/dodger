@@ -74,7 +74,7 @@ class Sku(models.Model):
     brand = models.ForeignKey(Brand)
     categories = models.ManyToManyField(Category)
     # inventory
-    quantity_on_hand = models.IntegerField()
+    quantity_on_hand = models.IntegerField(default=0)
     location = models.CharField(max_length=255, blank=True, null=True)
     # dat team
     owner = models.ForeignKey(User)
