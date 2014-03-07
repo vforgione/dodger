@@ -1,6 +1,6 @@
 [
 {
-  "pk": 1,
+  "pk": 2,
   "model": "tastypie.apikey",
   "fields": {
     "user": 2,

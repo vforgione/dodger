@@ -12,4 +12,4 @@ def shipment_received(po_id, shipment, dat_email):
 
     email = EmailMultiAlternatives(subject, plain, sender, [dat_email, ])
     email.attach_alternative(html, 'text/html')
-    email.send(fail_silently=False)
+    email.send(fail_silently=True)
