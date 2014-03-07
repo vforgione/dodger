@@ -16,7 +16,7 @@
   <input type="hidden" id="supplier" />
   {{ formset.management_form }}
   <div id="po-info" class="table-responsive"></div>
-  <div class="table-responsive">
+  <div class="table-responsive formset">
     <table class="table table-condensed">
     <thead>
         <tr><th>SKU</th><th>Qty Received</th></tr>
@@ -36,6 +36,9 @@
       </tbody>
     </table>
   </div>
+
+  <div><p><input type="button" id="add-more" class="btn btn-info" value="Add Another SKU" /></p><p>&nbsp;</p></div>
+
   <input type="submit" name="submit" value="Create Shipment" class="btn btn-primary" />
   <a href="{% url 'app:shipment__view' %}" class="btn btn-danger pull-right">Cancel</a>
 </form>

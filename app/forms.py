@@ -288,7 +288,7 @@ PurchaseOrderLineItemFormset = forms.models.inlineformset_factory(
 
 
 ShipmentLineItemFormset = forms.models.inlineformset_factory(
-    Shipment, ShipmentLineItem, form=ShipmentLineItemForm, extra=5, can_delete=False
+    Shipment, ShipmentLineItem, form=ShipmentLineItemForm, extra=1, can_delete=False
 )
 
 SupplierContactFormset = forms.models.inlineformset_factory(
