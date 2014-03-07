@@ -3,24 +3,6 @@
   "pk": 1,
   "model": "auth.user",
   "fields": {
-    "username": "VinceForgione",
-    "first_name": "Vince",
-    "last_name": "Forgione",
-    "is_active": true,
-    "is_superuser": true,
-    "is_staff": true,
-    "last_login": "2014-03-04T16:21:38.304Z",
-    "groups": [],
-    "user_permissions": [],
-    "password": "!JP8i6xQ4ZHx3Cke9RRjB7mpWMAIR5Uz49j3Aw5lZ",
-    "email": "vince@doggyloot.com",
-    "date_joined": "2014-02-26T01:01:57.865Z"
-  }
-},
-{
-  "pk": 2,
-  "model": "auth.user",
-  "fields": {
     "username": "api-readonly",
     "first_name": "",
     "last_name": "",
@@ -36,7 +18,7 @@
   }
 },
 {
-  "pk": 3,
+  "pk": 2,
   "model": "auth.user",
   "fields": {
     "username": "DAT",

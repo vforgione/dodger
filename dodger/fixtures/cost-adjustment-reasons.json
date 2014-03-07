@@ -1,9 +1,16 @@
 [
 {
-  "pk": 1, 
-  "model": "app.costadjustmentreason", 
+  "pk": 1,
+  "model": "app.costadjustmentreason",
   "fields": {
     "name": "Supplier Adjustment"
+  }
+},
+{
+  "pk": 2,
+  "model": "app.costadjustmentreason",
+  "fields": {
+    "name": "Tracker Sync"
   }
 }
 ]

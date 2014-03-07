@@ -22,14 +22,12 @@ from app.models import Supplier, Brand, Category, Sku, QuantityAdjustment, Quant
 
 
 # get/create user
-USER = User.objects.get_or_create(username='VinceForgione')[0]
+USER = User.objects.get_or_create(username='DAT')[0]
 USER.is_superuser = True
 USER.save()
 
 # get/cerate dat owner (default owner)
-OWNER = User.objects.get_or_create(username='DAT')[0]
-OWNER.email = 'dat@doggyloot.com'
-OWNER.save()
+OWNER = USER
 
 # qty adjustment reason
 REASON = QuantityAdjustmentReason.objects.get(name='Tracker Sync')
