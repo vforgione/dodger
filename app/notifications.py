@@ -4,7 +4,7 @@ from django.utils.html import strip_tags
 
 
 def shipment_received(po_id, shipment, dat_email):
-    sender = 'vince@doggyloot.com'
+    sender = 'dodger notifications'
     subject = 'Shipment Received for PO %s' % po_id
 
     html = render_to_string('email/shipment_received.html', {'shipment': shipment})

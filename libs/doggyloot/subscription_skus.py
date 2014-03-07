@@ -21,7 +21,7 @@ def notify():
     skus = Sku.objects.filter(is_subscription=True)
 
     # build email
-    sender = 'vince@doggyloot.com'
+    sender = 'dodger notifications'
     subject = 'Subscription SKUs'
     html = render_to_string('email/subscription_skus.html', {'skus': skus})
     plain = strip_tags(html)

@@ -36,7 +36,7 @@ def notify():
     unknown = set([sku for sku in sku_ids if sku not in [s.id for s in skus]])
 
     # build email
-    sender = 'vince@doggyloot.com'
+    sender = 'dodger notifications'
     subject = 'Live SKUs with 0 Qty'
     html = render_to_string('email/0_qty.html', {'skus': skus, 'unknown': unknown})
     plain = strip_tags(html)
