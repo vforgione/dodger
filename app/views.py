@@ -14,6 +14,7 @@ from pytz import timezone
 
 from forms import *
 from models import *
+from notifications import *
 
 
 PAGE_SIZE = 20
@@ -1025,6 +1026,7 @@ def shipment__create(request):
             if formset.is_valid():
                 shipment.save()
                 formset.save()
+                shipment_received(shipment.purchase_order.id, shipment, shipment.purchase_order.creator.email)
                 return redirect(reverse('app:shipment__view'))
         else:
             formset = ShipmentLineItemFormset(request.POST, instance=Shipment())

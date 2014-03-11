@@ -2,13 +2,74 @@
 <html>
 <head>
   <title>Shipment Received</title>
+  <style>tr{border-bottom:solid 1px #666}table{width:100%}td{padding:7px}tr{text-align:left;padding:7px}</style>
 </head>
 <body>
+
   <div>
     <h3>Shipment Received for PO {{ shipment.purchase_order }}</h3>
     <p>
       <a href="https://dodger.doggyloot.com{{ shipment.get_absolute_url }}" target="_blank">View Full Details For Shipment</a>
     </p>
   </div>
+
+  <div>
+    <h3 style="background-color:rgba(0,255,0,0.5)">Received Items</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>SKU</th><th>Qty Ordered</th><th>Qty Received</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for row in line_items %}
+      <tr>
+        <td>{{ row.0 }}</td><td>{{ row.1 }}</td><td style="color:{{ row.3 }}">{{ row.2 }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if missing|length %}
+  <div>
+    <h3 style="background-color:rgba(255,255,0,0.5)">Outstanding Items</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>SKU</th><th>Qty Ordered</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for row in missing %}
+      <tr>
+        <td>{{ row.0 }}</td><td>{{ row.1 }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  {% if extra|length %}
+  <div>
+    <h3 style="background-color:rgba(255,0,0,0.5)">Unordered, Yet Received, Items</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>SKU</th><th>Qty Received</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for row in extra %}
+      <tr>
+        <td>{{ row.0 }}</td><td>{{ row.1 }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
 </body>
 </html>

@@ -5,7 +5,6 @@ from django.core.urlresolvers import reverse
 from django.db import models
 
 from constants import US_STATES
-from notifications import shipment_received
 
 
 # control models
@@ -337,10 +336,6 @@ class Shipment(models.Model):
     purchase_order = models.ForeignKey(PurchaseOrder)
     note = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-        super(Shipment, self).save(*args, **kwargs)
-        shipment_received(self.purchase_order.id, self, self.purchase_order.creator.email)
 
     def get_absolute_url(self):
         return reverse('app:shipment__view', args=[str(self.pk)])
