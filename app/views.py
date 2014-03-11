@@ -40,6 +40,10 @@ def search(request):
             skus = skus.filter(in_live_deal=True)
         elif q == 'subscription':
             skus = skus.filter(is_subscription=True)
+        elif q == 'consignment':
+            skus = skus.filter(action__icontains='consignment')
+        elif q == 'clearance':
+            skus = skus.filter(action__icontains='clearance')
         else:
             attrs = [obj.sku.id for obj in SkuAttribute.objects.filter(value=q)]
 
