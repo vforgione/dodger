@@ -12,6 +12,32 @@
     {% if skus|length %}<li class="tocli"><a href="#skus">SKUs: {{ skus|length }} results</a></li>{% endif %}
   </ul>
 
+  {% if skus|length %}
+  <hr />
+  <h4 id="skus">SKUs</h4>
+  <div class="table-responsive">
+    <table class="table">
+    <thead>
+      <tr>
+        <th>&nbsp;</th><th>UPC</th><th>Qty on Hand</th><th>Location</th><th>Supplier SKU</th><th>In Live Deal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sku in skus %}
+      <tr>
+        <td><a href="{{ sku.get_absolute_url }}">{{ sku }}</a></td>
+        <td>{{ sku.upc|default:"-" }}</td>
+        <td>{{ sku.quantity_on_hand }}</td>
+        <td>{{ sku.location|default:"-" }}</td>
+        <td>{{ sku.supplier_sku|default:"-" }}</td>
+        <td>{{ sku.in_live_deal }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+  {% endif %}
+
   {% if brands|length %}
   <hr />
   <h4 id="brands">Brands</h4>
@@ -131,31 +157,5 @@
   </table>
   </div>
   {% endif %}
-
-  {% if skus|length %}
-  <hr />
-  <h4 id="skus">SKUs</h4>
-  <div class="table-responsive">
-    <table class="table">
-    <thead>
-      <tr>
-        <th>&nbsp;</th><th>UPC</th><th>Qty on Hand</th><th>Location</th><th>Supplier SKU</th><th>In Live Deal</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for sku in skus %}
-      <tr>
-        <td><a href="{{ sku.get_absolute_url }}">{{ sku }}</a></td>
-        <td>{{ sku.upc|default:"-" }}</td>
-        <td>{{ sku.quantity_on_hand }}</td>
-        <td>{{ sku.location|default:"-" }}</td>
-        <td>{{ sku.supplier_sku|default:"-" }}</td>
-        <td>{{ sku.in_live_deal }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-    </table>
-  </div>
-{% endif %}
 
 {% endblock %}
