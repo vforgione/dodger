@@ -52,7 +52,8 @@ def search(request):
                 Q(owner__username__icontains=q) |
                 Q(supplier__name__icontains=q) |
                 Q(supplier_sku__icontains=q) |
-                Q(id__in=attrs)
+                Q(id__in=attrs) |
+                Q(notes__icontains=q)
             )
 
             brands = brands.filter(name__icontains=q)
@@ -640,8 +641,8 @@ def sku__export(request):
     writer = csv.writer(response)
     writer.writerow([
         'id', 'name', 'upc', 'brand', 'categories', 'qty on hand', 'location', 'owner', 'supplier', 'lead time',
-        'min qty', 'notify', 'cost', 'supplier sku', 'case qty', 'in live deal', 'subscription', 'color', 'size',
-        'style', 'flavor', 'weight', 'is bulk', 'expiration date', 'country of origin', 'created', 'modified'
+        'min qty', 'notify', 'cost', 'supplier sku', 'case qty', 'in live deal', 'subscription', 'notes', 'color',
+        'size', 'style', 'flavor', 'weight', 'is bulk', 'expiration date', 'country of origin', 'created', 'modified'
     ])
 
     for sku in skus:
@@ -651,9 +652,10 @@ def sku__export(request):
             sku.id, sku.name, sku.upc, sku.brand.name, ', '.join([cat.name for cat in sku.categories.all()]),
             sku.quantity_on_hand, sku.location, sku.owner.username, sku.supplier.name, sku.lead_time,
             sku.minimum_quantity, sku.notify_at_threshold, sku.cost, sku.supplier_sku, sku.case_quantity,
-            sku.in_live_deal, sku.is_subscription, attrs.get('Color', ''), attrs.get('Size', ''), attrs.get('Style', ''),
-            attrs.get('Flavor', ''), attrs.get('Weight', ''), attrs.get('Is Bulk', ''), attrs.get('Expiration Date', ''),
-            attrs.get('Country of Origin', ''), sku.created.strftime('%m/%d/%Y'), sku.modified.strftime('%m/%d/%Y')
+            sku.in_live_deal, sku.is_subscription, sku.notes, attrs.get('Color', ''), attrs.get('Size', ''),
+            attrs.get('Style', ''), attrs.get('Flavor', ''), attrs.get('Weight', ''), attrs.get('Is Bulk', ''),
+            attrs.get('Expiration Date', ''), attrs.get('Country of Origin', ''), sku.created.strftime('%m/%d/%Y'),
+            sku.modified.strftime('%m/%d/%Y')
         ])
 
     return response

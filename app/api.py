@@ -211,6 +211,7 @@ class SkuResource(ModelResource):
             'is_subscription': ALL,
             'created': ALL,
             'modified': ALL,
+            'notes': ALL,
         }
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()

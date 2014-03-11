@@ -86,6 +86,7 @@ class Sku(models.Model):
     case_quantity = models.IntegerField(blank=True, null=True)
     in_live_deal = models.BooleanField(default=False)
     is_subscription = models.BooleanField(default=False)
+    notes = models.TextField(blank=True, null=True)
     # stamp
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

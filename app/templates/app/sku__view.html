@@ -26,6 +26,7 @@
   <tr><th>Is Subscription</th><td>{{ sku.is_subscription }}</td></tr>
   <tr><th>Date Created</th><td>{{ sku.created }}</td></tr>
   <tr><th>Date Last Modified</th><td>{{ sku.modified }}</td></tr>
+  <tr><th>Notes</th><td>{{ sku.notes|default:"-" }}</td></tr>
   {% if sku.skuattribute_set.all|length %}
   <tr>
     <td colspan="2">

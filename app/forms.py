@@ -113,7 +113,7 @@ class SkuForm(forms.ModelForm):
         fields = (
             'name', 'upc', 'brand', 'categories', 'quantity_on_hand', 'location', 'owner', 'supplier',
             'lead_time', 'minimum_quantity', 'notify_at_threshold', 'cost', 'supplier_sku', 'case_quantity',
-            'in_live_deal', 'is_subscription'
+            'in_live_deal', 'is_subscription', 'notes'
         )
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control name'}),
@@ -129,6 +129,7 @@ class SkuForm(forms.ModelForm):
             'cost': forms.TextInput(attrs={'class': 'form-control cost', 'placeholder': 'optional'}),
             'supplier_sku': forms.TextInput(attrs={'class': 'form-control supplier-sku', 'placeholder': 'optional'}),
             'case_quantity': forms.TextInput(attrs={'class': 'form-control case-quantity', 'placeholder': 'optional'}),
+            'notes': forms.TextInput(attrs={'class': 'form-control notes', 'placeholder': 'optional'})
         }
 
     def __init__(self, *args, **kwargs):
