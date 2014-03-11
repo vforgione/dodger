@@ -514,6 +514,7 @@ def filter_skus(request):
     in_live_deal = request.GET.get('in_live_deal', None)
     name = request.GET.get('name', None)  # icontains
     quantity_on_hand = request.GET.get('quantity_on_hand', None)  # parse and apply filter
+    expiration_date = request.GET.get('expiration_date', None)
 
     skus = Sku.objects.order_by('id')
     warnings = []
@@ -599,6 +600,10 @@ def filter_skus(request):
             else:
                 warnings.append('Could not parse quantity_on_hand = `%s`' % quantity_on_hand)
 
+    if expiration_date:
+        sku_ids = [attr.sku.id for attr in SkuAttribute.objects.filter(attribute__name='Expiration Date')]
+        skus = skus.filter(id__in=sku_ids)
+
     return skus, warnings, params
 
 
@@ -645,8 +650,9 @@ def sku__export(request):
     writer = csv.writer(response)
     writer.writerow([
         'id', 'name', 'upc', 'brand', 'categories', 'qty on hand', 'location', 'owner', 'supplier', 'lead time',
-        'min qty', 'notify', 'cost', 'supplier sku', 'case qty', 'in live deal', 'subscription', 'notes', 'color',
-        'size', 'style', 'flavor', 'weight', 'is bulk', 'expiration date', 'country of origin', 'created', 'modified'
+        'min qty', 'notify', 'cost', 'supplier sku', 'case qty', 'in live deal', 'subscription', 'notes',
+        'action', 'action_date', 'color', 'size', 'style', 'flavor', 'weight', 'is bulk', 'expiration date',
+        'country of origin', 'created', 'modified'
     ])
 
     for sku in skus:
