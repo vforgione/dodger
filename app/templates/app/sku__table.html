@@ -129,7 +129,8 @@
     <th>ID</th><th>Name</th><th>Categories</th><th>Brand</th><th>Supplier</th>
     <th>Owner</th><th>Min Qty</th><th>Notify</th><th>Cost</th>
     <th>Supp SKU</th><th>Case Qty</th><th>Location</th><th>Qty on Hand</th>
-    <th>In Live Deal</th><th>Is Subscription SKU</th><th>Notes</th><th>Attributes</th>
+    <th>In Live Deal</th><th>Is Subscription SKU</th><th>Notes</th>
+    <th>Action</th><th>Action Date</th><th>Attributes</th>
   </tr>
 </thead>
 <tbody>
@@ -151,6 +152,8 @@
     <td>{{ sku.in_live_deal }}</td>
     <td>{{ sku.is_subscription }}</td>
     <td>{{ sku.notes|default:"-" }}</td>
+    <td>{{ sku.action|default:"-" }}</td>
+    <td>{{ sku.action_date|default:"-" }}</td>
     <td>{{ sku.attributes|join:", " }}</td>
   </tr>
   {% endfor %}

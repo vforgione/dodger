@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 
-from constants import US_STATES
+from constants import US_STATES, ACTIONS
 
 
 # control models
@@ -87,6 +87,8 @@ class Sku(models.Model):
     in_live_deal = models.BooleanField(default=False)
     is_subscription = models.BooleanField(default=False)
     notes = models.TextField(blank=True, null=True)
+    action = models.CharField(max_length=255, choices=ACTIONS, blank=True, null=True)
+    action_date = models.DateField(blank=True, null=True)
     # stamp
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

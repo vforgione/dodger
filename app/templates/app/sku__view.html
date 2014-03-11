@@ -27,6 +27,8 @@
   <tr><th>Date Created</th><td>{{ sku.created }}</td></tr>
   <tr><th>Date Last Modified</th><td>{{ sku.modified }}</td></tr>
   <tr><th>Notes</th><td>{{ sku.notes|default:"-" }}</td></tr>
+  <tr><th>Action</th><td>{{ sku.action|default:"-" }}</td></tr>
+  <tr><th>Action Date</th><td>{{ sku.action_date|default:"-" }}</td></tr>
   {% if sku.skuattribute_set.all|length %}
   <tr>
     <td colspan="2">

@@ -212,6 +212,8 @@ class SkuResource(ModelResource):
             'created': ALL,
             'modified': ALL,
             'notes': ALL,
+            'action': ALL,
+            'action_date': ALL,
         }
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()

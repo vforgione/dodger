@@ -51,3 +51,11 @@ US_STATES = (
     ('WI', 'Wisconsin'),
     ('WY', 'Wyoming'),
 )
+
+
+ACTIONS = (
+    ('Preview Group', 'Preview Group'),
+    ('Main Group', 'Main Group'),
+    ('Clearance', 'Clearance'),
+    ('Consignment Return', 'Consignment Return'),
+)
