@@ -118,21 +118,25 @@ class Sku(models.Model):
 
     def _attributes(self):
         attrs = []
-        qs = SkuAttribute.objects.filter(sku=self)
-        for obj in qs:
-            if obj.attribute.name.lower().endswith('bulk'):
-                attrs.append('Bulk')
-            elif obj.attribute.name.lower().endswith('date'):
-                attrs.append('(%s) %s' % (obj.attribute.name.split()[0], obj.value))
-            else:
-                attrs.append(obj.value)
+        # qs = SkuAttribute.objects.filter(sku=self)
+        # for obj in qs:
+        #     if obj.attribute.name.lower().endswith('bulk'):
+        #         attrs.append('Bulk')
+        #     elif obj.attribute.name.lower().endswith('date'):
+        #         attrs.append('(%s) %s' % (obj.attribute.name.split()[0], obj.value))
+        #     else:
+        #         attrs.append(obj.value)
+        for attr in self.skuattribute_set.all():
+            attrs.append((attr.attribute.name, attr.value))
         return attrs
     attributes = property(_attributes)
 
     def _description(self):
         attrs = self.attributes
         if len(attrs):
-            return '[%d] %s %s : %s' % (self.id, self.brand, self.name, ', '.join(attrs))
+            # return '[%d] %s %s : %s' % (self.id, self.brand, self.name, ', '.join(attrs))
+            attrs = ', '.join(['(%s) %s' % (attr[0], attr[1]) for attr in attrs])
+            return '[%d] %s %s : %s' % (self.id, self.brand, self.name, attrs)
         else:
             return '[%d] %s %s' % (self.id, self.brand, self.name)
     description = property(_description)
