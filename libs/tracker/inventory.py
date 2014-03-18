@@ -172,9 +172,9 @@ def process_doc(doc):
 
 if __name__ == '__main__':
     import json
-    # from gdocs_config import *
-    # doc = get_doc(USERNAME, PASSWORD, DOC_NAME, SHEET_NAME)
-    # with open('/tmp/tracker.json', 'w') as fh:
-    #     json.dump(doc, fh)
-    doc = json.load(open('/tmp/tracker.json', 'r'))
-    process_doc(doc)
+    from gdocs_config import *
+    doc = get_doc(USERNAME, PASSWORD, DOC_NAME, SHEET_NAME)
+    with open('/tmp/tracker.json', 'w') as fh:
+        json.dump(doc, fh)
+    #doc = json.load(open('/tmp/tracker.json', 'r'))
+    #process_doc(doc)
