@@ -662,7 +662,7 @@ def sku__export(request):
             sku.id, sku.name, sku.upc, sku.brand.name, ', '.join([cat.name for cat in sku.categories.all()]),
             sku.quantity_on_hand, sku.location, sku.owner.username, sku.supplier.name, sku.lead_time,
             sku.minimum_quantity, sku.notify_at_threshold, sku.cost, sku.supplier_sku, sku.case_quantity,
-            sku.in_live_deal, sku.is_subscription, sku.notes, attrs.get('Color', ''), attrs.get('Size', ''),
+            sku.in_live_deal, sku.is_subscription, sku.notes, sku.action, sku.action_date, attrs.get('Color', ''), attrs.get('Size', ''),
             attrs.get('Style', ''), attrs.get('Flavor', ''), attrs.get('Weight', ''), attrs.get('Is Bulk', ''),
             attrs.get('Expiration Date', ''), attrs.get('Country of Origin', ''), sku.created.strftime('%m/%d/%Y'),
             sku.modified.strftime('%m/%d/%Y')
