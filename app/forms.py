@@ -171,13 +171,13 @@ class ContactForm(forms.ModelForm):
             'work_phone': forms.TextInput(attrs={'class': 'form-control work_phone'}),
             'cell_phone': forms.TextInput(attrs={'class': 'form-control cell_phone', 'placeholder': 'optional'}),
             'fax': forms.TextInput(attrs={'class': 'form-control fax', 'placeholder': 'optional'}),
-            'address1': forms.TextInput(attrs={'class': 'form-control address1'}),
+            'address1': forms.TextInput(attrs={'class': 'form-control address1', 'placeholder': 'optional'}),
             'address2': forms.TextInput(attrs={'class': 'form-control address2', 'placeholder': 'optional'}),
             'address3': forms.TextInput(attrs={'class': 'form-control address3', 'placeholder': 'optional'}),
-            'city': forms.TextInput(attrs={'class': 'form-control city'}),
-            'state': forms.Select(attrs={'class': 'form-control state'}),
-            'zipcode': forms.TextInput(attrs={'class': 'form-control zipcode'}),
-            'country': forms.TextInput(attrs={'class': 'form-control country'}),
+            'city': forms.TextInput(attrs={'class': 'form-control city', 'placeholder': 'optional'}),
+            'state': forms.Select(attrs={'class': 'form-control state', 'placeholder': 'optional'}),
+            'zipcode': forms.TextInput(attrs={'class': 'form-control zipcode', 'placeholder': 'optional'}),
+            'country': forms.TextInput(attrs={'class': 'form-control country', 'placeholder': 'optional'}),
         }
 
 
@@ -196,13 +196,13 @@ class ContactInlineForm(forms.ModelForm):
             'work_phone': forms.TextInput(attrs={'class': 'form-control work_phone'}),
             'cell_phone': forms.TextInput(attrs={'class': 'form-control cell_phone', 'placeholder': 'optional'}),
             'fax': forms.TextInput(attrs={'class': 'form-control fax', 'placeholder': 'optional'}),
-            'address1': forms.TextInput(attrs={'class': 'form-control address1'}),
+            'address1': forms.TextInput(attrs={'class': 'form-control address1', 'placeholder': 'optional'}),
             'address2': forms.TextInput(attrs={'class': 'form-control address2', 'placeholder': 'optional'}),
             'address3': forms.TextInput(attrs={'class': 'form-control address3', 'placeholder': 'optional'}),
-            'city': forms.TextInput(attrs={'class': 'form-control city'}),
-            'state': forms.Select(attrs={'class': 'form-control state'}),
-            'zipcode': forms.TextInput(attrs={'class': 'form-control zipcode'}),
-            'country': forms.TextInput(attrs={'class': 'form-control country'}),
+            'city': forms.TextInput(attrs={'class': 'form-control city', 'placeholder': 'optional'}),
+            'state': forms.Select(attrs={'class': 'form-control state', 'placeholder': 'optional'}),
+            'zipcode': forms.TextInput(attrs={'class': 'form-control zipcode', 'placeholder': 'optional'}),
+            'country': forms.TextInput(attrs={'class': 'form-control country', 'placeholder': 'optional'}),
         }
 
 

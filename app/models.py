@@ -221,13 +221,13 @@ class Contact(models.Model):
     work_phone = models.CharField(max_length=255)
     cell_phone = models.CharField(max_length=255, blank=True, null=True)
     fax = models.CharField(max_length=255, blank=True, null=True)
-    address1 = models.CharField(max_length=255)
+    address1 = models.CharField(max_length=255, blank=True, null=True)
     address2 = models.CharField(max_length=255, blank=True, null=True)
     address3 = models.CharField(max_length=255, blank=True, null=True)
-    city = models.CharField(max_length=255)
-    state = models.CharField(max_length=255, choices=US_STATES)
-    zipcode = models.CharField(max_length=255)
-    country = models.CharField(max_length=255, default='United States')
+    city = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=255, choices=US_STATES, blank=True, null=True)
+    zipcode = models.CharField(max_length=255, blank=True, null=True)
+    country = models.CharField(max_length=255, default='United States', blank=True, null=True)
     represents = models.ForeignKey(Supplier)
     label = models.ManyToManyField(ContactLabel)
 
@@ -241,13 +241,13 @@ class Contact(models.Model):
 class Receiver(models.Model):
 
     name = models.CharField(max_length=255, unique=True)
-    address1 = models.CharField(max_length=255)
+    address1 = models.CharField(max_length=255, blank=True, null=True)
     address2 = models.CharField(max_length=255, blank=True, null=True)
     address3 = models.CharField(max_length=255, blank=True, null=True)
-    city = models.CharField(max_length=255)
-    state = models.CharField(max_length=255, choices=US_STATES)
-    zipcode = models.CharField(max_length=255)
-    country = models.CharField(max_length=255, default='United States')
+    city = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=255, choices=US_STATES, blank=True, null=True)
+    zipcode = models.CharField(max_length=255, blank=True, null=True)
+    country = models.CharField(max_length=255, default='United States', blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse('app:receiver__view', args=[str(self.pk)])
