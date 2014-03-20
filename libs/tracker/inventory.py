@@ -33,20 +33,33 @@ OWNER = USER
 REASON = QuantityAdjustmentReason.objects.get(name='Tracker Sync')
 
 
-# TODO: remove after testing
 DEBUG = True
 
 
 def get_doc(username, password, doc_name, sheet_name):
     """pulls down the doc as a list of dicts - list is reversed (oldest first)"""
+    if DEBUG:
+        print 'making gspread client'
     client = gspread.login(username, password)
 
+    if DEBUG:
+        print 'getting workbook'
     workbook = client.open(doc_name)
+    if DEBUG:
+        print 'getting worksheet'
     sheet = workbook.worksheet(sheet_name)
+    if DEBUG:
+        print 'getting values'
     rows = sheet.get_all_values()
 
+    if DEBUG:
+        print 'making local doc'
     header = rows[0]
     doc = [dict(zip(header, row)) for row in rows[1:]]
+
+    if DEBUG:
+        print 'first date: %s' % doc[0]['Date Received / Updated']
+        print 'last date: %s' % doc[-1]['Date Received / Updated']
 
     return doc
 
@@ -76,11 +89,11 @@ def process_doc(doc):
             pass
 
     # iterate dicts in doc
-    for obj in doc:
+    for obj in doc[::-1]:  # step backwards through doc
 
         if DEBUG:
             print '\n'
-            print 'working on obj %s ...' % str(obj)
+            print 'working on obj %s' % str(obj)
 
         # remove n/a values
         for key, value in obj.iteritems():
