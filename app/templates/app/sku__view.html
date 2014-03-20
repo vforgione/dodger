@@ -58,10 +58,10 @@
 <table class="table table-striped">
 <thead>
   <tr>
-    <th>SKU&nbsp;&nbsp;<a href="?order-by=id&direction=asc" class="sort-asc"></a><a href="?order-by=id&direction=desc" class="sort-desc"></a></th>
-    <th>Qty on Hand&nbsp;&nbsp;<a href="?order-by=quantity_on_hand&direction=asc" class="sort-asc"></a><a href="?order-by=quantity_on_hand&direction=desc" class="sort-desc"></a></th>
-    <th>Location&nbsp;&nbsp;<a href="?order-by=location&direction=asc" class="sort-asc"></a><a href="?order-by=location&direction=desc" class="sort-desc"></a></th>
-    <th>Owner&nbsp;&nbsp;<a href="?order-by=owner__username&direction=asc" class="sort-asc"></a><a href="?order-by=owner__username&direction=desc" class="sort-desc"></a></th>
+    <th style="white-space:nowrap;">SKU&nbsp;&nbsp;<a href="/skus/id/" class="sort-asc"></a><a href="/skus/-id/" class="sort-desc"></a></th>
+    <th style="white-space:nowrap;">Qty on Hand&nbsp;&nbsp;<a href="/skus/quantity_on_hand/" class="sort-asc"></a><a href="/skus/-quantity_on_hand/" class="sort-desc"></a></th>
+    <th style="white-space:nowrap;">Location&nbsp;&nbsp;<a href="/skus/location/" class="sort-asc"></a><a href="/skus/-location/" class="sort-desc"></a></th>
+    <th style="white-space:nowrap;">Owner&nbsp;&nbsp;<a href="/skus/owner__username/" class="sort-asc"></a><a href="/skus/-owner__username/" class="sort-desc"></a></th>
   </tr>
 </thead>
 <tbody>
@@ -79,7 +79,7 @@
   <div class="row">
     <div class="col-lg-4">
       {% if skus.has_previous %}
-      <a href="?page={{ skus.previous_page_number }}&{{ request.GET.urlencode }}" class="btn btn-primary">&laquo; Previous</a>
+      <a href="?page={{ skus.previous_page_number }}" class="btn btn-primary">&laquo; Previous</a>
       {% endif %}
     </div>
     <div class="col-lg-4">
@@ -87,7 +87,7 @@
     </div>
     <div class="col-lg-4">
       {% if skus.has_next %}
-      <a href="?page={{ skus.next_page_number }}&{{ request.GET.urlencode }}" class="btn btn-primary">Next &raquo;</a>
+      <a href="?page={{ skus.next_page_number }}" class="btn btn-primary">Next &raquo;</a>
       {% endif %}
     </div>
   </div>
