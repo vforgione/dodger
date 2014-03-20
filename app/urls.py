@@ -23,11 +23,12 @@ urlpatterns = patterns(
 
     ##
     # skus
-    url(r'^skus(?:/(?P<pk>\d+))?(?:/(?P<order>[a-zA-Z0-9\-_]+))?/$', 'sku__view', name='sku__view'),
     url(r'^skus/create/$', 'sku__create', name='sku__create'),
     url(r'^skus/update(?:/(?P<pk>\d+))?/$', 'sku__update', name='sku__update'),
     url(r'^skus/table/$', 'sku__table', name='sku__table'),
     url(r'^skus/export/$', 'sku__export', name='sku__export'),
+    # /skus/table/ breaks this, so it has to be last
+    url(r'^skus(?:/(?P<order>[a-zA-Z0-9\-_]+))?(?:/(?P<pk>\d+))?/$', 'sku__view', name='sku__view'),
 
     ##
     # purchase orders

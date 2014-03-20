@@ -158,7 +158,14 @@
     <td>{{ sku.notes|default:"-" }}</td>
     <td>{{ sku.action|default:"-" }}</td>
     <td>{{ sku.action_date|default:"-" }}</td>
-    <td>{{ sku.attributes|join:", " }}</td>
+{#    <td>{{ sku.attributes|join:", " }}</td>#}
+    <td>
+      {% if sku.attributes|length %}
+        {% for attr in sku.attributes %}
+        {{ attr.0 }}: {{ attr.1 }},&nbsp;
+        {% endfor %}
+      {% else %}-{% endif %}
+    </td>
   </tr>
   {% endfor %}
 </tbody>
