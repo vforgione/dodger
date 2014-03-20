@@ -230,11 +230,11 @@ class PurchaseOrderForm(forms.ModelForm):
         fields = ('creator', 'receiver', 'supplier', 'contact', 'terms', 'shipping_cost', 'sales_tax',
           'note', 'tracking_url')
         widgets = {
-            'creator': forms.Select(attrs={'class': 'form-control creator'}),
-            'supplier': forms.Select(attrs={'class': 'form-control supplier'}),
-            'contact': forms.Select(attrs={'class': 'form-control contact'}),
-            'receiver': forms.Select(attrs={'class': 'form-control receiver'}),
-            'terms': forms.TextInput(attrs={'class': 'form-control terms'}),
+            'creator': forms.Select(attrs={'class': 'form-control creator', 'required': 'required'}),
+            'supplier': forms.Select(attrs={'class': 'form-control supplier', 'required': 'required'}),
+            'contact': forms.Select(attrs={'class': 'form-control contact', 'required': 'required'}),
+            'receiver': forms.Select(attrs={'class': 'form-control receiver', 'required': 'required'}),
+            'terms': forms.TextInput(attrs={'class': 'form-control terms', 'required': 'required'}),
             'note': forms.TextInput(attrs={'class': 'form-control note', 'placeholder': 'optional'}),
             'tracking_url': forms.TextInput(attrs={'class': 'form-control tracking_url', 'placeholder': 'optional'}),
             'shipping_cost': forms.TextInput(attrs={'class': 'form-control shipping_cost', 'placeholder': 'optional'}),
