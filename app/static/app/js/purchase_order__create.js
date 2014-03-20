@@ -17,6 +17,11 @@ function cloneMore(selector, type) {
 
 $(document).ready(function () {
 
+  // add required to first line item
+  $("#id_purchaseorderlineitem_set-0-sku").attr("required", "true");
+  $("#id_purchaseorderlineitem_set-0-quantity_ordered").attr("required", "true");
+  $("#id_purchaseorderlineitem_set-0-unit_cost").attr("required", "true");
+
   $("#add-more").click(function(){
     cloneMore('div.formset:last', 'purchaseorderlineitem_set');
   });
