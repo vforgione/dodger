@@ -1,9 +1,14 @@
 {% extends 'dodger/base.html' %}
 
+{% block extrahead %}
+<style>td{white-space:nowrap;}</style>
+{% endblock %}
+
 {% block content %}
 <div class="table-responsive">
 
 {% if po %}
+<input type="hidden" id="po" value="{{ po.id }}" />
 <h3>Detail View of Purchase Order #{{ po.id }}</h3>
 <table class="table">
 <tbody>
@@ -42,7 +47,7 @@
           <tr>
             <td class="col-lg-4"><a href="{{ li.sku.get_absolute_url }}" target="_blank">{{ li.sku }}</a></td>
             <td class="col-lg-1">{{ li.quantity_ordered }}</td>
-            <td class="col-lg-1" id="received-{{ li.sku.id }}"></td>
+            <td class="col-lg-1 rcvd" id="{{ li.sku.id }}" pk="{{ li.sku.id }}"></td>
             <td class="col-lg-2">${{ li.unit_cost|floatformat:2 }}</td>
             <td class="col-lg-2">{{ li.discount_percent|default:"0.00" }}%</td>
             <td class="col-lg-2">${{ li.discount_dollar|default:0|floatformat:2 }}</td>
@@ -106,4 +111,9 @@
 
 {% endif %}
 </div>
+{% endblock %}
+
+{% block contentjs %}
+{% load static %}
+<script src="{% static 'app/js/purchase_order__view.js' %}"></script>
 {% endblock %}
