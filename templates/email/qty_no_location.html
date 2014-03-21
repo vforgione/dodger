@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SKUs with no Location</title>
+</head>
+<body>
+<div>
+  <h3>SKUs with no Location</h3>
+  <p>The following SKUs have a quantity > 0, but no location.</p>
+  <table style="width:100%">
+    <thead>
+    <tr>
+      <th style="width:50%">SKU</th><th>Modification Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for sku in skus %}
+    <tr>
+      <td><a href="https://dodger.doggyloot.com{{ sku.get_absolute_url }}" target="_blank">{{ sku.description }}</a> </td>
+      <td>{{ sku.modified }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
