@@ -48,6 +48,68 @@
     </td>
   </tr>
   {% endif %}
+  {% if sku.quantityadjustment_set.all|length %}
+  <tr>
+    <td colspan="2">
+      <h4>Quantity Adjustments</h4>
+      <div class="table-responsive">
+        <table class="table table-condensed">
+          <thead>
+          <tr>
+            <th>Date</th><th>Old</th><th>New</th><th>Reason</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for adj in sku.quantityadjustment_set.all %}
+          <tr>
+            <td><a href="{% url 'app:quantity_adjustment__view' adj.pk %}">{{ adj.created }}</a></td>
+            <td>{{ adj.old }}</td>
+            <td>{{ adj.new }}</td>
+            <td>
+              {{ adj.reason.name }}
+              {% if adj.detail|length %}
+              &nbsp;:&nbsp;{{ adj.detail }}
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </td>
+  </tr>
+  {% endif %}
+  {% if sku.costadjustment_set.all|length %}
+  <tr>
+    <td colspan="2">
+      <h4>Cost Adjustments</h4>
+      <div class="table-responsive">
+        <table class="table table-condensed">
+          <thead>
+          <tr>
+            <th>Date</th><th>Old</th><th>New</th><th>Reason</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for adj in sku.costadjustment_set.all %}
+          <tr>
+            <td><a href="{% url 'app:quantity_adjustment__view' adj.pk %}">{{ adj.created }}</a></td>
+            <td>${{ adj.old }}</td>
+            <td>${{ adj.new }}</td>
+            <td>
+              {{ adj.reason.name }}
+              {% if adj.detail|length %}
+              &nbsp;:&nbsp;{{ adj.detail }}
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </td>
+  </tr>
+  {% endif %}
 </tbody>
 </table>
 <a class="btn btn-primary default" href="{% url 'app:sku__view' %}">Back To List</a>
