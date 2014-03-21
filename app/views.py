@@ -36,14 +36,50 @@ def search(request):
     shipments = Shipment.objects.all()
 
     if q:
+        # hot phrases
         if q == 'live':
             skus = skus.filter(in_live_deal=True)
+            brands = brands.filter(id=-1)
+            contacts = contacts.filter(id=-1)
+            suppliers = suppliers.filter(id=-1)
+            shipments = shipments.filter(id=-1)
+            pos = pos.filter(id=-1)
+
         elif q == 'subscription':
             skus = skus.filter(is_subscription=True)
+            brands = brands.filter(id=-1)
+            contacts = contacts.filter(id=-1)
+            suppliers = suppliers.filter(id=-1)
+            shipments = shipments.filter(id=-1)
+            pos = pos.filter(id=-1)
+
         elif q == 'consignment':
             skus = skus.filter(action__icontains='consignment')
+            brands = brands.filter(id=-1)
+            contacts = contacts.filter(id=-1)
+            suppliers = suppliers.filter(id=-1)
+            shipments = shipments.filter(id=-1)
+            pos = pos.filter(id=-1)
+
         elif q == 'clearance':
             skus = skus.filter(action__icontains='clearance')
+            brands = brands.filter(id=-1)
+            contacts = contacts.filter(id=-1)
+            suppliers = suppliers.filter(id=-1)
+            shipments = shipments.filter(id=-1)
+            pos = pos.filter(id=-1)
+
+        elif q == 'open pos':
+            _pos = [po.id for po in pos if not po.is_fully_received()]
+            pos = pos.filter(id__in=_pos)
+            skus = skus.filter(id=-1)
+            brands = brands.filter(id=-1)
+            contacts = contacts.filter(id=-1)
+            suppliers = suppliers.filter(id=-1)
+            shipments = shipments.filter(id=-1)
+
+
+        # full search
         else:
             attrs = [obj.sku.id for obj in SkuAttribute.objects.filter(value=q)]
 
