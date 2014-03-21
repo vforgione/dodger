@@ -11,6 +11,7 @@ environ.setdefault('DJANGO_SETTINGS_MODULE', 'dodger.settings')
 
 
 # program imports
+import codecs
 import re
 
 from django.db.utils import IntegrityError
@@ -100,6 +101,10 @@ def process_doc(doc):
             if value.lower().endswith('n/a'):
                 obj[key] = ''
 
+        # removed non-ascii characters
+        for key, value in obj.iteritems():
+            obj[key] = ''.join([c for c in value if ord(c) < 128])
+
         skuid = obj['SKU']
         name = obj['Product']
         supplier = obj['Supplier']
@@ -107,8 +112,8 @@ def process_doc(doc):
         categories = obj['Type (Toy/ Treat/ Chew/  More)']
         qty = obj['Total SKU Quantity']
         location = obj['Location']
-
-        reason = obj['Reason for Update']
+        detail = obj['Reason for Update']
+        date = obj['Date Received / Updated']
 
         size = obj['Size']
         style = obj['Style']
@@ -160,13 +165,17 @@ def process_doc(doc):
             sku.quantity_on_hand = qty
             sku.save(gdocs=True)
         else:
+            if detail in ['', None]:
+                detail = '%s : unknown' % date
+            else:
+                detail = ' : '.join([date, detail])
             sku = Sku.objects.get(id=skuid)
             adj = QuantityAdjustment()
             adj.sku = sku
             adj.new = qty
             adj.reason = REASON
             adj.who = USER
-            adj.deatil = reason
+            adj.detail = detail
             adj.save()
 
         # save categories m2m field
@@ -185,9 +194,9 @@ def process_doc(doc):
 
 if __name__ == '__main__':
     import json
-    #from gdocs_config import *
-    #doc = get_doc(USERNAME, PASSWORD, DOC_NAME, SHEET_NAME)
-    #with open('/home/deploy/tracker.json', 'w') as fh:
-    #    json.dump(doc, fh)
-    doc = json.load(open('/home/deploy/tracker.json', 'r'))
+    from gdocs_config import *
+    doc = get_doc(USERNAME, PASSWORD, DOC_NAME, SHEET_NAME)
+    with codecs.open('/tmp/tracker.json', 'w', encoding='utf8') as fh:
+       json.dump(doc, fh)
+    doc = json.load(codecs.open('/tmp/tracker.json', 'r', encoding='utf8'))
     process_doc(doc)
