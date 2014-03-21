@@ -32,7 +32,7 @@ def notify():
     skus = Sku.objects.all()
 
     # build csv
-    header = ['sku', 'brand', 'product', 'attributes', 'qty', 'modified', 'why']
+    header = ['sku', 'brand', 'product', 'attributes', 'qty', 'location', 'modified', 'why']
     fname = os.path.join('/', 'tmp', 'skus.csv')
     with codecs.open(fname, 'w', encoding='utf8') as fh:
         writer = csv.writer(fh)
@@ -65,7 +65,7 @@ def notify():
                 most_recent = (date.today(), 'unknown')
             # write row
             writer.writerow([
-                sku.id, sku.brand.name, sku.name, attributes, sku.quantity_on_hand,
+                sku.id, sku.brand.name, sku.name, attributes, sku.quantity_on_hand, sku.location,
                 most_recent[0].strftime('%Y-%m-%d'), most_recent[1]
             ])
 
