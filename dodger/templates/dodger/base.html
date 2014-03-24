@@ -34,7 +34,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">dodger</a>
+          <a class="navbar-brand" href="{% url 'app:home' %}">dodger</a>
         </div>
 
         {% if user.is_active and user.is_authenticated %}
@@ -162,6 +162,16 @@
   </div>
 
   <div class="nav-pad"></div>
+
+  {% if messages %}
+  <div class="container">
+    {% for message in messages %}
+    <div class="{{ message.extra_tags }}">
+      <p>{{ message|safe }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 
   <div id="content">
     <div class="container" id="content-main">

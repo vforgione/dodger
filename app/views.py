@@ -1,6 +1,7 @@
 import csv
-from datetime import datetime
+from datetime import date, datetime, timedelta
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.core.urlresolvers import reverse
@@ -20,6 +21,59 @@ from notifications import *
 PAGE_SIZE = 20
 
 TZ = timezone('America/Chicago')
+
+
+##
+# home
+def home(request):
+    live_skus = Sku.objects.filter(in_live_deal=True)
+
+    pos = PurchaseOrder.objects.all()
+    pos = [po for po in pos if not po.is_fully_received()]
+    out_pos = []
+    for po in pos:
+        polis = dict([(li.sku.id, li.quantity_ordered) for li in po.purchaseorderlineitem_set.all()])
+        slis = dict([(li.sku.id, li.quantity_received) for li in ShipmentLineItem.objects.filter(shipment__purchase_order=po)])
+        for sku, qty in polis.iteritems():
+            if sku in slis:
+                if qty <= slis[sku]:
+                    pass
+                else:
+                    out_pos.append((str(po), po.get_absolute_url(), sku, qty, slis[sku]))
+            else:
+                out_pos.append((str(po), po.get_absolute_url(), sku, qty, 0))
+
+    awa = date.today() - timedelta(days=7)
+    a_week_ago = datetime(awa.year, awa.month, awa.day)
+    recent_shipments = Shipment.objects.filter(created__gte=a_week_ago)
+
+    live_sku_alert = [sku for sku in Sku.objects.filter(in_live_deal=True, quantity_on_hand__lte=0)]
+    if len(live_sku_alert):
+        messages.add_message(
+            request, messages.ERROR,
+            '<b>The following SKUs are live on the site, but are reporting 0 qty:</b><br />%s' %
+                ', '.join(['<a href="%s" target="_blank">%s</a>' % (s.get_absolute_url(), s.id) for s in live_sku_alert]),
+            extra_tags='alert-danger'
+        )
+
+    location_alert = [sku for sku in Sku.objects.filter(in_live_deal=True, location__in=['', None])]
+    if len(location_alert):
+        messages.add_message(
+            request, messages.ERROR,
+            '<b>The following SKUs are live on the site, but do not have a location recorded:</b><br />%s' %
+                ', '.join(['<a href="%s" target="_blank">%s</a>' % (s.get_absolute_url(), s.id) for s in location_alert]),
+            extra_tags='alert-danger'
+        )
+
+    return render_to_response(
+        'app/home.html',
+        {
+            'live_skus': live_skus,
+            'out_pos': out_pos,
+            'recent_shipments': recent_shipments,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 ##
