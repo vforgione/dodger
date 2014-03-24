@@ -5,6 +5,10 @@ urlpatterns = patterns(
     'app.views',
 
     ##
+    # home
+    url(r'^$', 'home', name='home'),
+
+    ##
     # search
     url(r'^search/$', 'search', name='search'),
 
