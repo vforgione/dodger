@@ -2259,8 +2259,8 @@ def receiver__update(request, pk=None):
     else:
         form = ReceiverForm(request.POST, instance=receiver)
         if form.is_valid():
-            form.save()
-            return redirect(Receiver.get_absolute_url())
+            receiver = form.save()
+            return redirect(receiver.get_absolute_url())
 
     return render_to_response(
         'app/purchase_order_endpoint__update.html',

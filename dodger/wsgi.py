@@ -1,3 +1,6 @@
+import newrelic.agent
+newrelic.agent.initialize('/home/deploy/dodger-env/dodger/config/newrelic.ini')
+
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dodger.settings.prod")
 
