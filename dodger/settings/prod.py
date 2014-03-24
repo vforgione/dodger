@@ -2,9 +2,9 @@ from common import *
 
 
 # debug config
-DEBUG = False
+DEBUG = True
 
-TEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = True
 
 
 # site config
