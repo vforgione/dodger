@@ -123,16 +123,25 @@ $(document).ready(function () {
   // listen for sku selection
   $(".sku").change(function () {
     var input = $(this);
+    var next = input.parent().parent().next();
+
+    // wipe out any detail data if sku changes twice
+    try {
+      if (next.html().substr(0, 6) == "<td><a") {
+        next.html("");
+      }
+    } catch (e) {}
+
     $.ajax({
       url: "/api/sku_service/skus/" + $(this).val() + "/",
       type: "GET",
       dataType: "json",
       success: function (xhr) {
-        var info = '<tr><td colspan=2><table class="table table-condensed"><tbody><tr>' +
-            '<td class="col-xs-4"><b>Qty on Hand:</b> ' + xhr.quantity_on_hand + '</td>' +
-            '<td class="col-xs-4"><b>Location:</b> ' + xhr.location + '</td>' +
-            '<td class="col-xs-4"><a target="_blank" href="/skus/' + xhr.id + '/">Detailed Info</a></td>' +
-            '</tr></tbody></table></td></tr>';
+        var info = '<tr class="detail-info">' +
+          '<td><a target="_blank" href="/skus/' + xhr.id + '/">Detailed Info</a></td>' +
+          '<td><b>Qty on Hand:</b> ' + xhr.quantity_on_hand +
+          '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Location:</b> ' + xhr.location + '</td>' +
+          '</tr>';
         input.parent().parent().after(info);
       },
       error: function (xhr) {
