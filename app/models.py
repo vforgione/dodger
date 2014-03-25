@@ -13,6 +13,7 @@ class ControlModel(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ('name', )
 
     name = models.CharField(max_length=255, unique=True)
 
@@ -64,6 +65,9 @@ class Supplier(ControlModel):
 
 # full models
 class Sku(models.Model):
+
+    class Meta:
+        ordering = ('id', )
 
     # id
     id = models.IntegerField(primary_key=True)
@@ -148,6 +152,7 @@ class Sku(models.Model):
 class SkuAttribute(models.Model):
 
     class Meta:
+        ordering = ('sku__id', 'attribute__name')
         unique_together = (
             ('sku', 'attribute'),
         )
@@ -164,6 +169,9 @@ class SkuAttribute(models.Model):
 
 
 class CostAdjustment(models.Model):
+
+    class Meta:
+        ordering = ('-created', )
 
     sku = models.ForeignKey(Sku)
     old = models.FloatField()
@@ -187,6 +195,9 @@ class CostAdjustment(models.Model):
 
 
 class QuantityAdjustment(models.Model):
+
+    class Meta:
+        ordering = ('-created', )
 
     sku = models.ForeignKey(Sku)
     old = models.IntegerField()
@@ -212,6 +223,7 @@ class QuantityAdjustment(models.Model):
 class Contact(models.Model):
 
     class Meta:
+        ordering = ('name', 'represents')
         unique_together = (
             ('name', 'represents'),
         )
@@ -240,6 +252,9 @@ class Contact(models.Model):
 
 class Receiver(models.Model):
 
+    class Meta:
+        ordering = ('name', )
+
     name = models.CharField(max_length=255, unique=True)
     address1 = models.CharField(max_length=255, blank=True, null=True)
     address2 = models.CharField(max_length=255, blank=True, null=True)
@@ -257,6 +272,9 @@ class Receiver(models.Model):
 
 
 class PurchaseOrder(models.Model):
+
+    class Meta:
+        ordering = ('-created', )
 
     creator = models.ForeignKey(User)
     supplier = models.ForeignKey(Supplier)
@@ -300,6 +318,9 @@ class PurchaseOrder(models.Model):
 
 class PurchaseOrderLineItem(models.Model):
 
+    class Meta:
+        ordering = ('-purchase_order__id', 'sku__id')
+
     purchase_order = models.ForeignKey(PurchaseOrder)
     sku = models.ForeignKey(Sku)
     quantity_ordered = models.IntegerField()
@@ -339,6 +360,9 @@ class PurchaseOrderLineItem(models.Model):
 
 class Shipment(models.Model):
 
+    class Meta:
+        ordering = ('-created', )
+
     creator = models.ForeignKey(User)
     purchase_order = models.ForeignKey(PurchaseOrder)
     note = models.TextField(blank=True, null=True)
@@ -352,6 +376,9 @@ class Shipment(models.Model):
 
 
 class ShipmentLineItem(models.Model):
+
+    class Meta:
+        ordering = ('-shipment__id', 'sku__id')
 
     shipment = models.ForeignKey(Shipment)
     sku = models.ForeignKey(Sku)

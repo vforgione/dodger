@@ -1,5 +1,6 @@
 import csv
 from datetime import date, datetime, timedelta
+import json
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -754,6 +755,11 @@ def sku__export(request):
         ])
 
     return response
+
+
+def sku__locations(request):
+    output = dict([(sku.id, sku.location) for sku in Sku.objects.all()])
+    return HttpResponse(json.dumps(output), content_type='application/json')
 
 
 ##
