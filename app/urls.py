@@ -31,6 +31,7 @@ urlpatterns = patterns(
     url(r'^skus/update(?:/(?P<pk>\d+))?/$', 'sku__update', name='sku__update'),
     url(r'^skus/table/$', 'sku__table', name='sku__table'),
     url(r'^skus/export/$', 'sku__export', name='sku__export'),
+    url(r'^skus/locations/', 'sku__locations', name='sku__location'),
     # /skus/table/ breaks this, so it has to be last
     url(r'^skus(?:/(?P<pk>\d+))?/$', 'sku__view', name='sku__view'),  # detail view
     url(r'^skus(?:/(?P<order>[a-zA-Z0-9\-_]+))?/$', 'sku__view', name='sku__view'),  # list view with ordering
