@@ -176,7 +176,8 @@ def search(request):
                 Q(supplier__name__icontains=q) |
                 Q(contact__name__icontains=q) |
                 Q(creator__username__icontains=q) |
-                Q(id__in=poids)
+                Q(id__in=poids) |
+                Q(note__icontains=q)
             )
 
             sids = []
