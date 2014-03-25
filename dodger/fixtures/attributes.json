@@ -68,5 +68,12 @@
   "fields": {
     "name": "Force Ground Shipment"
   }
+},
+{
+  "pk": 11,
+  "model": "app.attribute",
+  "fields": {
+    "name": "Unit of Measurement"
+  }
 }
 ]
