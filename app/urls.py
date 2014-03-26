@@ -28,6 +28,7 @@ urlpatterns = patterns(
     ##
     # skus
     url(r'^skus/create/$', 'sku__create', name='sku__create'),
+    url(r'^skus/clone/(?P<pk>\d+)?/$', 'sku__clone', name='sku__clone'),
     url(r'^skus/update(?:/(?P<pk>\d+))?/$', 'sku__update', name='sku__update'),
     url(r'^skus/table/$', 'sku__table', name='sku__table'),
     url(r'^skus/export/$', 'sku__export', name='sku__export'),
