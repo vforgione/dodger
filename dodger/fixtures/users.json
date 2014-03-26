@@ -4,8 +4,8 @@
   "model": "auth.user",
   "fields": {
     "username": "api-readonly",
-    "first_name": "",
-    "last_name": "",
+    "first_name": "Development",
+    "last_name": "Team",
     "is_active": true,
     "is_superuser": false,
     "is_staff": false,
@@ -13,7 +13,7 @@
     "groups": [],
     "user_permissions": [],
     "password": "pbkdf2_sha256$12000$FDg9PtxvtcTg$//l1XOp6e3mpfumTAjzOlj/sg4hK60bm1twWp+5gcP4=",
-    "email": "vince@doggyloot.com",
+    "email": "devs@doggyloot.com",
     "date_joined": "2014-02-11T17:52:12Z"
   }
 },
@@ -22,8 +22,8 @@
   "model": "auth.user",
   "fields": {
     "username": "DAT",
-    "first_name": "",
-    "last_name": "",
+    "first_name": "Deal Acquisition",
+    "last_name": "Team",
     "is_active": true,
     "is_superuser": false,
     "is_staff": false,
