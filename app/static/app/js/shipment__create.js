@@ -62,7 +62,7 @@ $(document).ready(function () {
 
     // load up sku from supplier - the rationale is that the supplier could screw up and switch skus
     $.ajax({
-      url: '/api/sku_service/skus/?supplier__id=' + $('#supplier').val(),
+      url: '/api/sku_service/skus/?supplier__id=' + $('#supplier').val() + '&limit=0',
       type: 'GET',
       dataType: 'json',
       success: function (xhr, status) {
