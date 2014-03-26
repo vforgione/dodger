@@ -477,7 +477,7 @@ def sku__view(request, pk=None, order=None):
 
     else:
         if order is None:
-            order = 'id'
+            order = '-id'
         skus = Sku.objects.order_by(order)
         paginator = Paginator(skus, PAGE_SIZE)
         page = request.GET.get('page', 1)
