@@ -92,12 +92,15 @@
     <tr>
       <td class="col-lg-6">
         <div class="form-group">
-          <input type="submit" class="btn btn-primary" value="Filter SKUs" />
+          <label for="in_live_deal">Is Subscription</label>
+          <select name="is_subscription" class="form-control">
+            <option></option><option value="0">No</option><option value="1">Yes</option>
+          </select>
         </div>
       </td>
       <td class="col-lg-6">
         <div class="form-group">
-          &nbsp;
+          <input type="submit" class="btn btn-primary" value="Filter SKUs" />
         </div>
       </td>
     </tr>
