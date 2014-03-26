@@ -15,7 +15,7 @@ class ControlModel(models.Model):
         abstract = True
         ordering = ('name', )
 
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, unique=True, db_index=True)
 
     def __str__(self):
         return self.name
@@ -70,32 +70,32 @@ class Sku(models.Model):
         ordering = ('id', )
 
     # id
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=255)
-    upc = models.CharField(max_length=255, blank=True, null=True)
+    id =                    models.IntegerField(primary_key=True)
+    name =                  models.CharField(max_length=255, db_index=True)
+    upc =                   models.CharField(max_length=255, blank=True, null=True, db_index=True, default=None)
     # categorization
-    brand = models.ForeignKey(Brand)
-    categories = models.ManyToManyField(Category)
+    brand =                 models.ForeignKey(Brand)
+    categories =            models.ManyToManyField(Category)
     # inventory
-    quantity_on_hand = models.IntegerField(default=0)
-    location = models.CharField(max_length=255, blank=True, null=True)
+    quantity_on_hand =      models.IntegerField(default=0, db_index=True)
+    location =              models.CharField(max_length=255, blank=True, null=True, db_index=True, default=None)
     # dat team
-    owner = models.ForeignKey(User)
-    supplier = models.ForeignKey(Supplier)
-    lead_time = models.IntegerField(blank=True, null=True)
-    minimum_quantity = models.IntegerField(default=0)
-    notify_at_threshold = models.BooleanField(default=False)
-    cost = models.FloatField(blank=True, null=True, default=0)
-    supplier_sku = models.CharField(max_length=255, blank=True, null=True)
-    case_quantity = models.IntegerField(blank=True, null=True)
-    in_live_deal = models.BooleanField(default=False)
-    is_subscription = models.BooleanField(default=False)
-    notes = models.TextField(blank=True, null=True)
-    action = models.CharField(max_length=255, choices=ACTIONS, blank=True, null=True)
-    action_date = models.DateField(blank=True, null=True)
+    owner =                 models.ForeignKey(User)
+    supplier =              models.ForeignKey(Supplier)
+    lead_time =             models.IntegerField(blank=True, null=True, default=None)
+    minimum_quantity =      models.IntegerField(default=0)
+    notify_at_threshold =   models.BooleanField(default=False)
+    cost =                  models.FloatField(blank=True, null=True, default=0)
+    supplier_sku =          models.CharField(max_length=255, blank=True, null=True, default=None)
+    case_quantity =         models.IntegerField(blank=True, null=True, default=None)
+    in_live_deal =          models.BooleanField(default=False, db_index=True)
+    is_subscription =       models.BooleanField(default=False, db_index=True)
+    notes =                 models.CharField(max_length=255, blank=True, null=True, db_index=True, default=None)
+    action =                models.CharField(max_length=255, choices=ACTIONS, blank=True, null=True, db_index=True, default=None)
+    action_date =           models.CharField(max_length=255, blank=True, null=True, default=None)
     # stamp
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
+    created =               models.DateTimeField(auto_now_add=True)
+    modified =              models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         if not self.id:  # new sku
@@ -159,7 +159,7 @@ class SkuAttribute(models.Model):
 
     sku = models.ForeignKey(Sku)
     attribute = models.ForeignKey(Attribute)
-    value = models.CharField(max_length=255)
+    value = models.CharField(max_length=255, db_index=True)
 
     def get_absolute_url(self):
         return reverse('app:sku_attribute__view', args=[str(self.pk)])
@@ -178,7 +178,7 @@ class CostAdjustment(models.Model):
     new = models.FloatField()
     who = models.ForeignKey(User)
     reason = models.ForeignKey(CostAdjustmentReason)
-    detail = models.TextField(blank=True, null=True)
+    detail = models.TextField(blank=True, null=True, default=None)
     created = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
@@ -191,7 +191,7 @@ class CostAdjustment(models.Model):
         return reverse('app:cost_adjustment__view', args=[str(self.pk)])
 
     def __str__(self):
-        return '[%d] %d to %d' % (self.sku.id, self.old, self.new)
+        return '[%s] %s to %s' % (self.sku.id, self.old, self.new)
 
 
 class QuantityAdjustment(models.Model):
@@ -204,7 +204,7 @@ class QuantityAdjustment(models.Model):
     new = models.IntegerField()
     who = models.ForeignKey(User)
     reason = models.ForeignKey(QuantityAdjustmentReason)
-    detail = models.TextField(blank=True, null=True)
+    detail = models.TextField(blank=True, null=True, default=None)
     created = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
@@ -217,7 +217,7 @@ class QuantityAdjustment(models.Model):
         return reverse('app:quantity_adjustment__view', args=[str(self.pk)])
 
     def __str__(self):
-        return '[%d] %d to %d' % (self.sku.id, self.old, self.new)
+        return '[%s] %s to %s' % (self.sku.id, self.old, self.new)
 
 
 class Contact(models.Model):
@@ -231,14 +231,14 @@ class Contact(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
     work_phone = models.CharField(max_length=255)
-    cell_phone = models.CharField(max_length=255, blank=True, null=True)
-    fax = models.CharField(max_length=255, blank=True, null=True)
-    address1 = models.CharField(max_length=255, blank=True, null=True)
-    address2 = models.CharField(max_length=255, blank=True, null=True)
-    address3 = models.CharField(max_length=255, blank=True, null=True)
-    city = models.CharField(max_length=255, blank=True, null=True)
-    state = models.CharField(max_length=255, choices=US_STATES, blank=True, null=True)
-    zipcode = models.CharField(max_length=255, blank=True, null=True)
+    cell_phone = models.CharField(max_length=255, blank=True, null=True, default=None)
+    fax = models.CharField(max_length=255, blank=True, null=True, default=None)
+    address1 = models.CharField(max_length=255, blank=True, null=True, default=None)
+    address2 = models.CharField(max_length=255, blank=True, null=True, default=None)
+    address3 = models.CharField(max_length=255, blank=True, null=True, default=None)
+    city = models.CharField(max_length=255, blank=True, null=True, default=None)
+    state = models.CharField(max_length=255, choices=US_STATES, blank=True, null=True, default=None)
+    zipcode = models.CharField(max_length=255, blank=True, null=True, default=None)
     country = models.CharField(max_length=255, default='United States', blank=True, null=True)
     represents = models.ForeignKey(Supplier)
     label = models.ManyToManyField(ContactLabel)
@@ -256,12 +256,12 @@ class Receiver(models.Model):
         ordering = ('name', )
 
     name = models.CharField(max_length=255, unique=True)
-    address1 = models.CharField(max_length=255, blank=True, null=True)
-    address2 = models.CharField(max_length=255, blank=True, null=True)
-    address3 = models.CharField(max_length=255, blank=True, null=True)
-    city = models.CharField(max_length=255, blank=True, null=True)
-    state = models.CharField(max_length=255, choices=US_STATES, blank=True, null=True)
-    zipcode = models.CharField(max_length=255, blank=True, null=True)
+    address1 = models.CharField(max_length=255, blank=True, null=True, default=None)
+    address2 = models.CharField(max_length=255, blank=True, null=True, default=None)
+    address3 = models.CharField(max_length=255, blank=True, null=True, default=None)
+    city = models.CharField(max_length=255, blank=True, null=True, default=None)
+    state = models.CharField(max_length=255, choices=US_STATES, blank=True, null=True, default=None)
+    zipcode = models.CharField(max_length=255, blank=True, null=True, default=None)
     country = models.CharField(max_length=255, default='United States', blank=True, null=True)
 
     def get_absolute_url(self):
@@ -280,10 +280,10 @@ class PurchaseOrder(models.Model):
     supplier = models.ForeignKey(Supplier)
     contact = models.ForeignKey(Contact)
     receiver = models.ForeignKey(Receiver)
-    note = models.TextField(blank=True, null=True)
+    note = models.TextField(blank=True, null=True, default=None)
     created = models.DateTimeField(auto_now_add=True)
     terms = models.CharField(max_length=255)
-    tracking_url = models.CharField(max_length=512, blank=True, null=True)
+    tracking_url = models.CharField(max_length=512, blank=True, null=True, default=None)
     shipping_cost = models.FloatField(default=0.0)
     sales_tax = models.FloatField(default=0.0)
 
@@ -313,7 +313,7 @@ class PurchaseOrder(models.Model):
     total_cost = property(_total_cost)
 
     def __str__(self):
-        return '%d-%s' % (self.id, self.creator.username)
+        return '%s-%s' % (self.id, self.creator.username)
 
 
 class PurchaseOrderLineItem(models.Model):
@@ -355,7 +355,7 @@ class PurchaseOrderLineItem(models.Model):
     total_cost = property(_total_cost)
 
     def __str__(self):
-        return '[%d] %d' % (self.sku.id, self.quantity_ordered)
+        return '[%s] %s' % (self.sku.id, self.quantity_ordered)
 
 
 class Shipment(models.Model):
@@ -365,14 +365,14 @@ class Shipment(models.Model):
 
     creator = models.ForeignKey(User)
     purchase_order = models.ForeignKey(PurchaseOrder)
-    note = models.TextField(blank=True, null=True)
+    note = models.TextField(blank=True, null=True, default=None)
     created = models.DateTimeField(auto_now_add=True)
 
     def get_absolute_url(self):
         return reverse('app:shipment__view', args=[str(self.pk)])
 
     def __str__(self):
-        return '%d-%s' % (self.id, self.creator.username)
+        return '%s-%s' % (self.id, self.creator.username)
 
 
 class ShipmentLineItem(models.Model):
@@ -389,7 +389,7 @@ class ShipmentLineItem(models.Model):
         adj.sku = self.sku
         adj.new = self.sku.quantity_on_hand + self.quantity_received
         adj.reason = QuantityAdjustmentReason.objects.get(name='Received Shipment')
-        adj.detail = 'received %d units on %s in shipment <a href="%s">%s</a>' % (
+        adj.detail = 'received %s units on %s in shipment <a href="%s">%s</a>' % (
             self.quantity_received, self.shipment.created.strftime('%x'), self.shipment.get_absolute_url(), str(self)
         )
         adj.who = self.shipment.creator
@@ -400,4 +400,4 @@ class ShipmentLineItem(models.Model):
         return reverse('app:shipment_line_item__view', args=[str(self.pk)])
 
     def __str__(self):
-        return '[%d] %d' % (self.sku.id, self.quantity_received)
+        return '[%s] %s' % (self.sku.id, self.quantity_received)
