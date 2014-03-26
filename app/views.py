@@ -649,6 +649,7 @@ def filter_skus(request):
     name = request.GET.get('name', None)  # icontains
     quantity_on_hand = request.GET.get('quantity_on_hand', None)  # parse and apply filter
     expiration_date = request.GET.get('expiration_date', None)
+    subscription = request.GET.get('is_subscription', None)
 
     skus = Sku.objects.order_by('id')
     warnings = []
@@ -677,6 +678,10 @@ def filter_skus(request):
     if name:
         skus = skus.filter(name__icontains=name)
         params['Name'] = name
+
+    if subscription:
+        skus = skus.filter(is_subscription=subscription)
+        params['Is Subscription'] = subscription
 
     if quantity_on_hand:
         keywords = quantity_on_hand.split()
