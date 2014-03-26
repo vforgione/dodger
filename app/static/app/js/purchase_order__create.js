@@ -49,7 +49,7 @@ $(document).ready(function () {
     });
     // load up skus
     $.ajax({
-      url: "/api/sku_service/skus/?supplier__id=" + $(this).val(),
+      url: "/api/sku_service/skus/?supplier__id=" + $(this).val() + '&limit=0',
       type: "GET",
       dataType: "json",
       success: function (xhr) {
