@@ -347,6 +347,7 @@ class PurchaseOrderLineItem(models.Model):
     def _adjusted_unit_cost(self):
         dp = self.discount_percent or 0
         dd = self.discount_dollar or 0
+        dp /= 100.0
         return (self.unit_cost - (self.unit_cost * dp)) - dd
     adjusted_unit_cost = property(_adjusted_unit_cost)
 
