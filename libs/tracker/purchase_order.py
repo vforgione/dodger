@@ -7,7 +7,7 @@ from os.path import abspath, dirname, join
 import sys
 PROJ_DIR = abspath(join(dirname(__file__), '..', '..'))
 sys.path.insert(0, PROJ_DIR)
-environ.setdefault('DJANGO_SETTINGS_MODULE', 'dodger.settings.dev')
+environ.setdefault('DJANGO_SETTINGS_MODULE', 'dodger.settings.prod')
 
 import codecs
 import csv
