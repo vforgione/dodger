@@ -383,6 +383,16 @@ def quantity_adjustment__create(request):
                 sku = Sku.objects.get(id=request.POST['sku'])
                 sku.location = request.POST['location']
                 sku.save()
+            if str(request.POST['new']) == '0':
+                sku = Sku.objects.get(id=request.POST['sku'])
+                sku.location = None
+                sku.save()
+                try:
+                    sa = SkuAttribute.objects.get(sku=sku, attribute__name='Expiration Date')
+                    sa.delete()
+                    messages.add_message(request, messages.INFO, "Expiration Date Deleted", extra_tags='alert-info')
+                except SkuAttribute.DoesNotExist:
+                    pass
             if chain:
                 messages.add_message(request, messages.INFO, "Quantity Adjustment Saved", extra_tags='alert-info')
                 if loc:
