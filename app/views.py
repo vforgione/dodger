@@ -377,7 +377,16 @@ def quantity_adjustment__create(request):
         form = QuantityAdjustmentForm(request.POST)
         if form.is_valid():
             form.save()
+            loc = False
+            if 'location' in request.POST:
+                loc = True
+                sku = Sku.objects.get(id=request.POST['sku'])
+                sku.location = request.POST['location']
+                sku.save()
             if chain:
+                messages.add_message(request, messages.INFO, "Quantity Adjustment Saved", extra_tags='alert-info')
+                if loc:
+                    messages.add_message(request, messages.INFO, "Location Saved", extra_tags='alert-info')
                 return redirect(reverse('app:quantity_adjustment__create'))
             return redirect(reverse('app:quantity_adjustment__view'))
 

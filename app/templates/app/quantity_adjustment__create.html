@@ -19,6 +19,18 @@
   </div>
   {% endif %}
   {% endfor %}
+  {{ formset.management_form }}
+  {% for form in formset %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field.errors }}{{ field }}
+  </div>
+  {% endfor %}
+  {% endfor %}
+  <div class="form-group">
+    <label for="location">Location:</label>
+    <input type="text" name="location" id="location" class="form-control" placeholder="optional" />
+  </div>
   <table class="table">
     <tbody>
     <tr>
