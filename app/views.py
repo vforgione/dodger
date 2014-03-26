@@ -368,15 +368,17 @@ def quantity_adjustment__view(request, pk=None):
 
 @login_required
 def quantity_adjustment__create(request):
-    print 'barf'
     if request.method == 'GET':
         form = QuantityAdjustmentForm()
         form.fields['who'].initial = request.user
 
     else:
+        chain = request.POST['submit'] == 'Save and Create Another Adjustment'
         form = QuantityAdjustmentForm(request.POST)
         if form.is_valid():
             form.save()
+            if chain:
+                return redirect(reverse('app:quantity_adjustment__create'))
             return redirect(reverse('app:quantity_adjustment__view'))
 
     return render_to_response(
@@ -477,7 +479,7 @@ def sku__view(request, pk=None, order=None):
 
     else:
         if order is None:
-            order = 'id'
+            order = '-id'
         skus = Sku.objects.order_by(order)
         paginator = Paginator(skus, PAGE_SIZE)
         page = request.GET.get('page', 1)
