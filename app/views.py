@@ -547,6 +547,33 @@ def sku__create(request):
 
 
 @login_required
+def sku__clone(request, pk):
+    existing = get_object_or_404(Sku, pk=pk)
+    clone = Sku()
+    clone.name = existing.name
+    clone.upc = existing.upc
+    clone.brand = existing.brand
+    clone.quantity_on_hand = existing.quantity_on_hand
+    clone.location = existing.location
+    clone.owner = existing.owner
+    clone.supplier = existing.supplier
+    clone.lead_time = existing.lead_time
+    clone.minimum_quantity = existing.minimum_quantity
+    clone.notify_at_threshold = existing.notify_at_threshold
+    clone.cost = existing.cost
+    clone.supplier_sku = existing.supplier_sku
+    clone.case_quantity = existing.case_quantity
+    clone.in_live_deal = existing.in_live_deal
+    clone.is_subscription = existing.is_subscription
+    clone.notes = existing.notes
+    clone.action = existing.action
+    clone.action_date = existing.action_date
+    clone.save()
+    messages.add_message(request, messages.INFO, "SKU Cloned - Edit Attributes as Needed", extra_tags='alert-info')
+    return redirect(reverse('app:sku__update', args=[str(clone.pk)]))
+
+
+@login_required
 def sku__update(request, pk=None):
     if pk is None:
         skus = Sku.objects.order_by('-created')
