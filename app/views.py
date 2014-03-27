@@ -378,7 +378,7 @@ def quantity_adjustment__create(request):
         if form.is_valid():
             form.save()
             loc = False
-            if 'location' in request.POST:
+            if 'location' in request.POST and len(request.POST['location']):
                 loc = True
                 sku = Sku.objects.get(id=request.POST['sku'])
                 sku.location = request.POST['location']
