@@ -391,7 +391,8 @@ class ShipmentLineItem(models.Model):
         adj.new = self.sku.quantity_on_hand + self.quantity_received
         adj.reason = QuantityAdjustmentReason.objects.get(name='Received Shipment')
         adj.detail = 'received %s units on %s in shipment <a href="%s">%s</a>' % (
-            self.quantity_received, self.shipment.created.strftime('%x'), self.shipment.get_absolute_url(), str(self)
+            self.quantity_received, self.shipment.created.strftime('%x'), self.shipment.get_absolute_url(),
+            str(self.shipment)
         )
         adj.who = self.shipment.creator
         adj.save()
