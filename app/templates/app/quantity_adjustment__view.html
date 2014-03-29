@@ -27,7 +27,7 @@
   <tbody>
   {% for adj in adjs %}
   <tr>
-    <td><a href="{{ adj.get_absolute_url }}">{{ adj }}</a></td><td>{{ adj.created }}</td><td>{{ adj.who.username }}</td><td>{{ adj.reason }}</td><td>{{ adj.detail|default:"-" }}</td>
+    <td><a href="{{ adj.get_absolute_url }}">{{ adj }}</a></td><td>{{ adj.created }}</td><td>{{ adj.who.username }}</td><td>{{ adj.reason }}</td><td>{{ adj.detail|default:"-"|safe }}</td>
   </tr>
   {% endfor %}
   </tbody>
