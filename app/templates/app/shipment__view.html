@@ -17,13 +17,14 @@
       <div class="table-responsive">
         <table class="table table-condensed">
         <thead>
-          <tr><th>SKU</th><th>Qty Received</th></tr>
+          <tr><th>SKU</th><th>Qty Received</th><th>&nbsp;</th></tr>
         </thead>
         <tbody>
           {% for li in ship.shipmentlineitem_set.all %}
           <tr>
             <td class="col-lg-6"><a href="{{ li.sku.get_absolute_url }}" target="_blank">{{ li.sku }}</a></td>
-            <td class="col-lg-6">{{ li.quantity_received }}</td>
+            <td class="col-lg-5">{{ li.quantity_received }}</td>
+            <td class="col-lg-1"><a href="{% url 'app:shipment_line_item__update' li.pk %}" class="btn btn-danger" style="font-size:0.7em">Update this Line Item</a></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -34,7 +35,7 @@
 </tbody>
 </table>
 <a class="btn btn-primary default" href="{% url 'app:shipment__view' %}">Back To List</a>
-<a class="btn btn-danger pull-right" href="{% url 'app:shipment__update' ship.pk %}">Modify This Shipment</a>
+{#<a class="btn btn-danger pull-right" href="{% url 'app:shipment__update' ship.pk %}">Modify This Shipment</a>#}
 
 {% elif ships %}
 <h3>View Shipments</h3>

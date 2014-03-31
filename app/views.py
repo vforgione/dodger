@@ -1332,6 +1332,50 @@ def shipment__export(request):
 
 # shipment line items
 @login_required
+def shipment_line_item__update(request, pk):
+    li = get_object_or_404(ShipmentLineItem, pk=pk)
+    shipment = li.shipment
+
+    if request.method == 'GET':
+        form = ShipmentLineItemForm(instance=li)
+        form.fields['sku'].queryset = Sku.objects.filter(id=-1)
+        form.fields['quantity_received'].initial = ''
+
+    else:
+        form = ShipmentLineItemForm(request.POST, instance=li)
+        if form.is_valid():
+            # undo previous qty adj
+            old_qa = QuantityAdjustment.objects.get(sku=li.sku, detail__contains='href="%s"' % li.shipment.get_absolute_url())
+            qa = QuantityAdjustment(
+                sku=li.sku,
+                reason=QuantityAdjustmentReason.objects.get(name__icontains='rollback'),
+                old=li.sku.quantity_on_hand,
+                new=li.sku.quantity_on_hand - (old_qa.new - old_qa.old),
+                who=request.user,
+                detail='undoing adjustment %s -- updating shipping receipt' % old_qa.id
+            )
+            qa.save()
+            # save line item
+            form.save()
+            return redirect(reverse('app:shipment__view', args=[str(li.shipment.pk)]))
+
+    return render_to_response(
+        'app/shipment_line_item__update.html',
+        {
+            'li': li,
+            'shipment': shipment,
+            'form': form,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+@login_required
+def shipment_line_item__delete(request, pk):
+    li = get_object_or_404(ShipmentLineItem, pk=pk)
+
+
+@login_required
 def filter_sh_lis(request):
     pos = request.GET.get('pos', None)
     skus = request.GET.get('skus', None)
