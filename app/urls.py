@@ -61,6 +61,7 @@ urlpatterns = patterns(
 
     ##
     # shipment line items
+    url(r'^shipment_line_items/update/(?P<pk>\d+)?/$', 'shipment_line_item__update', name='shipment_line_item__update'),
     url(r'^shipment_line_items/table/$', 'shipment_line_item__table', name='shipment_line_item__table'),
     url(r'^shipment_line_items/export/$', 'shipment_line_item__export', name='shipment_line_item__export'),
 
