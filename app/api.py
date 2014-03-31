@@ -200,6 +200,7 @@ class SkuResource(ModelResource):
             'categories': ALL_WITH_RELATIONS,
             'quantity_on_hand': ALL,
             'location': ALL,
+            'last_location': ALL,
             'owner': ALL_WITH_RELATIONS,
             'supplier': ALL_WITH_RELATIONS,
             'lead_time': ALL,

@@ -143,6 +143,7 @@ def search(request):
                 Q(name__icontains=q) |
                 Q(upc__icontains=q) |
                 Q(location__icontains=q) |
+                Q(last_location__icontains=q) |
                 Q(brand__name__icontains=q) |
                 Q(owner__username__icontains=q) |
                 Q(supplier__name__icontains=q) |
@@ -788,8 +789,8 @@ def sku__export(request):
 
     writer = csv.writer(response)
     writer.writerow([
-        'id', 'name', 'upc', 'brand', 'categories', 'qty on hand', 'location', 'owner', 'supplier', 'lead time',
-        'min qty', 'notify', 'cost', 'supplier sku', 'case qty', 'in live deal', 'subscription', 'notes',
+        'id', 'name', 'upc', 'brand', 'categories', 'qty on hand', 'location', 'last location', 'owner', 'supplier',
+        'lead time', 'min qty', 'notify', 'cost', 'supplier sku', 'case qty', 'in live deal', 'subscription', 'notes',
         'action', 'action_date', 'color', 'size', 'style', 'flavor', 'weight', 'is bulk', 'expiration date',
         'country of origin', 'created', 'modified'
     ])
@@ -799,7 +800,7 @@ def sku__export(request):
         attrs = dict((attr.attribute.name, attr.value) for attr in attrs)
         writer.writerow([
             sku.id, sku.name, sku.upc, sku.brand.name, ', '.join([cat.name for cat in sku.categories.all()]),
-            sku.quantity_on_hand, sku.location, sku.owner.username, sku.supplier.name, sku.lead_time,
+            sku.quantity_on_hand, sku.location, sku.last_location, sku.owner.username, sku.supplier.name, sku.lead_time,
             sku.minimum_quantity, sku.notify_at_threshold, sku.cost, sku.supplier_sku, sku.case_quantity,
             sku.in_live_deal, sku.is_subscription, sku.notes, sku.action, sku.action_date, attrs.get('Color', ''), attrs.get('Size', ''),
             attrs.get('Style', ''), attrs.get('Flavor', ''), attrs.get('Weight', ''), attrs.get('Is Bulk', ''),

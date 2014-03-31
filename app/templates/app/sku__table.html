@@ -135,7 +135,7 @@
   <tr>
     <th>ID</th><th>Name</th><th>Categories</th><th>Brand</th><th>Supplier</th>
     <th>Owner</th><th>Min Qty</th><th>Notify</th><th>Cost</th>
-    <th>Supp SKU</th><th>Case Qty</th><th>Location</th><th>Qty on Hand</th>
+    <th>Supp SKU</th><th>Case Qty</th><th>Location</th><th>Last Location</th><th>Qty on Hand</th>
     <th>In Live Deal</th><th>Is Subscription SKU</th><th>Notes</th>
     <th>Action</th><th>Action Date</th><th>Attributes</th>
   </tr>
@@ -155,6 +155,7 @@
     <td>{{ sku.supplier_sku|default:"-" }}</td>
     <td>{{ sku.case_quantity|default:"-" }}</td>
     <td>{{ sku.location|default:"-" }}</td>
+    <td>{{ sku.last_location|default:"-" }}</td>
     <td>{{ sku.quantity_on_hand }}</td>
     <td>{{ sku.in_live_deal }}</td>
     <td>{{ sku.is_subscription }}</td>
