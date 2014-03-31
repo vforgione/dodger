@@ -14,6 +14,7 @@
   <tr><th>Categories</th><td>{{ sku.categories.all|default:"-"|join:", " }}</td></tr>
   <tr><th>Qty on Hand</th><td>{{ sku.quantity_on_hand }}</td></tr>
   <tr><th>Location</th><td>{{ sku.location|default:"-" }}</td></tr>
+  <tr><th>Last Location</th><td>{{ sku.last_location|default:"-" }}</td></tr>
   <tr><th>Owner</th><td>{{ sku.owner.username }}</td></tr>
   <tr><th>Supplier</th><td>{{ sku.supplier }}</td></tr>
   <tr><th>Lead Time</th><td>{{ sku.lead_time|default:"-" }}</td></tr>

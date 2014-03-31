@@ -20,6 +20,7 @@ from models import *
 #   test description property
 #   test cost adjustment
 #   test quantity adjustment
+#   test location swap
 # -----------------------------------------------
 class SkuModelTests(TestCase):
 
@@ -96,7 +97,7 @@ class SkuModelTests(TestCase):
         sa1.save()
         sa2 = SkuAttribute(sku=self.sku, attribute=self.attr2, value='07/2015')
         sa2.save()
-        self.assertEqual(self.sku.description, '[10161] Tyson test sku : 6", (Expiration) 07/2015')
+        self.assertEqual(self.sku.description, '[10161] Tyson test sku : (Expiration Date) 07/2015, (Size) 6"')
 
     def test_cost_adjustment(self):
         cost_adj = CostAdjustment(
@@ -121,6 +122,17 @@ class SkuModelTests(TestCase):
         qty_adj.save()
         self.assertEqual(self.sku.quantity_on_hand, qty_adj.new)
         self.assertEqual(qty_adj.old, old)
+
+    def test_location(self):
+        self.sku.location = 'some new location'
+        self.sku.save()
+        self.assertEqual(self.sku.old_location, None)
+        self.assertEqual(self.sku.location, 'some new location')
+        self.sku.location = 'an even newer location'
+        self.sku.save()
+        self.assertEqual(self.sku.old_location, 'some new location')
+        self.assertEqual(self.sku.location, 'an even newer location')
+        print self.sku.location, self.sku.old_location
 
 
 # ===============================================
@@ -149,13 +161,12 @@ class PurchaseOrderModelTests(TestCase):
         self.contact = Contact(
             name='test contact',
             email='name@place.com',
-            phone='312 555 0123',
+            work_phone='312 555 0123',
             address1='123 Fake St',
             city='Anytown',
             state='OH',
             zipcode='12345',
-            represents=self.supplier,
-            label=self.label
+            represents=self.supplier
         )
         self.contact.save()
 
@@ -330,13 +341,12 @@ class AbsoluteUrlTests(TestCase):
         self.contact = Contact(
             name='test contact',
             email='name@place.com',
-            phone='312 555 0123',
+            work_phone='312 555 0123',
             address1='123 Fake St',
             city='Anytown',
             state='OH',
             zipcode='12345',
-            represents=self.supplier,
-            label=self.label
+            represents=self.supplier
         )
         self.contact.save()
 

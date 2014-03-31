@@ -70,38 +70,45 @@ class Sku(models.Model):
         ordering = ('id', )
 
     # id
-    id =                    models.IntegerField(primary_key=True)
-    name =                  models.CharField(max_length=255, db_index=True)
-    upc =                   models.CharField(max_length=255, blank=True, null=True, db_index=True, default=None)
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=255, db_index=True)
+    upc = models.CharField(max_length=255, blank=True, null=True, db_index=True, default=None)
     # categorization
-    brand =                 models.ForeignKey(Brand)
-    categories =            models.ManyToManyField(Category)
+    brand = models.ForeignKey(Brand)
+    categories = models.ManyToManyField(Category)
     # inventory
-    quantity_on_hand =      models.IntegerField(default=0, db_index=True)
-    location =              models.CharField(max_length=255, blank=True, null=True, db_index=True, default=None)
+    quantity_on_hand = models.IntegerField(default=0, db_index=True)
+    location = models.CharField(max_length=255, blank=True, null=True, db_index=True, default=None)
+    last_location = models.CharField(max_length=255, blank=True, null=True, db_index=True, default=None)
     # dat team
-    owner =                 models.ForeignKey(User)
-    supplier =              models.ForeignKey(Supplier)
-    lead_time =             models.IntegerField(blank=True, null=True, default=None)
-    minimum_quantity =      models.IntegerField(default=0)
-    notify_at_threshold =   models.BooleanField(default=False)
-    cost =                  models.FloatField(blank=True, null=True, default=0)
-    supplier_sku =          models.CharField(max_length=255, blank=True, null=True, default=None)
-    case_quantity =         models.IntegerField(blank=True, null=True, default=None)
-    in_live_deal =          models.BooleanField(default=False, db_index=True)
-    is_subscription =       models.BooleanField(default=False, db_index=True)
-    notes =                 models.CharField(max_length=255, blank=True, null=True, db_index=True, default=None)
-    action =                models.CharField(max_length=255, choices=ACTIONS, blank=True, null=True, db_index=True, default=None)
-    action_date =           models.CharField(max_length=255, blank=True, null=True, default=None)
+    owner = models.ForeignKey(User)
+    supplier = models.ForeignKey(Supplier)
+    lead_time = models.IntegerField(blank=True, null=True, default=None)
+    minimum_quantity = models.IntegerField(default=0)
+    notify_at_threshold = models.BooleanField(default=False)
+    cost = models.FloatField(blank=True, null=True, default=0)
+    supplier_sku = models.CharField(max_length=255, blank=True, null=True, default=None)
+    case_quantity = models.IntegerField(blank=True, null=True, default=None)
+    in_live_deal = models.BooleanField(default=False, db_index=True)
+    is_subscription = models.BooleanField(default=False, db_index=True)
+    notes = models.CharField(max_length=255, blank=True, null=True, db_index=True, default=None)
+    action = models.CharField(max_length=255, choices=ACTIONS, blank=True, null=True, db_index=True, default=None)
+    action_date = models.CharField(max_length=255, blank=True, null=True, default=None)
     # stamp
-    created =               models.DateTimeField(auto_now_add=True)
-    modified =              models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         if not self.id:  # new sku
             self.id = Sku.objects.all().aggregate(models.Max('id'))['id__max'] + 1
             super(Sku, self).save(*args, **kwargs)
         else:  # existing sku
+            try:
+                old = Sku.objects.get(pk=self.pk)
+                if old.location != self.location:
+                    self.last_location = old.location
+            except:
+                pass
             if 'qty_change' in kwargs:
                 del kwargs['qty_change']
                 super(Sku, self).save(*args, **kwargs)
