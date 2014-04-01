@@ -2,7 +2,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
-from models import PurchaseOrderLineItem, ShipmentLineItem
+from models import PurchaseOrderLineItem, ShipmentLineItem, Sku
 
 
 def shipment_received(po_id, shipment, dat_email):
@@ -22,24 +22,24 @@ def shipment_received(po_id, shipment, dat_email):
     extra = []
     for sku, qo in po_li.iteritems():
         if sku in sh_li:
+            s = Sku.objects.get(id=sku)
+            name = '(%s) %s' % (s.supplier.name, s.description)
             if qo == sh_li[sku]:
-                line_items.append((sku, qo, sh_li[sku], '#000'))
+                line_items.append((name, qo, sh_li[sku], '#000'))
             else:
-                line_items.append((sku, qo, sh_li[sku], '#f00'))
+                line_items.append((name, qo, sh_li[sku], '#f00'))
             del sh_li[sku]
         else:
             missing.append((sku, qo))
     for sku, qr in sh_li.iteritems():
         extra.append((sku, qr))
-    print po_li
-    print sh_li
-    print line_items
-    print missing
-    print extra
 
     html = render_to_string('email/shipment_received.html',
         {'shipment': shipment, 'line_items': line_items, 'missing': missing, 'extra': extra})
     plain = strip_tags(html)
+    print html
+    print ''
+    print plain
 
     email = EmailMultiAlternatives(subject, plain, sender, [dat_email, ])
     email.attach_alternative(html, 'text/html')
