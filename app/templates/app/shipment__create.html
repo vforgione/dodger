@@ -6,7 +6,7 @@
 <p>No outstanding POs - nothing to do here.</p>
 
 {% else %}
-<form action="." method="post">
+<form action="." method="post" onsubmit="return confirm('Check in this shipment?');">
   {% csrf_token %}
   {% for field in form %}
   <div class="form-group">
