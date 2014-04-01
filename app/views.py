@@ -179,7 +179,8 @@ def search(request):
                 Q(contact__name__icontains=q) |
                 Q(creator__username__icontains=q) |
                 Q(id__in=poids) |
-                Q(note__icontains=q)
+                Q(note__icontains=q) |
+                Q(deal__icontains=q)
             )
 
             sids = []
@@ -945,6 +946,7 @@ def filter_pos(request):
     notes = request.GET.get('notes', None)
     start = request.GET.get('start', None)
     end = request.GET.get('end', None)
+    deal = request.GET.get('deal', None)
 
     pos = PurchaseOrder.objects.order_by('-created')
     warnings = []
@@ -975,6 +977,10 @@ def filter_pos(request):
         end = datetime(*(int(x) for x in end.split('-')), hour=23, minute=59, second=59, tzinfo=TZ)
         pos = pos.filter(created__range=[start, end])
         params['Date Created Range'] = '%s to %s' % (s, e)
+
+    if deal:
+        pos = pos.filter(deal__icontains=deal)
+        params['Deal'] = deal
 
     return pos, warnings, params
 
@@ -1015,18 +1021,18 @@ def purchase_order__export(request):
     pos, _, params = filter_pos(request)
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="pos__%s.csv"' % \
-          '_'.join([slugify(p) for p in params.values()])
+    response['Content-Disposition'] = 'attachment; filename="pos__%s.csv"' % '_'.join(
+        [slugify(p) for p in params.values()])
 
     writer = csv.writer(response)
     writer.writerow([
-        'id', 'date created', 'dat member', 'supplier', 'contact', 'receiver', 'terms',
+        'id', 'deal', 'date created', 'dat member', 'supplier', 'contact', 'receiver', 'terms',
         'shipping_cost', 'sales_tax', 'total_cost', 'note', 'shipment ids', 'tracking url'
     ])
 
     for po in pos:
         writer.writerow([
-            po.id, po.created.strftime('%m/%d/%Y'), po.creator.username, po.supplier.name, po.contact.name,
+            po.id, po.deal, po.created.strftime('%m/%d/%Y'), po.creator.username, po.supplier.name, po.contact.name,
             po.receiver.name, po.terms, po.shipping_cost, po.sales_tax, po.total_cost,
             po.note, ', '.join([str(s.id) for s in po.shipment_set.all()]), po.tracking_url
         ])
@@ -1053,6 +1059,7 @@ def filter_po_lis(request):
     skus = request.GET.get('skus', None)
     start = request.GET.get('start', None)
     end = request.GET.get('end', None)
+    deal = request.GET.get('deal', None)
 
     lis = PurchaseOrderLineItem.objects.order_by('-purchase_order__id')
     warnings = []
@@ -1072,6 +1079,10 @@ def filter_po_lis(request):
         end = datetime(*(int(x) for x in end.split('-')), hour=23, minute=59, second=59, tzinfo=TZ)
         lis = lis.filter(purchase_order__created__range=[start, end])
         params['Date Created Range'] = '%s to %s' % (s, e)
+
+    if deal:
+        lis = lis.filter(purchase_order__deal__icontains=deal)
+        params['Deal'] = deal
 
     return lis, warnings, params
 
@@ -1105,17 +1116,18 @@ def purchase_order_line_item__export(request):
     lis, _, params = filter_po_lis(request)
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="po_line_items__%s.csv"' % \
-          '_'.join([slugify(p) for p in params.values()])
+    response['Content-Disposition'] = 'attachment; filename="po_line_items__%s.csv"' % '_'.join(
+        [slugify(p) for p in params.values()])
 
     writer = csv.writer(response)
     writer.writerow([
-        'po id', 'sku id', 'qty ordered', 'disc percent', 'disc dollar'
+        'po id', 'deal', 'sku id', 'qty ordered', 'disc percent', 'disc dollar'
     ])
 
     for li in lis:
         writer.writerow([
-            li.purchase_order.id, li.sku.id, li.quantity_ordered, li.discount_percent, li.discount_dollar
+            li.purchase_order.id, li.purchase_order.deal, li.sku.id, li.quantity_ordered, li.discount_percent,
+            li.discount_dollar
         ])
 
     return response

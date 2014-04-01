@@ -108,13 +108,14 @@
   <table class="table">
     <thead>
     <tr>
-      <th>Name</th><th>Supplier</th><th>Contact</th><th>Creator</th><th>SKUs</th>
+      <th>Name</th><th>Deal</th><th>Supplier</th><th>Contact</th><th>Creator</th><th>SKUs</th>
     </tr>
     </thead>
     <tbody>
     {% for po in pos %}
     <tr>
       <td><a href="{{ po.get_absolute_url }}">{{ po }}</a></td>
+      <td>{{ po.deal }}</td>
       <td><a href="{{ po.supplier.get_absolute_url }}">{{ po.supplier }}</a></td>
       <td><a href="{{ po.contact.get_absolute_url }}">{{ po.contact }}</a></td>
       <td>{{ po.creator.email }}</td>

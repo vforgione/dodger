@@ -256,6 +256,7 @@ class PurchaseOrderResource(ModelResource):
         filtering = {
             'id': ALL,
             'creator': ALL_WITH_RELATIONS,
+            'deal': ALL,
             'supplier': ALL_WITH_RELATIONS,
             'contact': ALL_WITH_RELATIONS,
             'receiver': ALL_WITH_RELATIONS,
