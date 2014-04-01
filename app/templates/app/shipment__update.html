@@ -3,7 +3,7 @@
 {% block content %}
 {% if ship %}
 <h3>Update Shipment #{{ ship.id }}</h3>
-<form action="." method="post">
+<form action="." method="post" onsubmit="return confirm('Modify this shipment?');">
   {% csrf_token %}
   {% for field in form %}
   <div class="form-group">
@@ -46,7 +46,7 @@
 </thead>
 <tbody>
   {% for ship in ships %}
-  <tr><td><a href="{% url 'app:shipment__update' ship.pk %}">{{ ship }}</a></td><td><a href="{{ ship.purchase_order.get_absolute_url }}">{{ ship.purchase_order }}</a></td><td>{{ ship.created }}</td></tr>
+  <tr><td><a href="{% url 'app:shipment__update' ship.pk %}" onclick="return confirm('Modify shipment {{ ship }}?');">{{ ship }}</a></td><td><a href="{{ ship.purchase_order.get_absolute_url }}">{{ ship.purchase_order }}</a></td><td>{{ ship.created }}</td></tr>
   {% endfor %}
 </tbody>
 </table>

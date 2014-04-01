@@ -24,7 +24,7 @@
           <tr>
             <td class="col-lg-6"><a href="{{ li.sku.get_absolute_url }}" target="_blank">{{ li.sku }}</a></td>
             <td class="col-lg-5">{{ li.quantity_received }}</td>
-            <td class="col-lg-1"><a href="{% url 'app:shipment_line_item__update' li.pk %}" class="btn btn-danger" style="font-size:0.7em">Update this Line Item</a></td>
+            <td class="col-lg-1"><a href="{% url 'app:shipment_line_item__update' li.pk %}" class="btn btn-danger" style="font-size:0.7em" onclick="return confirm('Modify line {{ li.sku }}?');">Update this Line Item</a></td>
           </tr>
           {% endfor %}
         </tbody>
