@@ -73,15 +73,12 @@
           <td>{{ li.sku.supplier_sku|default:"-" }}</td>
           <td>{{ li.sku.id }}</td>
           <td>
-            {% if li.sku.skuattribute_set.all|length %}
             <ul>
+              <li>Name: {{ li.sku.name }}</li>
               {% for sa in li.sku.skuattribute_set.all %}
               <li>{{ sa.attribute.name }}: {{ sa.value }}</li>
               {% endfor %}
             </ul>
-            {% else %}
-            -
-            {% endif %}
           </td>
           <td>${{ li.unit_cost|floatformat:2 }}</td>
           <td>{{ li.discount_percent|default_if_none:0|floatformat:2 }}%</td>
