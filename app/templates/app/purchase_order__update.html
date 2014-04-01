@@ -45,11 +45,11 @@
 <h3>Select a Purchase Order to Update</h3>
 <table class="table table-striped">
 <thead>
-  <tr><th>&nbsp;</th><th>Date Created</th><th>Creator</th></tr>
+  <tr><th>&nbsp;</th><th>Deal</th><th>Date Created</th><th>Creator</th></tr>
 </thead>
 <tbody>
   {% for po in pos %}
-  <tr><td><a href="{% url 'app:purchase_order__update' po.pk %}">{{ po }}</a></td><td>{{ po.created }}</td><td>{{ po.owner.username }}</td></tr>
+  <tr><td><a href="{% url 'app:purchase_order__update' po.pk %}">{{ po }}</a></td><td>{{ po.deal }}</td><td>{{ po.created }}</td><td>{{ po.owner.username }}</td></tr>
   {% endfor %}
 </tbody>
 </table>

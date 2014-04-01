@@ -7,11 +7,11 @@
   {% for field in form %}
   <div class="form-group">
     {{ field.label_tag }}
-    {% if forloop.counter == 2 or forloop.counter == 3 or forloop.counter == 4 %}
+    {% if forloop.counter == 3 or forloop.counter == 4 or forloop.counter == 5 %}
     <a id="add-id_{{ field.name }}" href="
-      {% if forloop.counter == 2 %}/receivers/create/?popup=1
-      {% elif forloop.counter == 3 %}/suppliers/create/?popup=1
-      {% elif forloop.counter == 4 %}/contacts/create/?popup=1{% endif %}
+      {% if forloop.counter == 3 %}/receivers/create/?popup=1
+      {% elif forloop.counter == 4 %}/suppliers/create/?popup=1
+      {% elif forloop.counter == 5 %}/contacts/create/?popup=1{% endif %}
     " onclick="return showAddPopup(this);">&nbsp;Create a New {{ field.name|capfirst }}</a>
     {% endif %}
     {{ field.errors }}{{ field }}

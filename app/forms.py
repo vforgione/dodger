@@ -227,10 +227,11 @@ class PurchaseOrderForm(forms.ModelForm):
 
     class Meta:
         model = PurchaseOrder
-        fields = ('creator', 'receiver', 'supplier', 'contact', 'terms', 'shipping_cost', 'sales_tax',
-          'note', 'tracking_url')
+        fields = ('creator', 'deal', 'receiver', 'supplier', 'contact', 'terms', 'shipping_cost', 'sales_tax',
+                  'note', 'tracking_url')
         widgets = {
             'creator': forms.Select(attrs={'class': 'form-control creator', 'required': 'required'}),
+            'deal': forms.TextInput(attrs={'class': 'form-control deal', 'required': 'required'}),
             'supplier': forms.Select(attrs={'class': 'form-control supplier', 'required': 'required'}),
             'contact': forms.Select(attrs={'class': 'form-control contact', 'required': 'required'}),
             'receiver': forms.Select(attrs={'class': 'form-control receiver', 'required': 'required'}),

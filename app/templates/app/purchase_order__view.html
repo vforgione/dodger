@@ -13,6 +13,7 @@
 <table class="table">
 <tbody>
   <tr><th>Creator</th><td>{{ po.creator.username }}</td></tr>
+  <tr><th>Deal</th><td>{{ po.deal }}</td></tr>
   <tr><th>Supplier</th><td>{{ po.supplier }}</td></tr>
   <tr><th>Terms</th><td>{{ po.terms }}</td></tr>
   <tr><th>Contact</th><td><a href="{{ po.contact.get_absolute_url }}" target="_blank">{{ po.contact.name }}</a></td></tr>
@@ -79,11 +80,11 @@
 <h3>View Purchase Orders</h3>
 <table class="table table-striped">
 <thead>
-  <tr><th>&nbsp;</th><th>Date Created</th><th>SKUs</th></tr>
+  <tr><th>&nbsp;</th><th>Deal</th><th>Date Created</th><th>SKUs</th></tr>
 </thead>
 <tbody>
   {% for po in pos %}
-  <tr><td><a href="{{ po.get_absolute_url }}">{{ po }}</a></td><td>{{ po.created }}</td><td>{{ po.purchaseorderlineitem_set.all|join:", " }}</td></tr>
+  <tr><td><a href="{{ po.get_absolute_url }}">{{ po }}</a></td><td>{{ po.deal }}</td><td>{{ po.created }}</td><td>{{ po.purchaseorderlineitem_set.all|join:", " }}</td></tr>
   {% endfor %}
 </tbody>
 </table>

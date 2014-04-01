@@ -287,6 +287,7 @@ class PurchaseOrder(models.Model):
     supplier = models.ForeignKey(Supplier)
     contact = models.ForeignKey(Contact)
     receiver = models.ForeignKey(Receiver)
+    deal = models.CharField(max_length=255)
     note = models.TextField(blank=True, null=True, default=None)
     created = models.DateTimeField(auto_now_add=True)
     terms = models.CharField(max_length=255)
