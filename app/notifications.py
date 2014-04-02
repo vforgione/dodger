@@ -41,6 +41,6 @@ def shipment_received(po_id, shipment, dat_email):
     print ''
     print plain
 
-    email = EmailMultiAlternatives(subject, plain, sender, [dat_email, ])
+    email = EmailMultiAlternatives(subject, plain, sender, [dat_email, 'epark@sandboxindustries.com'])
     email.attach_alternative(html, 'text/html')
     email.send(fail_silently=True)
