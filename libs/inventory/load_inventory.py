@@ -84,6 +84,12 @@ def load_inventory(cutoff, filename):
         qa.old = sku.quantity_on_hand
         qa.save()
 
+    ##
+    # fix location
+    for sku in Sku.objects.filter(quantity_on_hand__gt=0, location__in=[None, '']):
+        sku.location = sku.last_location
+        sku.save()
+
 
 if __name__ == '__main__':
     cutoff = sys.argv[1]
