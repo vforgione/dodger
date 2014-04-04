@@ -89,6 +89,10 @@ class CostAdjustmentForm(forms.ModelForm):
             'detail': forms.TextInput(attrs={'class': 'form-control detail', 'placeholder': 'optional'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(CostAdjustmentForm, self).__init__(*args, **kwargs)
+        self.fields['new'].label = 'New Cost'
+
 
 class QuantityAdjustmentForm(forms.ModelForm):
 
@@ -103,6 +107,10 @@ class QuantityAdjustmentForm(forms.ModelForm):
             'reason': forms.Select(attrs={'class': 'form-control reason'}),
             'detail': forms.TextInput(attrs={'class': 'form-control detail', 'placeholder': 'optional'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(QuantityAdjustmentForm, self).__init__(*args, **kwargs)
+        self.fields['new'].label = 'New Quantity'
 
 
 # detailed models

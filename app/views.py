@@ -1054,6 +1054,33 @@ def purchase_order__print(request, pk):
 
 # purchase order line items
 @login_required
+def purchase_order_line_item__update(request, pk):
+    li = get_object_or_404(PurchaseOrderLineItem, pk=pk)
+    po = li.purchase_order
+
+    if request.method == 'GET':
+        form = PurchaseOrderLineItemForm(instance=li)
+        form.fields['sku'].queryset = Sku.objects.filter(id=-1)
+        form.fields['quantity_ordered'].initial = ''
+
+    else:
+        form = PurchaseOrderLineItemForm(request.POST, instance=li)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('app:purchase_order__view', args=[str(li.purchase_order.pk)]))
+
+    return render_to_response(
+        'app/purchase_order_line_item__update.html',
+        {
+            'li': li,
+            'po': po,
+            'form': form,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+@login_required
 def filter_po_lis(request):
     pos = request.GET.get('pos', None)
     skus = request.GET.get('skus', None)
@@ -1166,7 +1193,7 @@ def shipment__view(request, pk=None):
 @login_required
 def shipment__create(request):
     received = [po.id for po in PurchaseOrder.objects.all() if po.is_fully_received()]
-    pos = PurchaseOrder.objects.filter(~Q(id__in=received))
+    pos = PurchaseOrder.objects.filter(~Q(id__in=received)).order_by('created')
     if not len(pos):
         return render_to_response(
             'app/shipment__create.html',
