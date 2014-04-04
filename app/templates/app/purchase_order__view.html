@@ -40,18 +40,19 @@
         <table class="table table-condensed">
         <thead>
           <tr>
-            <th>SKU</th><th>Qty Ordered</th><th>Qty Received</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th>
+            <th>SKU</th><th>Qty Ordered</th><th>Qty Received</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th><th>&nbsp;</th>
           </tr>
         </thead>
         <tbody>
           {% for li in po.purchaseorderlineitem_set.all %}
           <tr>
-            <td class="col-lg-4"><a href="{{ li.sku.get_absolute_url }}" target="_blank">{{ li.sku }}</a></td>
+            <td class="col-lg-3"><a href="{{ li.sku.get_absolute_url }}" target="_blank">{{ li.sku }}</a></td>
             <td class="col-lg-1">{{ li.quantity_ordered }}</td>
             <td class="col-lg-1 rcvd" id="{{ li.sku.id }}" pk="{{ li.sku.id }}"></td>
             <td class="col-lg-2">${{ li.unit_cost|floatformat:2 }}</td>
             <td class="col-lg-2">{{ li.discount_percent|default:0 }}%</td>
             <td class="col-lg-2">${{ li.discount_dollar|default:0|floatformat:2 }}</td>
+            <td class="col-lg-1"><a href="{% url 'app:purchase_order_line_item__update' li.pk %}" class="btn btn-danger" style="font-size:0.7em" onclick="return confirm('Modify line {{ li.sku }}?');">Update this Line Item</a></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -64,15 +65,15 @@
 </table>
 <div class="container">
   <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-6">
       <a class="btn btn-primary default" href="{% url 'app:purchase_order__view' %}">Back To List</a>
     </div>
-    <div class="col-lg-4" style="text-align: center">
-      <a class="btn btn-primary" href="{% url 'app:purchase_order__print' po.pk %}">Save as PDF</a>
+    <div class="col-lg-6" style="text-align: center">
+      <a class="btn btn-primary pull-right" href="{% url 'app:purchase_order__print' po.pk %}">Save as PDF</a>
     </div>
-    <div class="col-lg-4">
-      <a class="btn btn-danger pull-right" href="{% url 'app:purchase_order__update' po.pk %}">Modify This PO</a>
-    </div>
+{#    <div class="col-lg-4">#}
+{#      <a class="btn btn-danger pull-right" href="{% url 'app:purchase_order__update' po.pk %}">Modify This PO</a>#}
+{#    </div>#}
   </div>
 </div>
 

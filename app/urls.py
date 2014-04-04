@@ -48,6 +48,7 @@ urlpatterns = patterns(
 
     ##
     # purchase order line items
+    url(r'^purchase_order_line_items/update/(?P<pk>\d+)?/$', 'purchase_order_line_item__update', name='purchase_order_line_item__update'),
     url(r'^purchase_order_line_items/table/$', 'purchase_order_line_item__table', name='purchase_order_line_item__table'),
     url(r'^purchase_order_line_items/export/$', 'purchase_order_line_item__export', name='purchase_order_line_item__export'),
 
