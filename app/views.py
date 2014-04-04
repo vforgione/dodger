@@ -89,6 +89,8 @@ def search(request):
     suppliers = Supplier.objects.all()
     pos = PurchaseOrder.objects.all()
     shipments = Shipment.objects.all()
+    qas = QuantityAdjustment.objects.all()
+    cas = CostAdjustment.objects.all()
 
     if q:
         # hot phrases
@@ -99,6 +101,8 @@ def search(request):
             suppliers = suppliers.filter(id=-1)
             shipments = shipments.filter(id=-1)
             pos = pos.filter(id=-1)
+            qas = qas.filter(sku__in_libe_deal=True)
+            cas = cas.filter(sku__in_libe_deal=True)
 
         elif q == 'subscription':
             skus = skus.filter(is_subscription=True)
@@ -107,6 +111,8 @@ def search(request):
             suppliers = suppliers.filter(id=-1)
             shipments = shipments.filter(id=-1)
             pos = pos.filter(id=-1)
+            qas = qas.filter(sku__is_subscription=True)
+            cas = cas.filter(sku__is_subscription=True)
 
         elif q == 'consignment':
             skus = skus.filter(action__icontains='consignment')
@@ -115,6 +121,8 @@ def search(request):
             suppliers = suppliers.filter(id=-1)
             shipments = shipments.filter(id=-1)
             pos = pos.filter(id=-1)
+            qas = qas.filter(id=-1)
+            cas = cas.filter(id=-1)
 
         elif q == 'clearance':
             skus = skus.filter(action__icontains='clearance')
@@ -123,6 +131,8 @@ def search(request):
             suppliers = suppliers.filter(id=-1)
             shipments = shipments.filter(id=-1)
             pos = pos.filter(id=-1)
+            qas = qas.filter(sku__action__icontains='clearance')
+            cas = cas.filter(sku__action__icontains='clearance')
 
         elif q == 'open pos':
             _pos = [po.id for po in pos if not po.is_fully_received()]
@@ -132,11 +142,17 @@ def search(request):
             contacts = contacts.filter(id=-1)
             suppliers = suppliers.filter(id=-1)
             shipments = shipments.filter(id=-1)
+            qas = qas.filter(id=-1)
+            cas = cas.filter(id=-1)
 
 
         # full search
         else:
             attrs = [obj.sku.id for obj in SkuAttribute.objects.filter(value=q)]
+            qa = [obj.sku.id for obj in
+                  QuantityAdjustment.objects.filter(Q(reason__name__icontains=q) | Q(who__username__icontains=q))]
+            ca = [obj.sku.id for obj in
+                  CostAdjustment.objects.filter(Q(reason__name__icontains=q) | Q(who__username__icontains=q))]
 
             skus = skus.filter(
                 Q(id__icontains=q) |
@@ -149,7 +165,9 @@ def search(request):
                 Q(supplier__name__icontains=q) |
                 Q(supplier_sku__icontains=q) |
                 Q(id__in=attrs) |
-                Q(notes__icontains=q)
+                Q(notes__icontains=q) |
+                Q(id__in=qa) |
+                Q(id__in=ca)
             )
 
             brands = brands.filter(name__icontains=q)
@@ -195,6 +213,18 @@ def search(request):
                 Q(purchase_order__id__in=poids)
             )
 
+            qas = qas.filter(
+                Q(reason__name__icontains=q) |
+                Q(detail__icontains=q) |
+                Q(who__username__icontains=q)
+            )
+
+            cas = cas.filter(
+                Q(reason__name__icontains=q) |
+                Q(detail__icontains=q) |
+                Q(who__username__icontains=q)
+            )
+
     return render_to_response(
         'app/search.html',
         {
@@ -204,6 +234,8 @@ def search(request):
             'suppliers': suppliers.distinct(),
             'pos': pos.distinct(),
             'ships': shipments.distinct(),
+            'qas': qas.distinct(),
+            'cas': cas.distinct(),
             'q': q,
         },
         context_instance=RequestContext(request)
