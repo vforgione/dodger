@@ -69,7 +69,7 @@
             <td>
               {{ adj.reason.name }}
               {% if adj.detail|length %}
-              &nbsp;:&nbsp;{{ adj.detail }}
+              &nbsp;:&nbsp;{{ adj.detail|safe }}
               {% endif %}
             </td>
           </tr>
@@ -100,7 +100,7 @@
             <td>
               {{ adj.reason.name }}
               {% if adj.detail|length %}
-              &nbsp;:&nbsp;{{ adj.detail }}
+              &nbsp;:&nbsp;{{ adj.detail|safe }}
               {% endif %}
             </td>
           </tr>
