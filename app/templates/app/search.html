@@ -108,13 +108,14 @@
   <table class="table">
     <thead>
     <tr>
-      <th>Name</th><th>Deal</th><th>Supplier</th><th>Contact</th><th>Creator</th><th>SKUs</th>
+      <th>Name</th><th>Date</th><th>Deal</th><th>Supplier</th><th>Contact</th><th>Creator</th><th>SKUs</th>
     </tr>
     </thead>
     <tbody>
     {% for po in pos %}
     <tr>
       <td><a href="{{ po.get_absolute_url }}">{{ po }}</a></td>
+      <td>{{ po.created }}</td>
       <td>{{ po.deal }}</td>
       <td><a href="{{ po.supplier.get_absolute_url }}">{{ po.supplier }}</a></td>
       <td><a href="{{ po.contact.get_absolute_url }}">{{ po.contact }}</a></td>
@@ -138,13 +139,14 @@
   <table class="table">
     <thead>
     <tr>
-      <th>Name</th><th>PO Ref</th><th>Creator</th><th>SKUs</th>
+      <th>Name</th><th>Date</th><th>PO Ref</th><th>Creator</th><th>SKUs</th>
     </tr>
     </thead>
     <tbody>
     {% for ship in ships %}
     <tr>
       <td><a href="{{ ship.get_absolute_url }}">{{ ship }}</a></td>
+      <td>{{ ship.created }}</td>
       <td><a href="{{ ship.purchase_order.get_absolute_url }}">{{ ship.purchase_order }}</a></td>
       <td>{{ ship.creator.email }}</td>
       <td>
