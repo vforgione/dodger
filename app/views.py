@@ -1166,7 +1166,7 @@ def shipment__view(request, pk=None):
 @login_required
 def shipment__create(request):
     received = [po.id for po in PurchaseOrder.objects.all() if po.is_fully_received()]
-    pos = PurchaseOrder.objects.filter(~Q(id__in=received))
+    pos = PurchaseOrder.objects.filter(~Q(id__in=received)).order_by('created')
     if not len(pos):
         return render_to_response(
             'app/shipment__create.html',
