@@ -228,14 +228,14 @@ def search(request):
     return render_to_response(
         'app/search.html',
         {
-            'skus': skus.distinct(),
-            'brands': brands.distinct(),
-            'contacts': contacts.distinct(),
-            'suppliers': suppliers.distinct(),
-            'pos': pos.distinct(),
-            'ships': shipments.distinct(),
-            'qas': qas.distinct(),
-            'cas': cas.distinct(),
+            'skus': skus.distinct(), 'sku_ids': ','.join([str(x.id) for x in skus]),
+            'brands': brands.distinct(), 'brand_ids': ','.join([str(x.id) for x in brands]),
+            'contacts': contacts.distinct(), 'contact_ids': ','.join([str(x.id) for x in contacts]),
+            'suppliers': suppliers.distinct(), 'supp_ids': ','.join([str(x.id) for x in suppliers]),
+            'pos': pos.distinct(), 'po_ids': ','.join([str(x.id) for x in pos]),
+            'ships': shipments.distinct(), 'ship_ids': ','.join([str(x.id) for x in shipments]),
+            'qas': qas.distinct(), 'qas_ids': ','.join([str(x.id) for x in qas]),
+            'cas': cas.distinct(), 'ca_ids': ','.join([str(x.id) for x in cas]),
             'q': q,
         },
         context_instance=RequestContext(request)
@@ -299,10 +299,14 @@ def filter_cost_adjs(request):
     skus = request.GET.get('skus', None)
     start = request.GET.get('start', None)
     end = request.GET.get('end', None)
+    ids = request.GET.get('ids', None)
 
     adjs = CostAdjustment.objects.order_by('-created')
     warnings = []
     params = {}
+
+    if ids:
+        adjs = adjs.filter(id__in=[id for id in ids.split(',')])
 
     if creator:
         adjs = adjs.filter(who__id=creator)
@@ -449,10 +453,14 @@ def filter_qty_adjs(request):
     skus = request.GET.get('skus', None)
     start = request.GET.get('start', None)
     end = request.GET.get('end', None)
+    ids = request.GET.get('ids', None)
 
     adjs = QuantityAdjustment.objects.order_by('-created')
     warnings = []
     params = {}
+
+    if ids:
+        adjs = adjs.filter(id__in=[id for id in ids.split(',')])
 
     if creator:
         adjs = adjs.filter(who__id=creator)
@@ -711,10 +719,15 @@ def filter_skus(request):
     quantity_on_hand = request.GET.get('quantity_on_hand', None)  # parse and apply filter
     expiration_date = request.GET.get('expiration_date', None)
     subscription = request.GET.get('is_subscription', None)
+    ids = request.GET.get('ids', None)
 
     skus = Sku.objects.order_by('id')
     warnings = []
     params = {}
+
+    if ids:
+        skus = skus.filter(id__in=[id for id in ids.split(',')])
+        params['ID'] = ', '.join(ids)
 
     if brand:
         skus = skus.filter(brand__id=brand)
@@ -1016,10 +1029,14 @@ def filter_pos(request):
     start = request.GET.get('start', None)
     end = request.GET.get('end', None)
     deal = request.GET.get('deal', None)
+    ids = request.GET.get('ids', None)
 
     pos = PurchaseOrder.objects.order_by('-created')
     warnings = []
     params = {}
+
+    if ids:
+        pos = pos.filter(id__in=[id for id in ids.split(',')])
 
     if creator:
         pos = pos.filter(creator__id=creator)
@@ -1156,10 +1173,14 @@ def filter_po_lis(request):
     start = request.GET.get('start', None)
     end = request.GET.get('end', None)
     deal = request.GET.get('deal', None)
+    ids = request.GET.get('ids', None)
 
     lis = PurchaseOrderLineItem.objects.order_by('-purchase_order__id')
     warnings = []
     params = {}
+
+    if ids:
+        lis = lis.filter(id__in=[id for id in ids.split(',')])
 
     if pos:
         lis = lis.filter(purchase_order__id__in=[po.rstrip() for po in pos.split(',')])
@@ -1368,10 +1389,14 @@ def filter_shipments(request):
     pos = request.GET.get('pos', None)
     start = request.GET.get('start', None)
     end = request.GET.get('end', None)
+    ids = request.GET.get('ids', None)
 
     ships = Shipment.objects.order_by('-created')
     warnings = []
     params = {}
+
+    if ids:
+        ships = ships.filter(id__in=[id for id in ids.split(',')])
 
     if creator:
         ships = ships.filter(creator__id=creator)
@@ -1423,7 +1448,7 @@ def shipment__export(request):
     ships, _, params = filter_shipments(request)
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="pos__%s.csv"' % \
+    response['Content-Disposition'] = 'attachment; filename="ship__%s.csv"' % \
           '_'.join([slugify(p) for p in params.values()])
 
     writer = csv.writer(response)
@@ -1490,10 +1515,14 @@ def filter_sh_lis(request):
     skus = request.GET.get('skus', None)
     start = request.GET.get('start', None)
     end = request.GET.get('end', None)
+    ids = request.GET.get('ids', None)
 
     lis = ShipmentLineItem.objects.order_by('-shipment__purchase_order__id')
     warnings = []
     params = {}
+
+    if ids:
+        lis = lis.filter(id__in=[id for id in ids.split(',')])
 
     if pos:
         lis = lis.filter(shipment__purchase_order__id__in=[po.rstrip() for po in pos.split(',')])

@@ -37,6 +37,7 @@
       {% endfor %}
     </tbody>
     </table>
+  <a href="/skus/export/?ids={{ sku_ids }}" class="btn btn-info">Export These SKUs</a>
   </div>
   {% endif %}
 
@@ -57,6 +58,7 @@
   {% endfor %}
   </tbody>
   </table>
+  <a href="/quantity_adjustments/export/?ids={{ qas_ids }}" class="btn btn-info">Export These Adjustments</a>
   {% endif %}
 
   {% if cas|length %}
@@ -76,6 +78,7 @@
   {% endfor %}
   </tbody>
   </table>
+  <a href="/cost_adjustments/export/?ids={{ cas_ids }}" class="btn btn-info">Export These Adjustments</a>
   {% endif %}
 
   {% if brands|length %}
@@ -170,6 +173,7 @@
     </tbody>
   </table>
   </div>
+  <a href="/purchase_orders/export/?ids={{ po_ids }}" class="btn btn-info">Export These Purchase Orders</a>
   {% endif %}
 
   {% if ships|length %}
@@ -199,6 +203,7 @@
     </tbody>
   </table>
   </div>
+  <a href="/shipments/export/?ids={{ ship_ids }}" class="btn btn-info">Export These Shipments</a>
   {% endif %}
 
 {% endblock %}
