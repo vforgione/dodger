@@ -818,6 +818,16 @@ def sku__locations(request):
 
 
 ##
+# sku attributes
+@login_required
+def sku_attribute__delete(request, pk):
+    sa = get_object_or_404(SkuAttribute, pk=pk)
+    sku = sa.sku.pk
+    sa.delete()
+    return redirect(reverse('app:sku__update', args=[str(sku)]))
+
+
+##
 # purchase orders
 @login_required
 def purchase_order__view(request, pk=None):

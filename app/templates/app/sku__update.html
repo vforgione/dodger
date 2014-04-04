@@ -14,18 +14,19 @@
   <div class="table-responsive">
     <table class="table table-condensed">
     <thead>
-      <tr><th>Attribute</th><th>Value</th></tr>
+      <tr><th>Attribute</th><th>Value</th><th>&nbsp;</th></tr>
     </thead>
     <tbody>
       {% for form in formset %}
       <tr>
         {% for field in form %}
         {% if forloop.counter < 4 and forloop.counter != 1 %}
-        <td class="col-lg-6">{{ field }}{{ field.errors }}</td>
+        <td class="col-lg-5">{{ field }}{{ field.errors }}</td>
         {% else %}
         <td style="display:none">{{ field }}{{ field.errors }}</td>
         {% endif %}
         {% endfor %}
+        <td class="col-lg-1"><a id="{{ forloop.counter }}" class="btn btn-danger del-btn" style="font-size:0.7em" onclick="return confirm('Delete This Attribute?')">Delete This Attribute</a></td>
       </tr>
       {% endfor %}
     </tbody>

@@ -38,6 +38,10 @@ urlpatterns = patterns(
     url(r'^skus(?:/(?P<order>[a-zA-Z0-9\-_]+))?/$', 'sku__view', name='sku__view'),  # list view with ordering
 
     ##
+    # sku attributes
+    url(r'sku_attributes/delete/(?P<pk>\d+)?/$', 'sku_attribute__delete', name='sku_attribute__delete'),
+
+    ##
     # purchase orders
     url(r'^purchase_orders(?:/(?P<pk>\d+))?/$', 'purchase_order__view', name='purchase_order__view'),
     url(r'^purchase_orders/create/$', 'purchase_order__create', name='purchase_order__create'),
