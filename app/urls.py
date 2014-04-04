@@ -24,6 +24,7 @@ urlpatterns = patterns(
     url(r'^quantity_adjustments/create/$', 'quantity_adjustment__create', name='quantity_adjustment__create'),
     url(r'^quantity_adjustments/table/$', 'quantity_adjustment__table', name='quantity_adjustment__table'),
     url(r'^quantity_adjustments/export/$', 'quantity_adjustment__export', name='quantity_adjustment__export'),
+    url(r'^quantity_adjustments/mass_zero/$', 'quantity_adjustment__mass_zero', name='quantity_adjustment__mass_zero'),
 
     ##
     # skus

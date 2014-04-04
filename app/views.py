@@ -489,6 +489,33 @@ def quantity_adjustment__export(request):
     return response
 
 
+@login_required
+def quantity_adjustment__mass_zero(request):
+    if request.method == 'POST':
+        skus = request.POST.getlist('skus')
+        for sku in skus:
+            sku = Sku.objects.get(id=sku)
+            qa = QuantityAdjustment(
+                sku=sku,
+                new=0,
+                reason=QuantityAdjustmentReason.objects.get(name='Done Deal'),
+                who=request.user
+            )
+            try:
+                qa.save()
+            except Exception, e:
+                messages.add_message(request, messages.ERROR, str(e), extra_tags='alert-danger')
+
+        return redirect(reverse('app:quantity_adjustment__view'))
+
+
+    return render_to_response(
+        'app/quantity_adjustment__mass_zero.html',
+        {},
+        context_instance=RequestContext(request)
+    )
+
+
 ##
 # skus
 @login_required
