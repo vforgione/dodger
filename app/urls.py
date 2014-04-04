@@ -24,6 +24,7 @@ urlpatterns = patterns(
     url(r'^quantity_adjustments/create/$', 'quantity_adjustment__create', name='quantity_adjustment__create'),
     url(r'^quantity_adjustments/table/$', 'quantity_adjustment__table', name='quantity_adjustment__table'),
     url(r'^quantity_adjustments/export/$', 'quantity_adjustment__export', name='quantity_adjustment__export'),
+    url(r'^quantity_adjustments/mass_zero/$', 'quantity_adjustment__mass_zero', name='quantity_adjustment__mass_zero'),
 
     ##
     # skus
@@ -36,6 +37,10 @@ urlpatterns = patterns(
     # /skus/table/ breaks this, so it has to be last
     url(r'^skus(?:/(?P<pk>\d+))?/$', 'sku__view', name='sku__view'),  # detail view
     url(r'^skus(?:/(?P<order>[a-zA-Z0-9\-_]+))?/$', 'sku__view', name='sku__view'),  # list view with ordering
+
+    ##
+    # sku attributes
+    url(r'sku_attributes/delete/(?P<pk>\d+)?/$', 'sku_attribute__delete', name='sku_attribute__delete'),
 
     ##
     # purchase orders
