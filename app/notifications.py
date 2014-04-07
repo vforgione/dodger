@@ -7,7 +7,7 @@ from models import PurchaseOrderLineItem, ShipmentLineItem, Sku
 
 def shipment_received(po_id, shipment, dat_email):
     sender = 'dodger notifications'
-    subject = 'Shipment Received for PO %s' % po_id
+    subject = '[dodger notifications] Shipment Received for PO %s' % po_id
 
     po_li = dict((li.sku.id, li.quantity_ordered)
                  for li in PurchaseOrderLineItem.objects.filter(purchase_order__id=po_id))
@@ -37,9 +37,6 @@ def shipment_received(po_id, shipment, dat_email):
     html = render_to_string('email/shipment_received.html',
         {'shipment': shipment, 'line_items': line_items, 'missing': missing, 'extra': extra})
     plain = strip_tags(html)
-    print html
-    print ''
-    print plain
 
     email = EmailMultiAlternatives(subject, plain, sender, [dat_email, 'epark@sandboxindustries.com'])
     email.attach_alternative(html, 'text/html')

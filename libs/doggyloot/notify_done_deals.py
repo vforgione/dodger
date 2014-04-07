@@ -35,7 +35,7 @@ def notify():
 
     # build email
     sender = 'dodger notifications'
-    subject = 'Done Deal SKUs for %s' % TODAY.strftime('%x')
+    subject = '[dodger notifications] Done Deal SKUs for %s' % TODAY.strftime('%x')
     html = render_to_string('email/done_deal.html', {'skus': skus, 'unknown': unknown, 'yesterday': YESTERDAY})
     plain = strip_tags(html)
 

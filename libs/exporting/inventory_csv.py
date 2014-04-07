@@ -57,7 +57,7 @@ def notify():
                 adjs.append([adj.created, why])
             try:
                 most_recent = max(adjs, key=lambda x: x[0])
-                if ':' in most_recent[1]:
+                if ':' in most_recent:
                     imported_date = most_recent[1].split(':')[0].strip()
                     imported_date = datetime.strptime(imported_date, '%m/%d/%Y')
                     most_recent[0] = imported_date

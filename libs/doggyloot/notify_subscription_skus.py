@@ -22,7 +22,7 @@ def notify():
 
     # build email
     sender = 'dodger notifications'
-    subject = 'Subscription SKUs'
+    subject = '[dodger notifications] Subscription SKUs'
     html = render_to_string('email/subscription_skus.html', {'skus': skus})
     plain = strip_tags(html)
 
