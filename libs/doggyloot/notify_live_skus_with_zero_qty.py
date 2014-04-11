@@ -33,7 +33,7 @@ def notify():
     skus = Sku.objects.filter(id__in=sku_ids.keys())
     for sku in skus:
         sku.deal = sku_ids[str(sku.id)]
-    unknown = set([sku for sku in sku_ids if sku not in [s.id for s in skus]])
+    unknown = set([sku for sku in sku_ids if sku not in [str(s.id) for s in skus]])
 
     # build email
     sender = 'dodger notifications'
