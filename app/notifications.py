@@ -38,6 +38,8 @@ def shipment_received(po_id, shipment, dat_email):
         {'shipment': shipment, 'line_items': line_items, 'missing': missing, 'extra': extra})
     plain = strip_tags(html)
 
-    email = EmailMultiAlternatives(subject, plain, sender, [dat_email, 'epark@sandboxindustries.com'])
+    email = EmailMultiAlternatives(subject, plain, sender, [dat_email, 'epark@sandboxindustries.com',
+                                                            'jim@doggyloot.com', 'mike@doggyloot.com',
+                                                            shipment.creator.email])
     email.attach_alternative(html, 'text/html')
     email.send(fail_silently=True)
