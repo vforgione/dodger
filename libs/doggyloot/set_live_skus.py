@@ -18,7 +18,7 @@ from app.models import Sku
 
 def get_skus_from_sd():
     res = requests.get(URI_LIVE_SKUS)
-    res = json.load(res.text)
+    res = json.loads(res.text)
     sku_ids = []
     for skuid in res:
         sku_ids.extend(skuid.split(' '))
