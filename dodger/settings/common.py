@@ -44,6 +44,11 @@ STATIC_ROOT = os.path.join(PROJ_DIR, 'static')
 
 
 # template config
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.request',
+    'django.contrib.auth.context_processors.auth',
+)
+
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )

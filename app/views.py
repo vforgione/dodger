@@ -860,26 +860,33 @@ def sku__export(request):
     response['Content-Disposition'] = 'attachment; filename="skus__%s.csv"' % \
           '_'.join([slugify(p) for p in params.values()])
 
-    writer = csv.writer(response)
-    writer.writerow([
+    attributes = [attr.name for attr in Attribute.objects.all()]
+    fields = [
         'id', 'name', 'upc', 'brand', 'categories', 'qty on hand', 'location', 'last location', 'owner', 'supplier',
         'lead time', 'min qty', 'notify', 'cost', 'supplier sku', 'case qty', 'in live deal', 'subscription', 'notes',
-        'action', 'action_date', 'color', 'size', 'style', 'flavor', 'weight', 'is bulk', 'expiration date',
-        'country of origin', 'created', 'modified'
-    ])
+        'action', 'action_date',
+    ]
+    fields.extend([a.lower() for a in attributes])
+    fields.extend(['created', 'modified'])
+    # print('\n\n' + str(fields) + '\n\n')
+
+    writer = csv.writer(response)
+    writer.writerow(fields)
 
     for sku in skus:
         attrs = SkuAttribute.objects.filter(sku__id=sku.id)
         attrs = dict((attr.attribute.name, attr.value) for attr in attrs)
-        writer.writerow([
+        row = [
             sku.id, sku.name, sku.upc, sku.brand.name, ', '.join([cat.name for cat in sku.categories.all()]),
             sku.quantity_on_hand, sku.location, sku.last_location, sku.owner.username, sku.supplier.name, sku.lead_time,
             sku.minimum_quantity, sku.notify_at_threshold, sku.cost, sku.supplier_sku, sku.case_quantity,
-            sku.in_live_deal, sku.is_subscription, sku.notes, sku.action, sku.action_date, attrs.get('Color', ''), attrs.get('Size', ''),
-            attrs.get('Style', ''), attrs.get('Flavor', ''), attrs.get('Weight', ''), attrs.get('Is Bulk', ''),
-            attrs.get('Expiration Date', ''), attrs.get('Country of Origin', ''), sku.created.strftime('%m/%d/%Y'),
-            sku.modified.strftime('%m/%d/%Y')
-        ])
+            sku.in_live_deal, sku.is_subscription, sku.notes, sku.action, sku.action_date,
+        ]
+        for attr in attributes:
+            row.append(attrs.get(attr, ''))
+        row.extend([sku.created.strftime('%m/%d/%Y'), sku.modified.strftime('%m/%d/%Y')])
+        # print('\n\n' + str(row) + '\n\n')
+        writer.writerow(row)
 
     return response
 
