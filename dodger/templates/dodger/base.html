@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <title>dodger | {% block title %}sku management{% endblock %}</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {% block meta %}{% endblock %}
+
+  {% load static %}
+  <link rel="shortcut icon" href="{% static 'dodger/img/favicon.ico' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/bootstrap-theme.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'dodger/css/base.min.css' %}" />
+  {% block css %}{% endblock %}
+
+  {% block extrahead %}{% endblock %}
+
+  <!--[if lt IE 9]>
+  <script src="{% static 'dodger/js/html5shiv.min.js' %}"></script>
+  <script src="{% static 'dodger/js/respond.min.js' %}"></script>
+  <![endif]-->
+
+</head>
+<body>
+<div class="container">
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'app:home' %}">dodger</a>
+        </div>
+
+        {% if user.is_active and user.is_authenticated %}
+        <div class="navbar-collapse collapse navbar-left">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Shipments<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="{% url 'app:shipment__view' %}">View Shipments</a></li>
+                <li><a href="{% url 'app:shipment__create' %}">Check In a Shipment</a></li>
+{#                <li><a href="{% url 'app:shipment__update' %}">Update a Shipment</a></li>#}
+                <li><a href="{% url 'app:shipment__table' %}">Export Shipment Data</a></li>
+                <li><a href="{% url 'app:shipment_line_item__table' %}">Export Shp Line Item Data</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Purchase Orders<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="{% url 'app:purchase_order__view' %}">View Purchase Orders</a></li>
+                <li><a href="{% url 'app:purchase_order__create' %}">Create a Purchase Order</a></li>
+{#                <li><a href="{% url 'app:purchase_order__update' %}">Update a Purchase Order</a></li>#}
+                <li><a href="{% url 'app:purchase_order__table' %}">Export Purchase Order Data</a></li>
+                <li><a href="{% url 'app:purchase_order_line_item__table' %}">Export Purchase Order Line Item Data</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">PO Assets<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Suppliers</li>
+                <li><a href="{% url 'app:supplier__view' %}">View Suppliers</a></li>
+                <li><a href="{% url 'app:supplier__create' %}">Create a Supplier</a></li>
+                <li><a href="{% url 'app:supplier__update' %}">Update Suppliers</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Contacts</li>
+                <li><a href="{% url 'app:contact__view' %}">View Contacts</a></li>
+                <li><a href="{% url 'app:contact__create' %}">Create a Contact</a></li>
+                <li><a href="{% url 'app:contact__update' %}">Update Contacts</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Receivers</li>
+                <li><a href="{% url 'app:receiver__view' %}">View Receivers</a></li>
+                <li><a href="{% url 'app:receiver__create' %}">Create a Receiver</a></li>
+                <li><a href="{% url 'app:receiver__update' %}">Update Receivers</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">SKU Manager<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">SKUs</li>
+                <li><a href="{% url 'app:sku__view' %}">View SKUs</a></li>
+                <li><a href="{% url 'app:sku__create' %}">Create a SKU</a></li>
+                <li><a href="{% url 'app:sku__update' %}">Update a SKU</a></li>
+                <li><a href="{% url 'app:sku__table' %}">Export SKU Data</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Quantity Adjustments</li>
+                <li><a href="{% url 'app:quantity_adjustment__view' %}">View Quantity Adjustments</a></li>
+                <li><a href="{% url 'app:quantity_adjustment__create' %}">Create Quantity Adjustment</a></li>
+                <li><a href="{% url 'app:quantity_adjustment__mass_zero' %}">Mass Zero Out</a></li>
+                <li><a href="{% url 'app:quantity_adjustment__table' %}">Export Quantity Adjustment Data</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Cost Adjustments</li>
+                <li><a href="{% url 'app:cost_adjustment__view' %}">View Cost Adjustments</a></li>
+                <li><a href="{% url 'app:cost_adjustment__create' %}">Create Cost Adjustment</a></li>
+                <li><a href="{% url 'app:cost_adjustment__table' %}">Export Cost Adjustment Data</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">SKU Assets<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Attributes</li>
+                <li><a href="{% url 'app:attribute__view' %}">View Attributes</a></li>
+                <li><a href="{% url 'app:attribute__create' %}">Create an Attribute</a></li>
+                <li><a href="{% url 'app:attribute__update' %}">Update Attributes</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Brands</li>
+                <li><a href="{% url 'app:brand__view' %}">View Brands</a></li>
+                <li><a href="{% url 'app:brand__create' %}">Create a Brand</a></li>
+                <li><a href="{% url 'app:brand__update' %}">Update Brands</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Categories</li>
+                <li><a href="{% url 'app:category__view' %}">View Categories</a></li>
+                <li><a href="{% url 'app:category__create' %}">Create a Category</a></li>
+                <li><a href="{% url 'app:category__update' %}">Update Categories</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Contact Labels</li>
+                <li><a href="{% url 'app:contact_label__view' %}">View Contact Labels</a></li>
+                <li><a href="{% url 'app:contact_label__create' %}">Create a Contact Label</a></li>
+                <li><a href="{% url 'app:contact_label__update' %}">Update Contact Labels</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Cost Adjustment Reasons</li>
+                <li><a href="{% url 'app:cost_adjustment_reason__view' %}">View Cost Adjustment Reasons</a></li>
+                <li><a href="{% url 'app:cost_adjustment_reason__create' %}">Create a Cost Adjustment Reasons</a></li>
+                <li><a href="{% url 'app:cost_adjustment_reason__update' %}">Update Cost Adjustment Reasons</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Quantity Adjustment Reasons</li>
+                <li><a href="{% url 'app:quantity_adjustment_reason__view' %}">View Quantity Adjustment Reasons</a></li>
+                <li><a href="{% url 'app:quantity_adjustment_reason__create' %}">Create a Quantity Adjustment Reason</a></li>
+                <li><a href="{% url 'app:quantity_adjustment_reason__update' %}">Update Quantity Adjustment Reasons</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Suppliers</li>
+                <li><a href="{% url 'app:supplier__view' %}">View Suppliers</a></li>
+                <li><a href="{% url 'app:supplier__create' %}">Create a Supplier</a></li>
+                <li><a href="{% url 'app:supplier__update' %}">Update Suppliers</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        {% endif %}
+
+        <div class="navbar-collapse collapse navbar-right">
+          <ul class="nav navbar-nav">
+            {% if user.is_active and user.is_authenticated %}
+            <li><a>
+              <form action="{% url 'app:search' %}" method="get" class="form-search form-inline">
+                <input type="text" name="q" class="search-query form-control omnibar" />
+              </form>
+            </a></li>
+            <li><a href="/accounts/logout/">Logout</a></li>
+            {% elif not user.is_authenticated %}
+            <li><a href="{% url 'social:begin' 'google' %}">Login</a></li>
+            {% endif %}
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-pad"></div>
+
+  {% if messages %}
+  <div class="container">
+    {% for message in messages %}
+    <div class="{{ message.extra_tags }}">
+      <p>{{ message|safe }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div id="content">
+    <div class="container" id="content-main">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+
+  <div id="footer">
+    <div class="container">
+      &copy; 2014 doggyloot, inc.
+    </div>
+  </div>
+
+  <script src="{% static 'dodger/js/jquery-1.11.0.min.js' %}"></script>
+  <script src="{% static 'dodger/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'app/js/popup.js' %}"></script>
+  {% block highlightjs %}{% endblock %}
+  {% block contentjs %}{% endblock %}
+  {% block extrajs %}{% endblock %}
+</div>
+</body>
+</html>

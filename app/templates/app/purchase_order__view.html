@@ -1,13 +1,19 @@
 {% extends 'dodger/base.html' %}
 
+{% block extrahead %}
+<style>td{white-space:nowrap;}</style>
+{% endblock %}
+
 {% block content %}
 <div class="table-responsive">
 
 {% if po %}
+<input type="hidden" id="po" value="{{ po.id }}" />
 <h3>Detail View of Purchase Order #{{ po.id }}</h3>
 <table class="table">
 <tbody>
   <tr><th>Creator</th><td>{{ po.creator.username }}</td></tr>
+  <tr><th>Deal</th><td>{{ po.deal }}</td></tr>
   <tr><th>Supplier</th><td>{{ po.supplier }}</td></tr>
   <tr><th>Terms</th><td>{{ po.terms }}</td></tr>
   <tr><th>Contact</th><td><a href="{{ po.contact.get_absolute_url }}" target="_blank">{{ po.contact.name }}</a></td></tr>
@@ -34,17 +40,19 @@
         <table class="table table-condensed">
         <thead>
           <tr>
-            <th>SKU</th><th>Qty Ordered</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th>
+            <th>SKU</th><th>Qty Ordered</th><th>Qty Received</th><th>Unit Cost</th><th>Discount Percent</th><th>Discount Dollar</th><th>&nbsp;</th>
           </tr>
         </thead>
         <tbody>
           {% for li in po.purchaseorderlineitem_set.all %}
           <tr>
-            <td class="col-lg-4"><a href="{{ li.sku.get_absolute_url }}" target="_blank">{{ li.sku }}</a></td>
-            <td class="col-lg-2">{{ li.quantity_ordered }}</td>
+            <td class="col-lg-3"><a href="{{ li.sku.get_absolute_url }}" target="_blank">{{ li.sku }}</a></td>
+            <td class="col-lg-1">{{ li.quantity_ordered }}</td>
+            <td class="col-lg-1 rcvd" id="{{ li.sku.id }}" pk="{{ li.sku.id }}"></td>
             <td class="col-lg-2">${{ li.unit_cost|floatformat:2 }}</td>
-            <td class="col-lg-2">{{ li.discount_percent|default:"0.00" }}%</td>
+            <td class="col-lg-2">{{ li.discount_percent|default:0 }}%</td>
             <td class="col-lg-2">${{ li.discount_dollar|default:0|floatformat:2 }}</td>
+            <td class="col-lg-1"><a href="{% url 'app:purchase_order_line_item__update' li.pk %}" class="btn btn-danger" style="font-size:0.7em" onclick="return confirm('Modify line {{ li.sku }}?');">Update this Line Item</a></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -57,15 +65,15 @@
 </table>
 <div class="container">
   <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-6">
       <a class="btn btn-primary default" href="{% url 'app:purchase_order__view' %}">Back To List</a>
     </div>
-    <div class="col-lg-4" style="text-align: center">
-      <a class="btn btn-primary" href="{% url 'app:purchase_order__print' po.pk %}">Save as PDF</a>
+    <div class="col-lg-6" style="text-align: center">
+      <a class="btn btn-primary pull-right" href="{% url 'app:purchase_order__print' po.pk %}">Save as PDF</a>
     </div>
-    <div class="col-lg-4">
-      <a class="btn btn-danger pull-right" href="{% url 'app:purchase_order__update' po.pk %}">Modify This PO</a>
-    </div>
+{#    <div class="col-lg-4">#}
+{#      <a class="btn btn-danger pull-right" href="{% url 'app:purchase_order__update' po.pk %}">Modify This PO</a>#}
+{#    </div>#}
   </div>
 </div>
 
@@ -73,11 +81,11 @@
 <h3>View Purchase Orders</h3>
 <table class="table table-striped">
 <thead>
-  <tr><th>&nbsp;</th><th>Date Created</th><th>SKUs</th></tr>
+  <tr><th>&nbsp;</th><th>Deal</th><th>Date Created</th><th>SKUs</th></tr>
 </thead>
 <tbody>
   {% for po in pos %}
-  <tr><td><a href="{{ po.get_absolute_url }}">{{ po }}</a></td><td>{{ po.created }}</td><td>{{ po.purchaseorderlineitem_set.all|join:", " }}</td></tr>
+  <tr><td><a href="{{ po.get_absolute_url }}">{{ po }}</a></td><td>{{ po.deal }}</td><td>{{ po.created }}</td><td>{{ po.purchaseorderlineitem_set.all|join:", " }}</td></tr>
   {% endfor %}
 </tbody>
 </table>
@@ -105,4 +113,9 @@
 
 {% endif %}
 </div>
+{% endblock %}
+
+{% block contentjs %}
+{% load static %}
+<script src="{% static 'app/js/purchase_order__view.js' %}"></script>
 {% endblock %}

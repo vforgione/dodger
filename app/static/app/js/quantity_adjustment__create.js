@@ -30,6 +30,11 @@ $(function () {
       dataType: 'json',
       success: function (xhr) {
         $('#id_new').attr('placeholder', 'Current Qty: ' + xhr.quantity_on_hand);
+        var html = "<div id='detail'>";
+        html += "<b>Description:</b>" + xhr.description + " | <b>Location:</b> " + xhr.location;
+        html += "</div>";
+        $("#detail").remove();
+        $(".sku").parent().append(html);
       },
       error: function (xhr) {
         alert(xhr.responseText);
@@ -39,4 +44,5 @@ $(function () {
       }
     });
   });
+
 });

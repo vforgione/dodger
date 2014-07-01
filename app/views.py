@@ -1,6 +1,8 @@
 import csv
-from datetime import datetime
+from datetime import date, datetime, timedelta
+import json
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.core.urlresolvers import reverse
@@ -14,11 +16,68 @@ from pytz import timezone
 
 from forms import *
 from models import *
+from notifications import *
 
 
 PAGE_SIZE = 20
 
 TZ = timezone('America/Chicago')
+
+
+##
+# home
+def home(request):
+    now = datetime.now()
+    two_weeks_ago = now - timedelta(days=14)
+
+    live_skus = Sku.objects.filter(in_live_deal=True)
+
+    pos = PurchaseOrder.objects.filter(created__gte=two_weeks_ago)
+    pos = [po for po in pos if not po.is_fully_received()]
+    out_pos = []
+    for po in pos:
+        polis = dict([(li.sku.id, li.quantity_ordered) for li in po.purchaseorderlineitem_set.all()])
+        slis = dict([(li.sku.id, li.quantity_received) for li in ShipmentLineItem.objects.filter(shipment__purchase_order=po)])
+        for sku, qty in polis.iteritems():
+            if sku in slis:
+                if qty <= slis[sku]:
+                    pass
+                else:
+                    out_pos.append((str(po), po.get_absolute_url(), sku, qty, slis[sku]))
+            else:
+                out_pos.append((str(po), po.get_absolute_url(), sku, qty, 0))
+
+    awa = date.today() - timedelta(days=7)
+    a_week_ago = datetime(awa.year, awa.month, awa.day)
+    recent_shipments = Shipment.objects.filter(created__gte=a_week_ago)
+
+    live_sku_alert = [sku for sku in Sku.objects.filter(in_live_deal=True, quantity_on_hand__lte=0)]
+    if len(live_sku_alert):
+        messages.add_message(
+            request, messages.ERROR,
+            '<b>The following SKUs are live on the site, but are reporting 0 qty:</b><br />%s' %
+                ', '.join(['<a href="%s" target="_blank">%s</a>' % (s.get_absolute_url(), s.id) for s in live_sku_alert]),
+            extra_tags='alert-danger'
+        )
+
+    location_alert = [sku for sku in Sku.objects.filter(in_live_deal=True, location__in=['', None])]
+    if len(location_alert):
+        messages.add_message(
+            request, messages.ERROR,
+            '<b>The following SKUs are live on the site, but do not have a location recorded:</b><br />%s' %
+                ', '.join(['<a href="%s" target="_blank">%s</a>' % (s.get_absolute_url(), s.id) for s in location_alert]),
+            extra_tags='alert-danger'
+        )
+
+    return render_to_response(
+        'app/home.html',
+        {
+            'live_skus': live_skus,
+            'out_pos': out_pos,
+            'recent_shipments': recent_shipments,
+        },
+        context_instance=RequestContext(request)
+    )
 
 
 ##
@@ -33,25 +92,85 @@ def search(request):
     suppliers = Supplier.objects.all()
     pos = PurchaseOrder.objects.all()
     shipments = Shipment.objects.all()
+    qas = QuantityAdjustment.objects.all()
+    cas = CostAdjustment.objects.all()
 
     if q:
+        # hot phrases
         if q == 'live':
             skus = skus.filter(in_live_deal=True)
+            brands = brands.filter(id=-1)
+            contacts = contacts.filter(id=-1)
+            suppliers = suppliers.filter(id=-1)
+            shipments = shipments.filter(id=-1)
+            pos = pos.filter(id=-1)
+            qas = qas.filter(sku__in_libe_deal=True)
+            cas = cas.filter(sku__in_libe_deal=True)
+
         elif q == 'subscription':
             skus = skus.filter(is_subscription=True)
+            brands = brands.filter(id=-1)
+            contacts = contacts.filter(id=-1)
+            suppliers = suppliers.filter(id=-1)
+            shipments = shipments.filter(id=-1)
+            pos = pos.filter(id=-1)
+            qas = qas.filter(sku__is_subscription=True)
+            cas = cas.filter(sku__is_subscription=True)
+
+        elif q == 'consignment':
+            skus = skus.filter(action__icontains='consignment')
+            brands = brands.filter(id=-1)
+            contacts = contacts.filter(id=-1)
+            suppliers = suppliers.filter(id=-1)
+            shipments = shipments.filter(id=-1)
+            pos = pos.filter(id=-1)
+            qas = qas.filter(id=-1)
+            cas = cas.filter(id=-1)
+
+        elif q == 'clearance':
+            skus = skus.filter(action__icontains='clearance')
+            brands = brands.filter(id=-1)
+            contacts = contacts.filter(id=-1)
+            suppliers = suppliers.filter(id=-1)
+            shipments = shipments.filter(id=-1)
+            pos = pos.filter(id=-1)
+            qas = qas.filter(sku__action__icontains='clearance')
+            cas = cas.filter(sku__action__icontains='clearance')
+
+        elif q == 'open pos':
+            _pos = [po.id for po in pos if not po.is_fully_received()]
+            pos = pos.filter(id__in=_pos)
+            skus = skus.filter(id=-1)
+            brands = brands.filter(id=-1)
+            contacts = contacts.filter(id=-1)
+            suppliers = suppliers.filter(id=-1)
+            shipments = shipments.filter(id=-1)
+            qas = qas.filter(id=-1)
+            cas = cas.filter(id=-1)
+
+
+        # full search
         else:
             attrs = [obj.sku.id for obj in SkuAttribute.objects.filter(value=q)]
+            qa = [obj.sku.id for obj in
+                  QuantityAdjustment.objects.filter(Q(reason__name__icontains=q) | Q(who__username__icontains=q))]
+            ca = [obj.sku.id for obj in
+                  CostAdjustment.objects.filter(Q(reason__name__icontains=q) | Q(who__username__icontains=q))]
 
             skus = skus.filter(
                 Q(id__icontains=q) |
                 Q(name__icontains=q) |
                 Q(upc__icontains=q) |
                 Q(location__icontains=q) |
+                Q(last_location__icontains=q) |
                 Q(brand__name__icontains=q) |
                 Q(owner__username__icontains=q) |
                 Q(supplier__name__icontains=q) |
                 Q(supplier_sku__icontains=q) |
-                Q(id__in=attrs)
+                Q(id__in=attrs) |
+                Q(notes__icontains=q) |
+                Q(id__in=qa) |
+                Q(id__in=ca)
             )
 
             brands = brands.filter(name__icontains=q)
@@ -80,7 +199,9 @@ def search(request):
                 Q(supplier__name__icontains=q) |
                 Q(contact__name__icontains=q) |
                 Q(creator__username__icontains=q) |
-                Q(id__in=poids)
+                Q(id__in=poids) |
+                Q(note__icontains=q) |
+                Q(deal__icontains=q)
             )
 
             sids = []
@@ -95,15 +216,29 @@ def search(request):
                 Q(purchase_order__id__in=poids)
             )
 
+            qas = qas.filter(
+                Q(reason__name__icontains=q) |
+                Q(detail__icontains=q) |
+                Q(who__username__icontains=q)
+            )
+
+            cas = cas.filter(
+                Q(reason__name__icontains=q) |
+                Q(detail__icontains=q) |
+                Q(who__username__icontains=q)
+            )
+
     return render_to_response(
         'app/search.html',
         {
-            'skus': skus.distinct(),
-            'brands': brands.distinct(),
-            'contacts': contacts.distinct(),
-            'suppliers': suppliers.distinct(),
-            'pos': pos.distinct(),
-            'ships': shipments.distinct(),
+            'skus': skus.distinct(), 'sku_ids': ','.join([str(x.id) for x in skus]),
+            'brands': brands.distinct(), 'brand_ids': ','.join([str(x.id) for x in brands]),
+            'contacts': contacts.distinct(), 'contact_ids': ','.join([str(x.id) for x in contacts]),
+            'suppliers': suppliers.distinct(), 'supp_ids': ','.join([str(x.id) for x in suppliers]),
+            'pos': pos.distinct(), 'po_ids': ','.join([str(x.id) for x in pos]),
+            'ships': shipments.distinct(), 'ship_ids': ','.join([str(x.id) for x in shipments]),
+            'qas': qas.distinct(), 'qas_ids': ','.join([str(x.id) for x in qas]),
+            'cas': cas.distinct(), 'ca_ids': ','.join([str(x.id) for x in cas]),
             'q': q,
         },
         context_instance=RequestContext(request)
@@ -167,10 +302,14 @@ def filter_cost_adjs(request):
     skus = request.GET.get('skus', None)
     start = request.GET.get('start', None)
     end = request.GET.get('end', None)
+    ids = request.GET.get('ids', None)
 
     adjs = CostAdjustment.objects.order_by('-created')
     warnings = []
     params = {}
+
+    if ids:
+        adjs = adjs.filter(id__in=[id for id in ids.split(',')])
 
     if creator:
         adjs = adjs.filter(who__id=creator)
@@ -270,15 +409,36 @@ def quantity_adjustment__view(request, pk=None):
 
 @login_required
 def quantity_adjustment__create(request):
-    print 'barf'
     if request.method == 'GET':
         form = QuantityAdjustmentForm()
         form.fields['who'].initial = request.user
 
     else:
+        chain = request.POST['submit'] == 'Save and Create Another Adjustment'
         form = QuantityAdjustmentForm(request.POST)
         if form.is_valid():
             form.save()
+            loc = False
+            if 'location' in request.POST and len(request.POST['location']):
+                loc = True
+                sku = Sku.objects.get(id=request.POST['sku'])
+                sku.location = request.POST['location']
+                sku.save()
+            if str(request.POST['new']) == '0':
+                sku = Sku.objects.get(id=request.POST['sku'])
+                sku.location = None
+                sku.save()
+                try:
+                    sa = SkuAttribute.objects.get(sku=sku, attribute__name='Expiration Date')
+                    sa.delete()
+                    messages.add_message(request, messages.INFO, "Expiration Date Deleted", extra_tags='alert-info')
+                except SkuAttribute.DoesNotExist:
+                    pass
+            if chain:
+                messages.add_message(request, messages.INFO, "Quantity Adjustment Saved", extra_tags='alert-info')
+                if loc:
+                    messages.add_message(request, messages.INFO, "Location Saved", extra_tags='alert-info')
+                return redirect(reverse('app:quantity_adjustment__create'))
             return redirect(reverse('app:quantity_adjustment__view'))
 
     return render_to_response(
@@ -296,10 +456,14 @@ def filter_qty_adjs(request):
     skus = request.GET.get('skus', None)
     start = request.GET.get('start', None)
     end = request.GET.get('end', None)
+    ids = request.GET.get('ids', None)
 
     adjs = QuantityAdjustment.objects.order_by('-created')
     warnings = []
     params = {}
+
+    if ids:
+        adjs = adjs.filter(id__in=[id for id in ids.split(',')])
 
     if creator:
         adjs = adjs.filter(who__id=creator)
@@ -368,17 +532,46 @@ def quantity_adjustment__export(request):
     return response
 
 
+@login_required
+def quantity_adjustment__mass_zero(request):
+    if request.method == 'POST':
+        skus = request.POST.getlist('skus')
+        for sku in skus:
+            sku = Sku.objects.get(id=sku)
+            qa = QuantityAdjustment(
+                sku=sku,
+                new=0,
+                reason=QuantityAdjustmentReason.objects.get(name='Done Deal'),
+                who=request.user
+            )
+            try:
+                qa.save()
+            except Exception, e:
+                messages.add_message(request, messages.ERROR, str(e), extra_tags='alert-danger')
+
+        return redirect(reverse('app:quantity_adjustment__view'))
+
+
+    return render_to_response(
+        'app/quantity_adjustment__mass_zero.html',
+        {},
+        context_instance=RequestContext(request)
+    )
+
+
 ##
 # skus
 @login_required
-def sku__view(request, pk=None):
+def sku__view(request, pk=None, order=None):
     sku, skus = None, None
 
     if pk is not None:
         sku = get_object_or_404(Sku, pk=pk)
 
     else:
-        skus = Sku.objects.order_by('-created')
+        if order is None:
+            order = '-id'
+        skus = Sku.objects.order_by(order)
         paginator = Paginator(skus, PAGE_SIZE)
         page = request.GET.get('page', 1)
         try:
@@ -433,6 +626,33 @@ def sku__create(request):
         },
         context_instance=RequestContext(request)
     )
+
+
+@login_required
+def sku__clone(request, pk):
+    existing = get_object_or_404(Sku, pk=pk)
+    clone = Sku()
+    clone.name = existing.name
+    clone.upc = existing.upc
+    clone.brand = existing.brand
+    clone.quantity_on_hand = existing.quantity_on_hand
+    clone.location = existing.location
+    clone.owner = existing.owner
+    clone.supplier = existing.supplier
+    clone.lead_time = existing.lead_time
+    clone.minimum_quantity = existing.minimum_quantity
+    clone.notify_at_threshold = existing.notify_at_threshold
+    clone.cost = existing.cost
+    clone.supplier_sku = existing.supplier_sku
+    clone.case_quantity = existing.case_quantity
+    clone.in_live_deal = existing.in_live_deal
+    clone.is_subscription = existing.is_subscription
+    clone.notes = existing.notes
+    clone.action = existing.action
+    clone.action_date = existing.action_date
+    clone.save()
+    messages.add_message(request, messages.INFO, "SKU Cloned - Edit Attributes as Needed", extra_tags='alert-info')
+    return redirect(reverse('app:sku__update', args=[str(clone.pk)]))
 
 
 @login_required
@@ -500,10 +720,17 @@ def filter_skus(request):
     in_live_deal = request.GET.get('in_live_deal', None)
     name = request.GET.get('name', None)  # icontains
     quantity_on_hand = request.GET.get('quantity_on_hand', None)  # parse and apply filter
+    expiration_date = request.GET.get('expiration_date', None)
+    subscription = request.GET.get('is_subscription', None)
+    ids = request.GET.get('ids', None)
 
     skus = Sku.objects.order_by('id')
     warnings = []
     params = {}
+
+    if ids:
+        skus = skus.filter(id__in=[id for id in ids.split(',')])
+        params['ID'] = ', '.join(ids)
 
     if brand:
         skus = skus.filter(brand__id=brand)
@@ -528,6 +755,10 @@ def filter_skus(request):
     if name:
         skus = skus.filter(name__icontains=name)
         params['Name'] = name
+
+    if subscription:
+        skus = skus.filter(is_subscription=subscription)
+        params['Is Subscription'] = subscription
 
     if quantity_on_hand:
         keywords = quantity_on_hand.split()
@@ -585,6 +816,10 @@ def filter_skus(request):
             else:
                 warnings.append('Could not parse quantity_on_hand = `%s`' % quantity_on_hand)
 
+    if expiration_date:
+        sku_ids = [attr.sku.id for attr in SkuAttribute.objects.filter(attribute__name='Expiration Date')]
+        skus = skus.filter(id__in=sku_ids)
+
     return skus, warnings, params
 
 
@@ -628,26 +863,50 @@ def sku__export(request):
     response['Content-Disposition'] = 'attachment; filename="skus__%s.csv"' % \
           '_'.join([slugify(p) for p in params.values()])
 
+    attributes = [attr.name for attr in Attribute.objects.all()]
+    fields = [
+        'id', 'name', 'upc', 'brand', 'categories', 'qty on hand', 'location', 'last location', 'owner', 'supplier',
+        'lead time', 'min qty', 'notify', 'cost', 'supplier sku', 'case qty', 'in live deal', 'subscription', 'notes',
+        'action', 'action_date',
+    ]
+    fields.extend([a.lower() for a in attributes])
+    fields.extend(['created', 'modified'])
+    # print('\n\n' + str(fields) + '\n\n')
+
     writer = csv.writer(response)
-    writer.writerow([
-        'id', 'name', 'upc', 'brand', 'categories', 'qty on hand', 'location', 'owner', 'supplier', 'lead time',
-        'min qty', 'notify', 'cost', 'supplier sku', 'case qty', 'in live deal', 'subscription', 'color', 'size',
-        'style', 'flavor', 'weight', 'is bulk', 'expiration date', 'country of origin', 'created', 'modified'
-    ])
+    writer.writerow(fields)
 
     for sku in skus:
         attrs = SkuAttribute.objects.filter(sku__id=sku.id)
         attrs = dict((attr.attribute.name, attr.value) for attr in attrs)
-        writer.writerow([
+        row = [
             sku.id, sku.name, sku.upc, sku.brand.name, ', '.join([cat.name for cat in sku.categories.all()]),
-            sku.quantity_on_hand, sku.location, sku.owner.username, sku.supplier.name, sku.lead_time,
+            sku.quantity_on_hand, sku.location, sku.last_location, sku.owner.username, sku.supplier.name, sku.lead_time,
             sku.minimum_quantity, sku.notify_at_threshold, sku.cost, sku.supplier_sku, sku.case_quantity,
-            sku.in_live_deal, sku.is_subscription, attrs.get('Color', ''), attrs.get('Size', ''), attrs.get('Style', ''),
-            attrs.get('Flavor', ''), attrs.get('Weight', ''), attrs.get('Is Bulk', ''), attrs.get('Expiration Date', ''),
-            attrs.get('Country of Origin', ''), sku.created.strftime('%m/%d/%Y'), sku.modified.strftime('%m/%d/%Y')
-        ])
+            sku.in_live_deal, sku.is_subscription, sku.notes, sku.action, sku.action_date,
+        ]
+        for attr in attributes:
+            row.append(attrs.get(attr, ''))
+        row.extend([sku.created.strftime('%m/%d/%Y'), sku.modified.strftime('%m/%d/%Y')])
+        # print('\n\n' + str(row) + '\n\n')
+        writer.writerow(row)
 
     return response
+
+
+def sku__locations(request):
+    output = dict([(sku.id, sku.location) for sku in Sku.objects.all()])
+    return HttpResponse(json.dumps(output), content_type='application/json')
+
+
+##
+# sku attributes
+@login_required
+def sku_attribute__delete(request, pk):
+    sa = get_object_or_404(SkuAttribute, pk=pk)
+    sku = sa.sku.pk
+    sa.delete()
+    return redirect(reverse('app:sku__update', args=[str(sku)]))
 
 
 ##
@@ -779,10 +1038,15 @@ def filter_pos(request):
     notes = request.GET.get('notes', None)
     start = request.GET.get('start', None)
     end = request.GET.get('end', None)
+    deal = request.GET.get('deal', None)
+    ids = request.GET.get('ids', None)
 
     pos = PurchaseOrder.objects.order_by('-created')
     warnings = []
     params = {}
+
+    if ids:
+        pos = pos.filter(id__in=[id for id in ids.split(',')])
 
     if creator:
         pos = pos.filter(creator__id=creator)
@@ -809,6 +1073,10 @@ def filter_pos(request):
         end = datetime(*(int(x) for x in end.split('-')), hour=23, minute=59, second=59, tzinfo=TZ)
         pos = pos.filter(created__range=[start, end])
         params['Date Created Range'] = '%s to %s' % (s, e)
+
+    if deal:
+        pos = pos.filter(deal__icontains=deal)
+        params['Deal'] = deal
 
     return pos, warnings, params
 
@@ -849,18 +1117,18 @@ def purchase_order__export(request):
     pos, _, params = filter_pos(request)
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="pos__%s.csv"' % \
-          '_'.join([slugify(p) for p in params.values()])
+    response['Content-Disposition'] = 'attachment; filename="pos__%s.csv"' % '_'.join(
+        [slugify(p) for p in params.values()])
 
     writer = csv.writer(response)
     writer.writerow([
-        'id', 'date created', 'dat member', 'supplier', 'contact', 'receiver', 'terms',
+        'id', 'deal', 'date created', 'dat member', 'supplier', 'contact', 'receiver', 'terms',
         'shipping_cost', 'sales_tax', 'total_cost', 'note', 'shipment ids', 'tracking url'
     ])
 
     for po in pos:
         writer.writerow([
-            po.id, po.created.strftime('%m/%d/%Y'), po.creator.username, po.supplier.name, po.contact.name,
+            po.id, po.deal, po.created.strftime('%m/%d/%Y'), po.creator.username, po.supplier.name, po.contact.name,
             po.receiver.name, po.terms, po.shipping_cost, po.sales_tax, po.total_cost,
             po.note, ', '.join([str(s.id) for s in po.shipment_set.all()]), po.tracking_url
         ])
@@ -882,15 +1150,47 @@ def purchase_order__print(request, pk):
 
 # purchase order line items
 @login_required
+def purchase_order_line_item__update(request, pk):
+    li = get_object_or_404(PurchaseOrderLineItem, pk=pk)
+    po = li.purchase_order
+
+    if request.method == 'GET':
+        form = PurchaseOrderLineItemForm(instance=li)
+        form.fields['sku'].queryset = Sku.objects.filter(id=-1)
+        form.fields['quantity_ordered'].initial = ''
+
+    else:
+        form = PurchaseOrderLineItemForm(request.POST, instance=li)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('app:purchase_order__view', args=[str(li.purchase_order.pk)]))
+
+    return render_to_response(
+        'app/purchase_order_line_item__update.html',
+        {
+            'li': li,
+            'po': po,
+            'form': form,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+@login_required
 def filter_po_lis(request):
     pos = request.GET.get('pos', None)
     skus = request.GET.get('skus', None)
     start = request.GET.get('start', None)
     end = request.GET.get('end', None)
+    deal = request.GET.get('deal', None)
+    ids = request.GET.get('ids', None)
 
     lis = PurchaseOrderLineItem.objects.order_by('-purchase_order__id')
     warnings = []
     params = {}
+
+    if ids:
+        lis = lis.filter(id__in=[id for id in ids.split(',')])
 
     if pos:
         lis = lis.filter(purchase_order__id__in=[po.rstrip() for po in pos.split(',')])
@@ -906,6 +1206,10 @@ def filter_po_lis(request):
         end = datetime(*(int(x) for x in end.split('-')), hour=23, minute=59, second=59, tzinfo=TZ)
         lis = lis.filter(purchase_order__created__range=[start, end])
         params['Date Created Range'] = '%s to %s' % (s, e)
+
+    if deal:
+        lis = lis.filter(purchase_order__deal__icontains=deal)
+        params['Deal'] = deal
 
     return lis, warnings, params
 
@@ -939,17 +1243,18 @@ def purchase_order_line_item__export(request):
     lis, _, params = filter_po_lis(request)
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="po_line_items__%s.csv"' % \
-          '_'.join([slugify(p) for p in params.values()])
+    response['Content-Disposition'] = 'attachment; filename="po_line_items__%s.csv"' % '_'.join(
+        [slugify(p) for p in params.values()])
 
     writer = csv.writer(response)
     writer.writerow([
-        'po id', 'sku id', 'qty ordered', 'disc percent', 'disc dollar'
+        'po id', 'deal', 'sku id', 'qty ordered', 'disc percent', 'disc dollar'
     ])
 
     for li in lis:
         writer.writerow([
-            li.purchase_order.id, li.sku.id, li.quantity_ordered, li.discount_percent, li.discount_dollar
+            li.purchase_order.id, li.purchase_order.deal, li.sku.id, li.quantity_ordered, li.discount_percent,
+            li.discount_dollar
         ])
 
     return response
@@ -988,7 +1293,7 @@ def shipment__view(request, pk=None):
 @login_required
 def shipment__create(request):
     received = [po.id for po in PurchaseOrder.objects.all() if po.is_fully_received()]
-    pos = PurchaseOrder.objects.filter(~Q(id__in=received))
+    pos = PurchaseOrder.objects.filter(~Q(id__in=received)).order_by('created')
     if not len(pos):
         return render_to_response(
             'app/shipment__create.html',
@@ -1017,6 +1322,7 @@ def shipment__create(request):
             if formset.is_valid():
                 shipment.save()
                 formset.save()
+                shipment_received(shipment.purchase_order.id, shipment, shipment.purchase_order.creator.email)
                 return redirect(reverse('app:shipment__view'))
         else:
             formset = ShipmentLineItemFormset(request.POST, instance=Shipment())
@@ -1093,10 +1399,14 @@ def filter_shipments(request):
     pos = request.GET.get('pos', None)
     start = request.GET.get('start', None)
     end = request.GET.get('end', None)
+    ids = request.GET.get('ids', None)
 
     ships = Shipment.objects.order_by('-created')
     warnings = []
     params = {}
+
+    if ids:
+        ships = ships.filter(id__in=[id for id in ids.split(',')])
 
     if creator:
         ships = ships.filter(creator__id=creator)
@@ -1148,7 +1458,7 @@ def shipment__export(request):
     ships, _, params = filter_shipments(request)
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="pos__%s.csv"' % \
+    response['Content-Disposition'] = 'attachment; filename="ship__%s.csv"' % \
           '_'.join([slugify(p) for p in params.values()])
 
     writer = csv.writer(response)
@@ -1166,15 +1476,63 @@ def shipment__export(request):
 
 # shipment line items
 @login_required
+def shipment_line_item__update(request, pk):
+    li = get_object_or_404(ShipmentLineItem, pk=pk)
+    shipment = li.shipment
+
+    if request.method == 'GET':
+        form = ShipmentLineItemForm(instance=li)
+        form.fields['sku'].queryset = Sku.objects.filter(id=-1)
+        form.fields['quantity_received'].initial = ''
+
+    else:
+        form = ShipmentLineItemForm(request.POST, instance=li)
+        if form.is_valid():
+            # undo previous qty adj
+            old_qa = QuantityAdjustment.objects.get(sku=li.sku, detail__contains='href="%s"' % li.shipment.get_absolute_url())
+            qa = QuantityAdjustment(
+                sku=li.sku,
+                reason=QuantityAdjustmentReason.objects.get(name__icontains='rollback'),
+                old=li.sku.quantity_on_hand,
+                new=li.sku.quantity_on_hand - (old_qa.new - old_qa.old),
+                who=request.user,
+                detail='undoing adjustment %s -- updating shipping receipt' % old_qa.id
+            )
+            qa.save()
+            # save line item
+            form.save()
+            return redirect(reverse('app:shipment__view', args=[str(li.shipment.pk)]))
+
+    return render_to_response(
+        'app/shipment_line_item__update.html',
+        {
+            'li': li,
+            'shipment': shipment,
+            'form': form,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+@login_required
+def shipment_line_item__delete(request, pk):
+    li = get_object_or_404(ShipmentLineItem, pk=pk)
+
+
+@login_required
 def filter_sh_lis(request):
     pos = request.GET.get('pos', None)
     skus = request.GET.get('skus', None)
     start = request.GET.get('start', None)
     end = request.GET.get('end', None)
+    ids = request.GET.get('ids', None)
 
     lis = ShipmentLineItem.objects.order_by('-shipment__purchase_order__id')
     warnings = []
     params = {}
+
+    if ids:
+        lis = lis.filter(id__in=[id for id in ids.split(',')])
 
     if pos:
         lis = lis.filter(shipment__purchase_order__id__in=[po.rstrip() for po in pos.split(',')])
@@ -2207,8 +2565,8 @@ def receiver__update(request, pk=None):
     else:
         form = ReceiverForm(request.POST, instance=receiver)
         if form.is_valid():
-            form.save()
-            return redirect(Receiver.get_absolute_url())
+            receiver = form.save()
+            return redirect(receiver.get_absolute_url())
 
     return render_to_response(
         'app/purchase_order_endpoint__update.html',

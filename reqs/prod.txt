@@ -1,0 +1,4 @@
+-r common.txt
+
+newrelic==2.16.0.12
+psycopg2==2.5.2

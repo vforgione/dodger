@@ -6,7 +6,6 @@
 
 {% block content %}
 <h3>Make a Quantity Adjustment</h3>
-
 <form action="." method="post">
   {% csrf_token %}
   {% for field in form %}
@@ -20,8 +19,35 @@
   </div>
   {% endif %}
   {% endfor %}
-  <input type="submit" name="submit" value="Make Adjustment" class="btn btn-primary" />
-  <a href="{% url 'app:quantity_adjustment__view' %}" class="btn btn-danger pull-right">Cancel</a>
+  {{ formset.management_form }}
+  {% for form in formset %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field.errors }}{{ field }}
+  </div>
+  {% endfor %}
+  {% endfor %}
+  <div class="form-group">
+    <label for="location">Location:</label>
+    <input type="text" name="location" id="location" class="form-control" placeholder="optional" />
+  </div>
+  <table class="table">
+    <tbody>
+    <tr>
+      <td class="col-lg-4">
+        <input type="submit" name="submit" value="Make Adjustment" class="btn btn-primary" />
+      </td>
+      <td class="col-lg-4" style="text-align:center">
+        <input type="submit" name="submit" value="Save and Create Another Adjustment" class="btn btn-info" />
+      </td>
+      <td class="col-lg-4">
+        <a href="{% url 'app:quantity_adjustment__view' %}" class="btn btn-danger pull-right">Cancel</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+{#  <input type="submit" name="submit" value="Make Adjustment" class="btn btn-primary" />#}
+{#  <a href="{% url 'app:quantity_adjustment__view' %}" class="btn btn-danger pull-right">Cancel</a>#}
 </form>
 {% endblock %}
 

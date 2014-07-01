@@ -5,6 +5,10 @@ urlpatterns = patterns(
     'app.views',
 
     ##
+    # home
+    url(r'^$', 'home', name='home'),
+
+    ##
     # search
     url(r'^search/$', 'search', name='search'),
 
@@ -20,14 +24,23 @@ urlpatterns = patterns(
     url(r'^quantity_adjustments/create/$', 'quantity_adjustment__create', name='quantity_adjustment__create'),
     url(r'^quantity_adjustments/table/$', 'quantity_adjustment__table', name='quantity_adjustment__table'),
     url(r'^quantity_adjustments/export/$', 'quantity_adjustment__export', name='quantity_adjustment__export'),
+    url(r'^quantity_adjustments/mass_zero/$', 'quantity_adjustment__mass_zero', name='quantity_adjustment__mass_zero'),
 
     ##
     # skus
-    url(r'^skus(?:/(?P<pk>\d+))?/$', 'sku__view', name='sku__view'),
     url(r'^skus/create/$', 'sku__create', name='sku__create'),
+    url(r'^skus/clone/(?P<pk>\d+)?/$', 'sku__clone', name='sku__clone'),
     url(r'^skus/update(?:/(?P<pk>\d+))?/$', 'sku__update', name='sku__update'),
     url(r'^skus/table/$', 'sku__table', name='sku__table'),
     url(r'^skus/export/$', 'sku__export', name='sku__export'),
+    url(r'^skus/locations/', 'sku__locations', name='sku__location'),
+    # /skus/table/ breaks this, so it has to be last
+    url(r'^skus(?:/(?P<pk>\d+))?/$', 'sku__view', name='sku__view'),  # detail view
+    url(r'^skus(?:/(?P<order>[a-zA-Z0-9\-_]+))?/$', 'sku__view', name='sku__view'),  # list view with ordering
+
+    ##
+    # sku attributes
+    url(r'sku_attributes/delete/(?P<pk>\d+)?/$', 'sku_attribute__delete', name='sku_attribute__delete'),
 
     ##
     # purchase orders
@@ -40,6 +53,7 @@ urlpatterns = patterns(
 
     ##
     # purchase order line items
+    url(r'^purchase_order_line_items/update/(?P<pk>\d+)?/$', 'purchase_order_line_item__update', name='purchase_order_line_item__update'),
     url(r'^purchase_order_line_items/table/$', 'purchase_order_line_item__table', name='purchase_order_line_item__table'),
     url(r'^purchase_order_line_items/export/$', 'purchase_order_line_item__export', name='purchase_order_line_item__export'),
 
@@ -53,6 +67,7 @@ urlpatterns = patterns(
 
     ##
     # shipment line items
+    url(r'^shipment_line_items/update/(?P<pk>\d+)?/$', 'shipment_line_item__update', name='shipment_line_item__update'),
     url(r'^shipment_line_items/table/$', 'shipment_line_item__table', name='shipment_line_item__table'),
     url(r'^shipment_line_items/export/$', 'shipment_line_item__export', name='shipment_line_item__export'),
 

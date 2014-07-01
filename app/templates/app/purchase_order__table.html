@@ -66,13 +66,18 @@
       </td>
     </tr>
     <tr>
-      <td class="col-lg-6" colspan="2">
+      <td class="col-lg-6">
+        <div class="form-group">
+          <label for="deal">Deal</label>
+          <input type="text" name="deal" class="form-control" id="deal" />
+        </div>
+      </td>
+      <td class="col-lg-6">
         <div class="form-group">
           <input type="submit" class="btn btn-primary" value="Filter POs" />
         </div>
       </td>
     </tr>
-    <tr><td colspan="2">&nbsp;</td></tr>
   </table>
 </form>
 </div>
@@ -101,7 +106,7 @@
 <table class="table table-striped table-condensed data-table">
 <thead>
   <tr>
-    <th>ID</th><th>Date Created</th><th>DAT Member</th><th>Supplier</th><th>Contact</th><th>Receiver</th>
+    <th>ID</th><th>Deal</th><th>Date Created</th><th>DAT Member</th><th>Supplier</th><th>Contact</th><th>Receiver</th>
     <th>Terms</th><th>Shipping Cost</th><th>Sales Tax</th><th>Total Cost</th><th>Note</th><th>Tracking URL</th>
     <th>Shipments</th>
   </tr>
@@ -110,6 +115,7 @@
   {% for po in pos %}
   <tr>
     <td>{{ po.id }}</td>
+    <td>{{ po.deal }}</td>
     <td>{{ po.created }}</td>
     <td>{{ po.creator.username }}</td>
     <td>{{ po.supplier.name }}</td>

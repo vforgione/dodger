@@ -37,7 +37,7 @@
       </div>
       <div class="col-lg-3">
         <h4>Ship To</h4>
-        doggyloot, inc.<br />
+        Doggyloot<br />
         {{ po.receiver.name }}<br />
         {{ po.receiver.address1 }}<br />
         {% if po.receiver.address2 %}{{ po.receiver.address2 }}<br />{% endif %}
@@ -46,7 +46,7 @@
       </div>
       <div class="col-lg-3">
         <h4>Bill To</h4>
-        doggyloot, inc.<br />
+        Doggyloot<br />
         213 N Racine Ave<br />
         Chicago, IL 60607<br />
         accounting@doggyloot.com
@@ -73,15 +73,12 @@
           <td>{{ li.sku.supplier_sku|default:"-" }}</td>
           <td>{{ li.sku.id }}</td>
           <td>
-            {% if li.sku.skuattribute_set.all|length %}
             <ul>
+              <li>Name: {{ li.sku.name }}</li>
               {% for sa in li.sku.skuattribute_set.all %}
               <li>{{ sa.attribute.name }}: {{ sa.value }}</li>
               {% endfor %}
             </ul>
-            {% else %}
-            -
-            {% endif %}
           </td>
           <td>${{ li.unit_cost|floatformat:2 }}</td>
           <td>{{ li.discount_percent|default_if_none:0|floatformat:2 }}%</td>

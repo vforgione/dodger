@@ -1,0 +1,29 @@
+{% extends 'dodger/base.html' %}
+
+{% block content %}
+  <h3>Updating Shipment {{ shipment }}</h3>
+
+  <div class="alert alert-info" id="sku-warning">
+  <p>Loading SKUs. Please be patient.</p>
+  </div>
+
+  <input type="hidden" id="old-sku" value="{{ li.sku.pk }}" />
+  <input type="hidden" id="old-qty" value="{{ li.quantity_received }}" />
+  <input type="hidden" id="supplier-pk" value="{{ li.shipment.purchase_order.supplier.pk }}" />
+
+  <form action="." method="post">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}{{ field }}{{ field.errors }}
+  </div>
+  {% endfor %}
+  <input type="submit" value="Update Line Item" class="btn btn-danger" />
+  <a href="{% url 'app:shipment__view' li.shipment.pk %}" class="btn btn-primary pull-right">Cancel</a>
+  </form>
+{% endblock %}
+
+{% block contentjs %}
+{% load static %}
+<script src="{% static 'app/js/shipment_line_item__update.js' %}"></script>
+{% endblock %}

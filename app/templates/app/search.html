@@ -10,7 +10,76 @@
     {% if pos|length %}<li class="tocli"><a href="#pos">Purchase Orders: {{ pos|length }} results</a></li>{% endif %}
     {% if ships|length %}<li class="tocli"><a href="#ships">Shipments: {{ ships|length }} results</a></li>{% endif %}
     {% if skus|length %}<li class="tocli"><a href="#skus">SKUs: {{ skus|length }} results</a></li>{% endif %}
+    {% if qas|length %}<li class="tocli"><a href="#qas">Quantity Adjustments: {{ qas|length }} results</a></li>{% endif %}
+    {% if cas|length %}<li class="tocli"><a href="#cas">Cost Adjustments: {{ cas|length }} results</a></li>{% endif %}
   </ul>
+
+  {% if skus|length %}
+  <hr />
+  <h4 id="skus">SKUs</h4>
+  <div class="table-responsive">
+    <table class="table">
+    <thead>
+      <tr>
+        <th>&nbsp;</th><th>UPC</th><th>Qty on Hand</th><th>Location</th><th>Supplier SKU</th><th>In Live Deal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sku in skus %}
+      <tr>
+        <td><a href="{{ sku.get_absolute_url }}">{{ sku }}</a></td>
+        <td>{{ sku.upc|default:"-" }}</td>
+        <td>{{ sku.quantity_on_hand }}</td>
+        <td>{{ sku.location|default:"-" }}</td>
+        <td>{{ sku.supplier_sku|default:"-" }}</td>
+        <td>{{ sku.in_live_deal }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  <a href="/skus/export/?ids={{ sku_ids }}" class="btn btn-info">Export These SKUs</a>
+  </div>
+  {% endif %}
+
+  {% if qas|length %}
+  <hr />
+  <h4 id="qas">Quantity Adjustments</h4>
+  <table class="table">
+  <thead>
+  <tr>
+    <th>SKU</th><th>Date</th><th>Old</th><th>New</th><th>Reason</th><th>Detail</th><th>Who</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for adj in qas %}
+  <tr>
+    <td><a href="{{ adj.get_absolute_url }}">{{ adj }}</a></td><td>{{ adj.created }}</td><td>{{ adj.old }}</td><td>{{ adj.new }}</td><td>{{ adj.reason.name }}</td><td>{{ adj.detail|default:"-"|safe }}</td><td>{{ adj.who.username }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+  </table>
+  <a href="/quantity_adjustments/export/?ids={{ qas_ids }}" class="btn btn-info">Export These Adjustments</a>
+  {% endif %}
+
+  {% if cas|length %}
+  <hr />
+  <h4 id="cas">Cost Adjustments</h4>
+  <table class="table">
+  <thead>
+  <tr>
+    <th>SKU</th><th>Date</th><th>Old</th><th>New</th><th>Reason</th><th>Detail</th><th>Who</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for adj in cas %}
+  <tr>
+    <td><a href="{{ adj.get_absolute_url }}">{{ adj }}</a></td><td>{{ adj.created }}</td><td>{{ adj.old }}</td><td>{{ adj.new }}</td><td>{{ adj.reason.name }}</td><td>{{ adj.detail|default:"-"|safe }}</td><td>{{ adj.who.username }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+  </table>
+  <a href="/cost_adjustments/export/?ids={{ cas_ids }}" class="btn btn-info">Export These Adjustments</a>
+  {% endif %}
 
   {% if brands|length %}
   <hr />
@@ -82,13 +151,15 @@
   <table class="table">
     <thead>
     <tr>
-      <th>Name</th><th>Supplier</th><th>Contact</th><th>Creator</th><th>SKUs</th>
+      <th>Name</th><th>Date</th><th>Deal</th><th>Supplier</th><th>Contact</th><th>Creator</th><th>SKUs</th>
     </tr>
     </thead>
     <tbody>
     {% for po in pos %}
     <tr>
       <td><a href="{{ po.get_absolute_url }}">{{ po }}</a></td>
+      <td>{{ po.created }}</td>
+      <td>{{ po.deal }}</td>
       <td><a href="{{ po.supplier.get_absolute_url }}">{{ po.supplier }}</a></td>
       <td><a href="{{ po.contact.get_absolute_url }}">{{ po.contact }}</a></td>
       <td>{{ po.creator.email }}</td>
@@ -102,6 +173,7 @@
     </tbody>
   </table>
   </div>
+  <a href="/purchase_orders/export/?ids={{ po_ids }}" class="btn btn-info">Export These Purchase Orders</a>
   {% endif %}
 
   {% if ships|length %}
@@ -111,13 +183,14 @@
   <table class="table">
     <thead>
     <tr>
-      <th>Name</th><th>PO Ref</th><th>Creator</th><th>SKUs</th>
+      <th>Name</th><th>Date</th><th>PO Ref</th><th>Creator</th><th>SKUs</th>
     </tr>
     </thead>
     <tbody>
     {% for ship in ships %}
     <tr>
       <td><a href="{{ ship.get_absolute_url }}">{{ ship }}</a></td>
+      <td>{{ ship.created }}</td>
       <td><a href="{{ ship.purchase_order.get_absolute_url }}">{{ ship.purchase_order }}</a></td>
       <td>{{ ship.creator.email }}</td>
       <td>
@@ -130,32 +203,7 @@
     </tbody>
   </table>
   </div>
+  <a href="/shipments/export/?ids={{ ship_ids }}" class="btn btn-info">Export These Shipments</a>
   {% endif %}
-
-  {% if skus|length %}
-  <hr />
-  <h4 id="skus">SKUs</h4>
-  <div class="table-responsive">
-    <table class="table">
-    <thead>
-      <tr>
-        <th>&nbsp;</th><th>UPC</th><th>Qty on Hand</th><th>Location</th><th>Supplier SKU</th><th>In Live Deal</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for sku in skus %}
-      <tr>
-        <td><a href="{{ sku.get_absolute_url }}">{{ sku }}</a></td>
-        <td>{{ sku.upc|default:"-" }}</td>
-        <td>{{ sku.quantity_on_hand }}</td>
-        <td>{{ sku.location|default:"-" }}</td>
-        <td>{{ sku.supplier_sku|default:"-" }}</td>
-        <td>{{ sku.in_live_deal }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-    </table>
-  </div>
-{% endif %}
 
 {% endblock %}

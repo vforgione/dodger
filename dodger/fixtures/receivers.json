@@ -1,15 +1,15 @@
 [
 {
-  "pk": 1, 
-  "model": "app.receiver", 
+  "pk": 1,
+  "model": "app.receiver",
   "fields": {
-    "city": "Chicago", 
-    "name": "Ogden Warehouse", 
-    "address1": "350 N Ogden", 
-    "address2": "Suite 100", 
-    "address3": "C/O: Torin Pyer-Pereira", 
-    "zipcode": "60607", 
-    "state": "IL", 
+    "city": "Chicago",
+    "name": "Ogden Warehouse",
+    "address2": "350 N Ogden",
+    "address3": "Suite 100",
+    "address1": "C/O: Torin Pyer-Pereira",
+    "zipcode": "60607",
+    "state": "IL",
     "country": "United States"
   }
 }

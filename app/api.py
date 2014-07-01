@@ -200,6 +200,7 @@ class SkuResource(ModelResource):
             'categories': ALL_WITH_RELATIONS,
             'quantity_on_hand': ALL,
             'location': ALL,
+            'last_location': ALL,
             'owner': ALL_WITH_RELATIONS,
             'supplier': ALL_WITH_RELATIONS,
             'lead_time': ALL,
@@ -211,6 +212,9 @@ class SkuResource(ModelResource):
             'is_subscription': ALL,
             'created': ALL,
             'modified': ALL,
+            'notes': ALL,
+            'action': ALL,
+            'action_date': ALL,
         }
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
@@ -252,6 +256,7 @@ class PurchaseOrderResource(ModelResource):
         filtering = {
             'id': ALL,
             'creator': ALL_WITH_RELATIONS,
+            'deal': ALL,
             'supplier': ALL_WITH_RELATIONS,
             'contact': ALL_WITH_RELATIONS,
             'receiver': ALL_WITH_RELATIONS,

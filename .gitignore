@@ -4,5 +4,4 @@
 *_settings.py
 *_config.py
 .DS_Store
-/apps
 /static

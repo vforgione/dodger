@@ -81,19 +81,26 @@
       </td>
       <td class="col-lg-6">
         <div class="form-group">
-          &nbsp;
+          <label for="expiration_date">Expiration Date</label>
+          <select name="expiration_date" class="form-control">
+            <option></option>
+            <option value="include">Has an Exp. Date</option>
+          </select>
         </div>
       </td>
     </tr>
     <tr>
       <td class="col-lg-6">
         <div class="form-group">
-          <input type="submit" class="btn btn-primary" value="Filter SKUs" />
+          <label for="in_live_deal">Is Subscription</label>
+          <select name="is_subscription" class="form-control">
+            <option></option><option value="0">No</option><option value="1">Yes</option>
+          </select>
         </div>
       </td>
       <td class="col-lg-6">
         <div class="form-group">
-          &nbsp;
+          <input type="submit" class="btn btn-primary" value="Filter SKUs" />
         </div>
       </td>
     </tr>
@@ -128,8 +135,9 @@
   <tr>
     <th>ID</th><th>Name</th><th>Categories</th><th>Brand</th><th>Supplier</th>
     <th>Owner</th><th>Min Qty</th><th>Notify</th><th>Cost</th>
-    <th>Supp SKU</th><th>Case Qty</th><th>Location</th><th>Qty on Hand</th>
-    <th>In Live Deal</th><th>Is Subscription SKU</th><th>Attributes</th>
+    <th>Supp SKU</th><th>Case Qty</th><th>Location</th><th>Last Location</th><th>Qty on Hand</th>
+    <th>In Live Deal</th><th>Is Subscription SKU</th><th>Notes</th>
+    <th>Action</th><th>Action Date</th><th>Attributes</th>
   </tr>
 </thead>
 <tbody>
@@ -147,10 +155,21 @@
     <td>{{ sku.supplier_sku|default:"-" }}</td>
     <td>{{ sku.case_quantity|default:"-" }}</td>
     <td>{{ sku.location|default:"-" }}</td>
+    <td>{{ sku.last_location|default:"-" }}</td>
     <td>{{ sku.quantity_on_hand }}</td>
     <td>{{ sku.in_live_deal }}</td>
     <td>{{ sku.is_subscription }}</td>
-    <td>{{ sku.attributes|join:", " }}</td>
+    <td>{{ sku.notes|default:"-" }}</td>
+    <td>{{ sku.action|default:"-" }}</td>
+    <td>{{ sku.action_date|default:"-" }}</td>
+{#    <td>{{ sku.attributes|join:", " }}</td>#}
+    <td>
+      {% if sku.attributes|length %}
+        {% for attr in sku.attributes %}
+        {{ attr.0 }}: {{ attr.1 }},&nbsp;
+        {% endfor %}
+      {% else %}-{% endif %}
+    </td>
   </tr>
   {% endfor %}
 </tbody>

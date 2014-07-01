@@ -10,8 +10,8 @@
   <tr><th>When</th><td>{{ adj.when }}</td></tr>
   <tr><th>Who</th><td>{{ adj.who.username }}</td></tr>
   <tr><th>SKU</th><td><a href="{{ adj.sku.get_absolute_url }}">{{ adj.sku }}</a></td></tr>
-  <tr><th>Old Cost</th><td>{{ adj.old }}</td></tr>
-  <tr><th>New Cost</th><td>{{ adj.new }}</td></tr>
+  <tr><th>Old Quantity</th><td>{{ adj.old }}</td></tr>
+  <tr><th>New Quantity</th><td>{{ adj.new }}</td></tr>
   <tr><th>Reason</th><td>{{ adj.reason }}</td></tr>
   <tr><th>Detail</th><td>{{ adj.detail|default:"-"|safe }}</td></tr>
   </tbody>
@@ -22,12 +22,12 @@
 <h3>View Quantity Adjustments</h3>
 <table class="table table-striped">
   <thead>
-  <tr><th>&nbsp;</th><th>When</th><th>Who</th><th>Reason</th></tr>
+  <tr><th>&nbsp;</th><th>When</th><th>Who</th><th>Reason</th><th>Detail</th></tr>
   </thead>
   <tbody>
   {% for adj in adjs %}
   <tr>
-    <td><a href="{{ adj.get_absolute_url }}">{{ adj }}</a></td><td>{{ adj.created }}</td><td>{{ adj.who.username }}</td><td>{{ adj.reason }}</td>
+    <td><a href="{{ adj.get_absolute_url }}">{{ adj }}</a></td><td>{{ adj.created }}</td><td>{{ adj.who.username }}</td><td>{{ adj.reason }}</td><td>{{ adj.detail|default:"-"|safe }}</td>
   </tr>
   {% endfor %}
   </tbody>

@@ -7,6 +7,21 @@
 <h3>Detail View of SKU {{ sku.id }}</h3>
 <table class="table">
 <tbody>
+<tr>
+  <td class="col-lg-4">
+    <a class="btn btn-primary default" href="{% url 'app:sku__view' %}">Back To List</a>
+  </td>
+  <td class="col-lg-4" style="text-align:center">
+    <a class="btn btn-info" href="{% url 'app:sku__clone' sku.pk %}">Clone This SKU</a>
+  </td>
+  <td class="col-lg-4">
+    <a class="btn btn-danger pull-right" href="{% url 'app:sku__update' sku.pk %}">Modify This SKU</a>
+  </td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<tbody>
   <tr><th>ID</th><td>{{ sku.id }}</td></tr>
   <tr><th>Name</th><td>{{ sku.name }}</td></tr>
   <tr><th>UPC</th><td>{{ sku.upc|default:"-" }}</td></tr>
@@ -14,6 +29,7 @@
   <tr><th>Categories</th><td>{{ sku.categories.all|default:"-"|join:", " }}</td></tr>
   <tr><th>Qty on Hand</th><td>{{ sku.quantity_on_hand }}</td></tr>
   <tr><th>Location</th><td>{{ sku.location|default:"-" }}</td></tr>
+  <tr><th>Last Location</th><td>{{ sku.last_location|default:"-" }}</td></tr>
   <tr><th>Owner</th><td>{{ sku.owner.username }}</td></tr>
   <tr><th>Supplier</th><td>{{ sku.supplier }}</td></tr>
   <tr><th>Lead Time</th><td>{{ sku.lead_time|default:"-" }}</td></tr>
@@ -26,6 +42,9 @@
   <tr><th>Is Subscription</th><td>{{ sku.is_subscription }}</td></tr>
   <tr><th>Date Created</th><td>{{ sku.created }}</td></tr>
   <tr><th>Date Last Modified</th><td>{{ sku.modified }}</td></tr>
+  <tr><th>Notes</th><td>{{ sku.notes|default:"-" }}</td></tr>
+  <tr><th>Action</th><td>{{ sku.action|default:"-" }}</td></tr>
+  <tr><th>Action Date</th><td>{{ sku.action_date|default:"-" }}</td></tr>
   {% if sku.skuattribute_set.all|length %}
   <tr>
     <td colspan="2">
@@ -45,16 +64,98 @@
     </td>
   </tr>
   {% endif %}
+  {% if sku.quantityadjustment_set.all|length %}
+  <tr>
+    <td colspan="2">
+      <h4>Quantity Adjustments</h4>
+      <div class="table-responsive">
+        <table class="table table-condensed">
+          <thead>
+          <tr>
+            <th>Date</th><th>Old</th><th>New</th><th>Reason</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for adj in sku.quantityadjustment_set.all %}
+          <tr>
+            <td><a href="{% url 'app:quantity_adjustment__view' adj.pk %}">{{ adj.created }}</a></td>
+            <td>{{ adj.old }}</td>
+            <td>{{ adj.new }}</td>
+            <td>
+              {{ adj.reason.name }}
+              {% if adj.detail|length %}
+              &nbsp;:&nbsp;{{ adj.detail|safe }}
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </td>
+  </tr>
+  {% endif %}
+  {% if sku.costadjustment_set.all|length %}
+  <tr>
+    <td colspan="2">
+      <h4>Cost Adjustments</h4>
+      <div class="table-responsive">
+        <table class="table table-condensed">
+          <thead>
+          <tr>
+            <th>Date</th><th>Old</th><th>New</th><th>Reason</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for adj in sku.costadjustment_set.all %}
+          <tr>
+            <td><a href="{% url 'app:quantity_adjustment__view' adj.pk %}">{{ adj.created }}</a></td>
+            <td>${{ adj.old }}</td>
+            <td>${{ adj.new }}</td>
+            <td>
+              {{ adj.reason.name }}
+              {% if adj.detail|length %}
+              &nbsp;:&nbsp;{{ adj.detail|safe }}
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </td>
+  </tr>
+  {% endif %}
 </tbody>
 </table>
-<a class="btn btn-primary default" href="{% url 'app:sku__view' %}">Back To List</a>
-<a class="btn btn-danger pull-right" href="{% url 'app:sku__update' sku.pk %}">Modify This SKU</a>
+<table class="table">
+<tbody>
+<tr>
+  <td class="col-lg-4">
+    <a class="btn btn-primary default" href="{% url 'app:sku__view' %}">Back To List</a>
+  </td>
+  <td class="col-lg-4" style="text-align:center">
+    <a class="btn btn-info" href="{% url 'app:sku__clone' sku.pk %}">Clone This SKU</a>
+  </td>
+  <td class="col-lg-4">
+    <a class="btn btn-danger pull-right" href="{% url 'app:sku__update' sku.pk %}">Modify This SKU</a>
+  </td>
+</tr>
+</tbody>
+</table>
+{#<a class="btn btn-primary default" href="{% url 'app:sku__view' %}">Back To List</a>#}
+{#<a class="btn btn-danger pull-right" href="{% url 'app:sku__update' sku.pk %}">Modify This SKU</a>#}
 
 {% elif skus %}
 <h3>View SKUs</h3>
 <table class="table table-striped">
 <thead>
-  <tr><th>&nbsp;</th><th>Qty on Hand</th><th>Location</th><th>Owner</th></tr>
+  <tr>
+    <th style="white-space:nowrap;">SKU&nbsp;&nbsp;<a href="/skus/id/" class="sort-asc"></a><a href="/skus/-id/" class="sort-desc"></a></th>
+    <th style="white-space:nowrap;">Qty on Hand&nbsp;&nbsp;<a href="/skus/quantity_on_hand/" class="sort-asc"></a><a href="/skus/-quantity_on_hand/" class="sort-desc"></a></th>
+    <th style="white-space:nowrap;">Location&nbsp;&nbsp;<a href="/skus/location/" class="sort-asc"></a><a href="/skus/-location/" class="sort-desc"></a></th>
+    <th style="white-space:nowrap;">Owner&nbsp;&nbsp;<a href="/skus/owner__username/" class="sort-asc"></a><a href="/skus/-owner__username/" class="sort-desc"></a></th>
+  </tr>
 </thead>
 <tbody>
   {% for sku in skus %}
