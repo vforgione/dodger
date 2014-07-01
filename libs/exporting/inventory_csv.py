@@ -24,6 +24,7 @@ from app.models import Sku
 
 NOTIFICATION_RECIPIENTS = [
     'vince@doggyloot.com',
+    'ed@doggyloot.com',
 ]
 
 
