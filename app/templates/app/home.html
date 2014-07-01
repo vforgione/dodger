@@ -14,7 +14,7 @@
 
 <div><p>&nbsp;</p></div>
 
-<div>
+<div class="col-lg-12">
 <h4>Live SKUs</h4>
 <div class="table-responsive">
   <table class="table table-striped skus">
@@ -38,11 +38,11 @@
 
 <hr />
 
-<div>
+<div class="col-lg-6">
 <h4>Outstanding Purchase Orders</h4>
 {% if out_pos|length %}
 <div class="table-responsive">
-  <table class="table table-striped" style="width: 100%">
+  <table class="table table-striped skus">
     <thead>
     <tr>
       <th style="min-width: 33%">Purchase Order</th><th style="min-width: 33%">SKU</th><th style="min-width: 34%">Ordered/Received</th>
@@ -64,13 +64,11 @@
 {% endif %}
 </div>
 
-<hr />
-
-<div>
+<div class="col-lg-6">
 <h4>Recent Shipments Received</h4>
 {% if recent_shipments|length %}
 <div class="table-responsive">
-  <table class="table table-striped" style="width: 100%">
+  <table class="table table-striped skus" style="width: 100%">
     <thead>
     <tr>
       <th style="width: 33%">Shipment</th><th style="width: 33%">Purchase Order</th><th style="width: 34%">Date</th>
