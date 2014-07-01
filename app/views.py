@@ -27,9 +27,12 @@ TZ = timezone('America/Chicago')
 ##
 # home
 def home(request):
+    now = datetime.now()
+    two_weeks_ago = now - timedelta(days=14)
+
     live_skus = Sku.objects.filter(in_live_deal=True)
 
-    pos = PurchaseOrder.objects.all()
+    pos = PurchaseOrder.objects.filter(created__gte=two_weeks_ago)
     pos = [po for po in pos if not po.is_fully_received()]
     out_pos = []
     for po in pos:
