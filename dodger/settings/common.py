@@ -105,6 +105,12 @@ INSTALLED_APPS = (
 # db config
 DATABASES = {
     'default': {
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'dodger_dev',
+        # 'USER': 'vince',
+        # 'PASSWORD': '',
+        # 'HOST': '',
+        # 'PORT': '',
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(PROJ_DIR, 'db.sqlite3'),
     }

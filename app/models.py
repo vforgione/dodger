@@ -224,7 +224,7 @@ class QuantityAdjustment(models.Model):
         return reverse('app:quantity_adjustment__view', args=[str(self.pk)])
 
     def __str__(self):
-        return '[%s] %s to %s' % (self.sku.id, self.old, self.new)
+        return '[%s] %s to %s on %s by %s because %s' % (self.sku.id, self.old, self.new, self.created, self.who, self.reason)
 
 
 class Contact(models.Model):

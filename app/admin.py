@@ -11,7 +11,7 @@ class ControlModelAdmin(admin.ModelAdmin):
 
 class AdjustmentAdmin(admin.ModelAdmin):
 
-    search_fields = ('when', 'who__username', 'sku__id', 'sku__name', 'sku__upc')
+    search_fields = ('created', 'who__username', 'sku__id', 'sku__name', 'sku__upc')
 
 
 class PurchaseOrderEndpointAdmin(admin.ModelAdmin):
