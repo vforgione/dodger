@@ -9,6 +9,7 @@ sys.path.insert(0, proj)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dodger.settings.prod')
 
 import json
+import re
 
 import requests
 
@@ -16,12 +17,16 @@ from constants import URI_LIVE_SKUS
 from app.models import Sku
 
 
+SKU_NUMBER_REGEX = re.compile(r'^\d+$')
+
+
 def get_skus_from_sd():
     res = requests.get(URI_LIVE_SKUS)
     res = json.loads(res.text)
     sku_ids = []
     for skuid in res:
-        sku_ids.extend(skuid.split(' '))
+        skus = [s for s in skuid.split(' ') if SKU_NUMBER_REGEX.match(s)]
+        sku_ids.extend(skus)
     sku_ids = set(sku_ids)
     return sku_ids
 
