@@ -4,7 +4,7 @@ from common import *
 # debug config
 DEBUG = True
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
 
 # site config

@@ -3,6 +3,8 @@ from django.contrib import admin
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
+from django.http import HttpResponse
+
 
 admin.autodiscover()
 
@@ -14,6 +16,9 @@ def logout_page(request):
 
 urlpatterns = patterns(
     '',
+
+    # robots one liner
+    (r'^robots\.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", mimetype="text/plain")),
 
     # login/out
     # url(r'^accounts/login/', 'django.contrib.auth.views.login'),

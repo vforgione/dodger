@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+  <meta name="robots" content="noindex">
   <title>dodger | {% block title %}sku management{% endblock %}</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -164,6 +164,7 @@
 
   <div class="nav-pad"></div>
 
+{% if user.is_active and user.is_authenticated %}
   {% if messages %}
   <div class="container">
     {% for message in messages %}
@@ -185,7 +186,7 @@
       &copy; 2014 doggyloot, inc.
     </div>
   </div>
-
+{% endif %}
   <script src="{% static 'dodger/js/jquery-1.11.0.min.js' %}"></script>
   <script src="{% static 'dodger/js/bootstrap.min.js' %}"></script>
   <script src="{% static 'app/js/popup.js' %}"></script>
