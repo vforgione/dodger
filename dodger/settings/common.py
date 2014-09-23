@@ -134,4 +134,4 @@ LOGIN_REDIRECT_URL = '/'
 
 SOCIAL_AUTH_GOOGLE_WHITELISTED_DOMAINS = ['doggyloot.com', ]
 
-SOCIAL_AUTH_GOOGLE_WHITELISTED_EMAILS = ['v.forgione@gmail.com', 'epark@sandboxindustries.com']
+SOCIAL_AUTH_GOOGLE_WHITELISTED_EMAILS = ['v.forgione@gmail.com', 'epark@sandboxindustries.com', 'masha@sandboxindustries.com']

@@ -1,6 +1,11 @@
+# -*- encoding: utf-8 -*-
+
+from string import ascii_letters, digits
 import csv
+import codecs
 from datetime import date, datetime, timedelta
 import json
+import sys
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -889,7 +894,13 @@ def sku__export(request):
             row.append(attrs.get(attr, ''))
         row.extend([sku.created.strftime('%m/%d/%Y'), sku.modified.strftime('%m/%d/%Y')])
         # print('\n\n' + str(row) + '\n\n')
-        writer.writerow(row)
+        for cell in row:
+            if isinstance(cell, basestring):
+                cell = ''.join([c for c in cell if c in ascii_letters+digits])
+        try:
+            writer.writerow(row)
+        except Exception, e:
+            sys.stderr.write(str(e))
 
     return response
 
